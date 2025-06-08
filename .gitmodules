@@ -1,0 +1,3 @@
+[submodule "lancer-web"]
+	path = lancer-web
+	url = https://github.com/mvp-masters/lancer-web
