@@ -10,7 +10,7 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 type Testimonial = {
@@ -36,18 +36,59 @@ export const AnimatedTestimonials = ({
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<string>('');
 
+  // Use refs to avoid re-renders and state conflicts
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isPausedRef = useRef(false);
+  const lastInteractionRef = useRef<number>(0);
+
   // Use intersection observer to detect when component is in view
   const { ref, inView } = useInView({
     threshold: 0.3,
     rootMargin: '250px 0px',
   });
 
+  const clearAutoplay = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  const startAutoplay = () => {
+    if (!autoplay || !inView || isPausedRef.current) return;
+
+    clearAutoplay();
+    intervalRef.current = setInterval(() => {
+      setActive((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+  };
+
+  const pauseAutoplay = () => {
+    isPausedRef.current = true;
+    clearAutoplay();
+    lastInteractionRef.current = Date.now();
+  };
+
+  const resumeAutoplayAfterDelay = () => {
+    // Resume autoplay after 10 seconds of no interaction
+    setTimeout(() => {
+      if (Date.now() - lastInteractionRef.current >= 10000) {
+        isPausedRef.current = false;
+        startAutoplay();
+      }
+    }, 10000);
+  };
+
   const handleNext = () => {
+    pauseAutoplay();
     setActive((prev) => (prev + 1) % testimonials.length);
+    resumeAutoplayAfterDelay();
   };
 
   const handlePrev = () => {
+    pauseAutoplay();
     setActive((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    resumeAutoplayAfterDelay();
   };
 
   const isActive = (index: number) => {
@@ -73,9 +114,15 @@ export const AnimatedTestimonials = ({
 
   useEffect(() => {
     if (autoplay && inView) {
-      const interval = setInterval(handleNext, 5000);
-      return () => clearInterval(interval);
+      isPausedRef.current = false;
+      startAutoplay();
+    } else {
+      clearAutoplay();
     }
+
+    return () => {
+      clearAutoplay();
+    };
   }, [autoplay, inView]);
 
   useEffect(() => {
