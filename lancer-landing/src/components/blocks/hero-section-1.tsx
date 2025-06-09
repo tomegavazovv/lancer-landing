@@ -566,12 +566,12 @@ export function HeroSection() {
             preset='blur-slide'
             className='space-y-6'
             threshold={0.2}
-            rootMargin='-100px'
+            rootMargin='-50px'
             variants={{
               container: {
                 visible: {
                   transition: {
-                    staggerChildren: 0.2, // Increased from default 0.1 to slow down stagger
+                    staggerChildren: 0.1, // Increased from default 0.1 to slow down stagger
                   },
                 },
               },

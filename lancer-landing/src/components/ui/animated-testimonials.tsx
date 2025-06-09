@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 type Testimonial = {
   quote: string;
@@ -34,6 +35,12 @@ export const AnimatedTestimonials = ({
   const [randomRotations, setRandomRotations] = useState<number[]>([]);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<string>('');
+
+  // Use intersection observer to detect when component is in view
+  const { ref, inView } = useInView({
+    threshold: 0.3,
+    rootMargin: '250px 0px',
+  });
 
   const handleNext = () => {
     setActive((prev) => (prev + 1) % testimonials.length);
@@ -65,11 +72,11 @@ export const AnimatedTestimonials = ({
   }, [testimonials.length]);
 
   useEffect(() => {
-    if (autoplay) {
+    if (autoplay && inView) {
       const interval = setInterval(handleNext, 5000);
       return () => clearInterval(interval);
     }
-  }, [autoplay]);
+  }, [autoplay, inView]);
 
   useEffect(() => {
     // Handle escape key to close modal
@@ -99,6 +106,7 @@ export const AnimatedTestimonials = ({
   return (
     <>
       <div
+        ref={ref}
         className={cn(
           'max-w-sm md:max-w-4xl mx-auto px-4 md:px-8 lg:px-12 py-20',
           className
