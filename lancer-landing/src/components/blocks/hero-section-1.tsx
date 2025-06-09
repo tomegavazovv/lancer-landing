@@ -1,6 +1,10 @@
 import { AnimatedGroup } from '@/components/ui/animated-group';
 import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
 import { Button } from '@/components/ui/button';
+import { Highlight } from '@/components/ui/hero-highlight';
+import { LinkPreview } from '@/components/ui/link-preview';
+import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
+import { Timeline } from '@/components/ui/timeline';
 import { cn } from '@/lib/utils';
 import { Medal, Menu, Sparkles, Star, X } from 'lucide-react';
 import Image from 'next/image';
@@ -10,11 +14,14 @@ import { useInView } from 'react-intersection-observer';
 import { BorderBeam } from '../magicui/border-beam';
 import { AvatarCircles } from '../ui/avatar-circles';
 import { Badge } from '../ui/badge';
+import { FeatureCard } from '../ui/feature-card';
 import { Glow } from '../ui/glow';
 import { LogoIcon } from '../ui/logo-icon';
 import { Mockup, MockupFrame } from '../ui/mockup';
+import { Particles } from '../ui/particles';
 import { SparklesText } from '../ui/sparkles-text';
 import { FaqSection } from './faq';
+import { Footer } from './footer';
 
 const transitionVariants = {
   item: {
@@ -63,6 +70,211 @@ const avatars = [
   },
 ];
 
+export function TimelineDemo() {
+  const data = [
+    {
+      title: 'Step 1: Build Your Knowledge Base',
+      content: (
+        <div>
+          <p className='mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200'>
+            Set up your profile, skills, experience, and preferences so Lancer
+            understands exactly what jobs are perfect for you. This knowledge
+            base becomes the foundation for all intelligent filtering and
+            proposal generation.
+          </p>
+          <div className='grid grid-cols-2 gap-4'>
+            <img
+              src='https://assets.aceternity.com/templates/startup-1.webp'
+              alt='knowledge base setup'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/templates/startup-2.webp'
+              alt='profile configuration'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/templates/startup-3.webp'
+              alt='skills mapping'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/templates/startup-4.webp'
+              alt='preferences setup'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Step 2: Smart Job Filtering with AI Suitability Layer',
+      content: (
+        <div>
+          <p className='mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200'>
+            Beyond basic keyword filters, Lancer uses advanced AI to analyze
+            each job posting and determine true compatibility. Even if a job
+            mentions "Webflow," our AI understands whether it actually matches
+            your specific expertise level and project preferences.
+          </p>
+          <p className='mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200'>
+            This intelligent suitability layer eliminates irrelevant matches and
+            ensures you only apply to jobs where you have a real competitive
+            advantage.
+          </p>
+          <div className='grid grid-cols-2 gap-4'>
+            <img
+              src='https://assets.aceternity.com/pro/hero-sections.png'
+              alt='job filtering dashboard'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/features-section.png'
+              alt='AI suitability analysis'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/pro/bento-grids.png'
+              alt='smart matching algorithm'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/cards.png'
+              alt='job compatibility scores'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Step 3: AI-Generated Proposals',
+      content: (
+        <div>
+          <p className='mb-4 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200'>
+            When a perfect job match is found, Lancer automatically crafts
+            personalized cover letters and answers client questions using your
+            knowledge base.
+          </p>
+          <div className='mb-8'>
+            <div className='flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300'>
+              ✅ Personalized cover letter generation
+            </div>
+            <div className='flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300'>
+              ✅ Automatic question answering
+            </div>
+            <div className='flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300'>
+              ✅ Tone matching your communication style
+            </div>
+            <div className='flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300'>
+              ✅ Relevant portfolio and experience highlighting
+            </div>
+            <div className='flex items-center gap-2 text-xs text-neutral-700 md:text-sm dark:text-neutral-300'>
+              ✅ Competitive pricing suggestions
+            </div>
+          </div>
+          <div className='grid grid-cols-2 gap-4'>
+            <img
+              src='https://assets.aceternity.com/pro/hero-sections.png'
+              alt='proposal generator'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/features-section.png'
+              alt='question answering'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/pro/bento-grids.png'
+              alt='personalization engine'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/cards.png'
+              alt='proposal examples'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Step 4: Automated Bidding & Advanced Management',
+      content: (
+        <div>
+          <p className='mb-8 text-xs font-normal text-neutral-800 md:text-sm dark:text-neutral-200'>
+            Lancer connects to your agency manager account and handles the
+            entire bidding process automatically. Run multiple campaigns, track
+            analytics across accounts, and get instant notifications when
+            opportunities arise.
+          </p>
+          <div className='grid grid-cols-2 gap-4'>
+            <img
+              src='https://assets.aceternity.com/pro/hero-sections.png'
+              alt='automated bidding system'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/features-section.png'
+              alt='campaign management'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/pro/bento-grids.png'
+              alt='analytics dashboard'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+            <img
+              src='https://assets.aceternity.com/cards.png'
+              alt='multi-account support'
+              width={500}
+              height={500}
+              className='h-20 w-full rounded-lg object-cover shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] md:h-44 lg:h-60'
+            />
+          </div>
+        </div>
+      ),
+    },
+  ];
+  return (
+    <div className='relative w-full overflow-clip'>
+      <AnimatedGroup preset='blur-slide' threshold={0.2}>
+        <Timeline data={data} />
+      </AnimatedGroup>
+    </div>
+  );
+}
+
 function AnimatedTestimonialsDemo() {
   const testimonials = [
     {
@@ -98,7 +310,7 @@ function AnimatedTestimonialsDemo() {
       socialLink: 'https://www.linkedin.com/in/ivo-damjanovski/',
     },
   ];
-  return <AnimatedTestimonials testimonials={testimonials} />;
+  return <AnimatedTestimonials autoplay={true} testimonials={testimonials} />;
 }
 
 export { AnimatedTestimonialsDemo };
@@ -350,52 +562,240 @@ export function HeroSection() {
           ref={testimonialsRef}
           className='bg-black pb-16 pt-16 md:pb-32 -mt-1 '
         >
-          <h3 className='text-white text-center text-4xl font-bold mb-3 flex items-center justify-center gap-2'>
-            <Medal className='w-10 h-10' />
-            <span>Trusted by Upwork Professionals</span>
-          </h3>
-          <p className='text-gray-300 text-center text-lg max-w-xl mx-auto'>
-            Freelancers and agencies who've elevated their Upwork business
-          </p>
-          <div className='mt-10 max-w-4xl mx-auto relative border border-2 border-white/20 rounded-3xl mx-5'>
-            <BorderBeam
-              size={150}
-              duration={12}
-              colorFrom='#ffaa40'
-              colorTo='#9c40ff'
-              delay={0}
-            />
-            <AnimatedTestimonialsDemo />
-          </div>
-        </section>
-
-        <section className='mx-auto max-w-7xl px-6 py-16 flex flex-col items-center justify-center gap-5'>
-          <div>
-            <Badge
-              variant='outline'
-              className='text-lg py-2 px-4 flex items-center gap-2 rounded-full'
-            >
-              <Sparkles className='w-[32px] h-[32px]' />
-              <span className='text-foreground'>Enhanced Features</span>
-            </Badge>
-          </div>
-          <div className='flex flex-col items-center justify-center'>
-            <h3 className='text-4xl font-bold text-center max-w-4xl mx-auto'>
-              Lancer is an Upwork AI Agent that finds the perfect jobs for you
-              and applies to them automatically
+          <AnimatedGroup
+            preset='blur-slide'
+            className='space-y-6'
+            threshold={0.2}
+            rootMargin='-100px'
+            variants={{
+              container: {
+                visible: {
+                  transition: {
+                    staggerChildren: 0.2, // Increased from default 0.1 to slow down stagger
+                  },
+                },
+              },
+              item: {
+                hidden: { opacity: 0, filter: 'blur(4px)', y: 20 },
+                visible: {
+                  opacity: 1,
+                  filter: 'blur(0px)',
+                  y: 0,
+                  transition: {
+                    duration: 0.4, // Added duration to slow down individual items
+                    ease: 'easeOut',
+                  },
+                },
+              },
+            }}
+          >
+            <h3 className='text-white text-center text-4xl font-bold mb-3 flex items-center justify-center gap-2'>
+              <Medal className='w-10 h-10' />
+              <span>Trusted by Upwork Professionals</span>
             </h3>
-            <div className='mt-10'>Features section coming soon</div>
+            <p className='text-gray-300 text-center text-lg max-w-xl mx-auto'>
+              Freelancers and agencies who've elevated their Upwork business
+            </p>
+            <div className='mt-10 max-w-4xl mx-auto relative border border-2 border-white/20 rounded-3xl mx-5'>
+              <BorderBeam
+                size={150}
+                duration={12}
+                colorFrom='#ffaa40'
+                colorTo='#9c40ff'
+                delay={0}
+              />
+              <AnimatedTestimonialsDemo />
+            </div>
+          </AnimatedGroup>
+        </section>
+
+        <section className='mx-auto max-w-7xl px-6 '>
+          <AnimatedGroup
+            className='mx-auto max-w-7xl px-6 py-16 flex flex-col items-center justify-center gap-5'
+            preset='blur-slide'
+            variants={{
+              container: {
+                visible: {
+                  transition: {
+                    staggerChildren: 0.3, // Increased from 0.2 to slow down stagger
+                  },
+                },
+              },
+              item: {
+                hidden: { opacity: 0, filter: 'blur(4px)', y: 20 },
+                visible: {
+                  opacity: 1,
+                  filter: 'blur(0px)',
+                  y: 0,
+                  transition: {
+                    duration: 0.4, // Added duration to slow down individual items
+                    ease: 'easeOut',
+                  },
+                },
+              },
+            }}
+            rootMargin='-100px'
+          >
+            <div>
+              <Badge
+                variant='outline'
+                className='text-md py-2 px-4 flex items-center gap-2 rounded-full'
+              >
+                <Sparkles className='w-[32px] h-[32px]' />
+                <span className='text-foreground'>Enhanced Features</span>
+              </Badge>
+            </div>
+            <div className='flex flex-col items-center justify-center gap-15'>
+              <h3 className='text-4xl leading-tight font-bold text-center max-w-4xl mx-auto'>
+                Upwork AI Agent that finds the perfect jobs for you and applies
+                to them automatically
+              </h3>
+            </div>
+          </AnimatedGroup>
+
+          <div className='mt-10 space-y-16'>
+            <AnimatedGroup preset='blur-slide' threshold={0.1}>
+              <div className='relative border border-gray-200 rounded-lg dark:border-gray-700'>
+                <FeatureCard
+                  title={
+                    <>
+                      AI <Highlight variant='green'>Job Analysis</Highlight>
+                    </>
+                  }
+                  description="Static filters aren't enough. Even if you filter for keywords, most jobs still won't be right for you. Lancer's AI suitability layer analyzes each job posting to determine true compatibility with your skills and preferences."
+                  buttonText='Get Started'
+                  buttonHref='#link'
+                  checkmarkText='No card required'
+                  imageSrc='https://i.ibb.co/Zsw2QQG/Group-8-2.png'
+                  imageAlt='AI suitability filtering'
+                />
+              </div>
+            </AnimatedGroup>
+
+            <AnimatedGroup preset='blur-slide' threshold={0.1}>
+              <div className='relative border border-gray-200 rounded-lg dark:border-gray-700'>
+                <FeatureCard
+                  title={
+                    <>
+                      Personalized{' '}
+                      <Highlight variant='blue'>Proposals</Highlight>
+                    </>
+                  }
+                  description='Stop wasting time writing the same cover letters over and over. Lancer generates personalized proposals and answers client questions using your knowledge base—making every application sound genuinely tailored to the job.'
+                  buttonText='Get Started'
+                  buttonHref='#link'
+                  checkmarkText='No card required'
+                  imageSrc='https://i.ibb.co/tp9s01gx/Screenshot-2025-06-09-at-15-26-25.png'
+                  imageAlt='Automated proposal generation'
+                />
+              </div>
+            </AnimatedGroup>
+
+            <AnimatedGroup preset='blur-slide' threshold={0.1}>
+              <div className='relative border border-gray-200 rounded-lg dark:border-gray-700'>
+                <FeatureCard
+                  title={
+                    <>
+                      Complete{' '}
+                      <Highlight variant='orange'>Bidding Automation</Highlight>
+                    </>
+                  }
+                  description='Lancer connects to your agency manager account and handles the entire bidding process. From job analysis to proposal submission—your Upwork outreach runs completely hands-free while you focus on delivering work.'
+                  buttonText='Get Started'
+                  buttonHref='#link'
+                  checkmarkText='No card required'
+                  imageSrc='https://i.ibb.co/Wp6vdZ0b/Group-7.png'
+                  imageAlt='Automated bidding system'
+                />
+              </div>
+            </AnimatedGroup>
+
+            <AnimatedGroup preset='blur-slide' threshold={0.1}>
+              <div className='relative border border-gray-200 rounded-lg dark:border-gray-700'>
+                <FeatureCard
+                  title={
+                    <>
+                      Key <Highlight variant='purple'>Insights</Highlight>
+                    </>
+                  }
+                  description='Track performance across multiple campaigns and accounts. Get detailed analytics on proposal success rates, instant notifications for new opportunities, and manage everything from one dashboard.'
+                  buttonText='Get Started'
+                  buttonHref='#link'
+                  checkmarkText='No card required'
+                  imageSrc='https://i.ibb.co/GQWW8PV0/image-6.png'
+                  imageAlt='Analytics dashboard'
+                />
+              </div>
+            </AnimatedGroup>
           </div>
         </section>
 
-        <section className='mx-auto max-w-7xl px-6 py-16'>
-          <FaqSection
-            title='Frequently Asked Questions'
-            description='Everything you need to know about Lancer and Upwork automation'
-            items={faqData}
-          />
+        <section className='relative bg-gradient-to-b from-background via-muted/20 to-background'>
+          {/* Statistics Section with Particles */}
+          <div className='relative py-40'>
+            <Particles
+              className='absolute inset-0'
+              quantity={200}
+              staticity={10}
+              ease={80}
+              color='black'
+              refresh={true}
+            />
+            <div className='relative z-10 mx-auto max-w-7xl px-6 text-center'>
+              <div className='text-8xl md:text-9xl lg:text-[12rem] font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent'>
+                1,247
+              </div>
+              <p className='mt-6 text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed'>
+                successful deals landed by Lancer users this month
+              </p>
+              <div className='mt-4 flex items-center justify-center gap-2 text-sm md:text-base font-medium text-muted-foreground/80'>
+                <LinkPreview
+                  isStatic={true}
+                  imageSrc='https://i.pinimg.com/736x/f2/38/54/f2385487f44aaef17b7674249bcfa39c.jpg'
+                  width={200}
+                  height={200}
+                  className='cursor-pointer hover:underline z-50'
+                >
+                  <TextGenerateEffect
+                    words='💤 while they were sleeping 💤'
+                    className='text-sm md:text-base font-medium text-muted-foreground/80'
+                    duration={1}
+                  />
+                </LinkPreview>
+              </div>
+              <div className='mt-8 flex flex-col items-center justify-center gap-2 md:flex-row'>
+                <div className='bg-foreground/10 rounded-[14px] border p-0.5'>
+                  <Button
+                    asChild
+                    size='lg'
+                    className='rounded-xl px-5 text-base'
+                  >
+                    <Link href='#link'>
+                      <span className='text-nowrap'>Get Started</span>
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* FAQ Section */}
+          <div className='relative mx-auto max-w-7xl px-6 '>
+            <AnimatedGroup
+              preset='blur-slide'
+              threshold={0.2}
+              rootMargin='-50px'
+            >
+              <FaqSection
+                title='Frequently Asked Questions'
+                description='Everything you need to know about Lancer and Upwork automation'
+                items={faqData}
+              />
+            </AnimatedGroup>
+          </div>
         </section>
       </main>
+      <Footer />
     </>
   );
 }

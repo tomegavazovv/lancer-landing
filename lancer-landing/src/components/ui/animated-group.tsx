@@ -1,8 +1,8 @@
 'use client';
-import { ReactNode } from 'react';
-import { motion, Variants } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import React from 'react';
+import { motion, Variants } from 'framer-motion';
+import React, { ReactNode } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 type PresetType =
   | 'fade'
@@ -24,6 +24,9 @@ type AnimatedGroupProps = {
     item?: Variants;
   };
   preset?: PresetType;
+  threshold?: number;
+  triggerOnce?: boolean;
+  rootMargin?: string;
 };
 
 const defaultContainerVariants: Variants = {
@@ -142,7 +145,16 @@ function AnimatedGroup({
   className,
   variants,
   preset,
+  threshold = 0.1,
+  triggerOnce = true,
+  rootMargin = '0px',
 }: AnimatedGroupProps) {
+  const { ref, inView } = useInView({
+    threshold,
+    triggerOnce,
+    rootMargin,
+  });
+
   const selectedVariants = preset
     ? presetVariants[preset]
     : { container: defaultContainerVariants, item: defaultItemVariants };
@@ -151,8 +163,9 @@ function AnimatedGroup({
 
   return (
     <motion.div
+      ref={ref}
       initial='hidden'
-      animate='visible'
+      animate={inView ? 'visible' : 'hidden'}
       variants={containerVariants}
       className={cn(className)}
     >
