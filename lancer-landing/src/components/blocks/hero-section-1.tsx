@@ -334,7 +334,7 @@ export function HeroSection() {
       <main className='overflow-hidden'>
         <div
           aria-hidden
-          className='z-[2] absolute inset-0 pointer-events-none isolate opacity-50 contain-strict hidden lg:block'
+          className='z-0 absolute inset-0 pointer-events-none isolate opacity-50 contain-strict hidden lg:block'
         >
           <div className='w-[35rem] h-[80rem] -translate-y-[350px] absolute left-0 top-0 -rotate-45 rounded-full bg-[radial-gradient(68.54%_68.72%_at_55.02%_31.46%,hsla(0,0%,85%,.08)_0,hsla(0,0%,55%,.02)_50%,hsla(0,0%,45%,0)_80%)]' />
           <div className='h-[80rem] absolute left-0 top-0 w-56 -rotate-45 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,0%,85%,.06)_0,hsla(0,0%,45%,.02)_80%,transparent_100%)] [translate:5%_-50%]' />
@@ -449,13 +449,13 @@ export function HeroSection() {
                     },
                     ...transitionVariants,
                   }}
-                  className='mt-8 flex flex-col items-center justify-center gap-2 md:flex-row relative z-[500]'
+                  className='mt-8 flex flex-col items-center justify-center gap-2 md:flex-row relative z-10'
                 >
-                  <div className='bg-foreground/10 rounded-[14px] border p-0.5 relative z-[500]'>
+                  <div className='bg-foreground/10 rounded-[14px] border p-0.5 relative z-10'>
                     <Button
                       asChild
                       size='lg'
-                      className='rounded-xl px-5 text-base relative z-[500]'
+                      className='rounded-xl px-5 text-base relative z-10'
                     >
                       <Link href='/get-started'>
                         <span className='text-nowrap'>Get Started</span>
@@ -479,7 +479,7 @@ export function HeroSection() {
                 ...transitionVariants,
               }}
             >
-              <div className='relative flex justify-center -mr-56 mt-8 px-2 sm:mr-0 sm:mt-12 md:mt-20 z-[100]'>
+              <div className='relative flex justify-center -mr-56 mt-8 px-2 sm:mr-0 sm:mt-12 md:mt-20 z-20'>
                 <div className='relative pt-12'>
                   <MockupFrame
                     className='animate-appear opacity-0 delay-700'
@@ -492,7 +492,7 @@ export function HeroSection() {
                       />
                       <div className='bg-background relative mx-auto max-w-6xl overflow-hidden rounded-2xl p-4'>
                         <Image
-                          className='z-2 aspect-15/8 relative rounded-2xl dark:hidden'
+                          className='z-10 aspect-15/8 relative rounded-2xl dark:hidden'
                           src='/product.png'
                           alt='app screen'
                           width='2700'
@@ -550,7 +550,7 @@ export function HeroSection() {
             <p className='text-gray-300 text-center text-lg max-w-xl mx-auto'>
               Freelancers and agencies who've elevated their Upwork business
             </p>
-            <div className='mt-10 max-w-4xl mx-auto relative border border-2 border-white/20 rounded-3xl mx-5'>
+            <div className='mt-10 max-w-4xl mx-auto relative border-2 border-white/20 rounded-3xl mx-5'>
               <BorderBeam
                 size={150}
                 duration={12}
@@ -689,11 +689,11 @@ export function HeroSection() {
           <div className='relative py-40'>
             <Particles
               className='absolute inset-0'
-              quantity={200}
-              staticity={10}
-              ease={80}
+              quantity={100}
+              staticity={30}
+              ease={50}
               color='black'
-              refresh={true}
+              refresh={false}
             />
             <div className='relative z-10 mx-auto max-w-7xl px-6 text-center'>
               <div className='text-8xl md:text-9xl lg:text-[12rem] font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent'>
@@ -783,7 +783,7 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
     <header>
       <nav
         data-state={menuState && 'active'}
-        className='fixed z-[9999] w-full px-2 group'
+        className='fixed z-50 w-full px-2 group'
       >
         <div
           className={cn(

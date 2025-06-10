@@ -67,26 +67,6 @@
       transform: scale(1);
     }
   }
-  @keyframes appear {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-    }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-    }
-  }
-  @keyframes appear-zoom {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-    }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    }
-  }
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --shadow: var(----shadow);
@@ -121,22 +101,6 @@
     }
     to {
       height: 0;
-    }
-  }
-  @keyframes accordion-down {
-  from {
-    height: 0;
-    }
-  to {
-    height: var(--radix-accordion-content-height);
-    }
-  }
-  @keyframes accordion-up {
-  from {
-    height: var(--radix-accordion-content-height);
-    }
-  to {
-    height: 0;
     }
   }
   --animate-shine: shine var(--duration) infinite linear
