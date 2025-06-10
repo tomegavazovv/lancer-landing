@@ -110,7 +110,7 @@ const demoPlans = [
     ],
     description: 'Perfect for freelancers ready to level up their Upwork game.',
     buttonText: 'Get Started',
-    href: '/sign-up',
+    href: '/get-started',
     isPopular: false,
   },
   {
@@ -147,7 +147,7 @@ const demoPlans = [
     description:
       'Built for the top 10% freelancers looking to automate their Upwork outreach and win more deals on auto-pilot.',
     buttonText: 'Get Started',
-    href: '/sign-up',
+    href: '/get-started',
     isPopular: true,
   },
   {
@@ -184,7 +184,7 @@ const demoPlans = [
     description:
       'Created for the top 1% freelancer and agencies earning over $100,000/yr. looking to run campaigns with no limits.',
     buttonText: 'Get Started',
-    href: '/sign-up',
+    href: '/get-started',
     isPopular: false,
   },
   {
@@ -211,7 +211,7 @@ const demoPlans = [
     description:
       'Designed for Upwork outreach experts managing high-volume campaigns for multiple clients.',
     buttonText: 'Get Started',
-    href: '/sign-up',
+    href: '/get-started',
     isPopular: false,
   },
 ];
@@ -457,7 +457,7 @@ export function HeroSection() {
                       size='lg'
                       className='rounded-xl px-5 text-base'
                     >
-                      <Link href='#link'>
+                      <Link href='/get-started'>
                         <span className='text-nowrap'>Get Started</span>
                       </Link>
                     </Button>
@@ -618,7 +618,7 @@ export function HeroSection() {
                   }
                   description="Static filters aren't enough. Even if you filter for keywords, most jobs still won't be right for you. Lancer's AI suitability layer analyzes each job posting to determine true compatibility with your skills and preferences."
                   buttonText='Get Started'
-                  buttonHref='#link'
+                  buttonHref='/get-started'
                   checkmarkText='No card required'
                   imageSrc='https://i.ibb.co/Zsw2QQG/Group-8-2.png'
                   imageAlt='AI suitability filtering'
@@ -637,7 +637,7 @@ export function HeroSection() {
                   }
                   description='Stop wasting time writing the same cover letters over and over. Lancer generates personalized proposals and answers client questions using your knowledge base—making every application sound genuinely tailored to the job.'
                   buttonText='Get Started'
-                  buttonHref='#link'
+                  buttonHref='/get-started'
                   checkmarkText='No card required'
                   imageSrc='https://i.ibb.co/tp9s01gx/Screenshot-2025-06-09-at-15-26-25.png'
                   imageAlt='Automated proposal generation'
@@ -656,7 +656,7 @@ export function HeroSection() {
                   }
                   description='Lancer connects to your agency manager account and handles the entire bidding process. From job analysis to proposal submission—your Upwork outreach runs completely hands-free while you focus on delivering work.'
                   buttonText='Get Started'
-                  buttonHref='#link'
+                  buttonHref='/get-started'
                   checkmarkText='No card required'
                   imageSrc='https://i.ibb.co/Wp6vdZ0b/Group-7.png'
                   imageAlt='Automated bidding system'
@@ -674,7 +674,7 @@ export function HeroSection() {
                   }
                   description='Track performance across multiple campaigns and accounts. Get detailed analytics on proposal success rates, instant notifications for new opportunities, and manage everything from one dashboard.'
                   buttonText='Get Started'
-                  buttonHref='#link'
+                  buttonHref='/get-started'
                   checkmarkText='No card required'
                   imageSrc='https://i.ibb.co/GQWW8PV0/image-6.png'
                   imageAlt='Analytics dashboard'
@@ -724,7 +724,7 @@ export function HeroSection() {
                     size='lg'
                     className='rounded-xl px-5 text-base'
                   >
-                    <Link href='#link'>
+                    <Link href='/get-started'>
                       <span className='text-nowrap'>Get Started</span>
                     </Link>
                   </Button>
@@ -851,7 +851,7 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
                   size='sm'
                   className={cn(isScrolled && 'lg:hidden')}
                 >
-                  <Link href='#'>
+                  <Link href='/get-started'>
                     <span>Get Started</span>
                   </Link>
                 </Button>
@@ -860,7 +860,7 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
                   size='sm'
                   className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
                 >
-                  <Link href='#'>
+                  <Link href='/get-started'>
                     <span>Get Started</span>
                   </Link>
                 </Button>

@@ -1,6 +1,6 @@
 'use client';
 
-import { buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Tooltip,
   TooltipContent,
@@ -157,19 +157,17 @@ export function Pricing({
                 ))}
               </ul>
               <hr className='w-full my-6 mt-8' />
-              <Link
-                href={plan.href}
-                className={cn(
-                  buttonVariants({
-                    variant: 'outline',
-                  }),
-                  'group relative w-full gap-2 overflow-hidden text-lg font-semibold tracking-tighter',
-                  'transform-gpu ring-offset-current transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-1 hover:bg-primary hover:text-primary-foreground',
-                  'bg-primary text-primary-foreground'
-                )}
-              >
-                {plan.buttonText}
-              </Link>
+              <div className='bg-foreground/10 rounded-[14px] border p-0.5'>
+                <Button
+                  asChild
+                  size='lg'
+                  className='rounded-xl px-5 text-base w-full'
+                >
+                  <Link href={plan.href}>
+                    <span className='text-nowrap'>{plan.buttonText}</span>
+                  </Link>
+                </Button>
+              </div>
             </div>
           </motion.div>
         ))}
