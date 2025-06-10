@@ -449,13 +449,13 @@ export function HeroSection() {
                     },
                     ...transitionVariants,
                   }}
-                  className='mt-8 flex flex-col items-center justify-center gap-2 md:flex-row'
+                  className='mt-8 flex flex-col items-center justify-center gap-2 md:flex-row relative z-[500]'
                 >
-                  <div className='bg-foreground/10 rounded-[14px] border p-0.5'>
+                  <div className='bg-foreground/10 rounded-[14px] border p-0.5 relative z-[500]'>
                     <Button
                       asChild
                       size='lg'
-                      className='rounded-xl px-5 text-base'
+                      className='rounded-xl px-5 text-base relative z-[500]'
                     >
                       <Link href='/get-started'>
                         <span className='text-nowrap'>Get Started</span>
@@ -479,7 +479,7 @@ export function HeroSection() {
                 ...transitionVariants,
               }}
             >
-              <div className='relative flex justify-center -mr-56 mt-8 px-2 sm:mr-0 sm:mt-12 md:mt-20'>
+              <div className='relative flex justify-center -mr-56 mt-8 px-2 sm:mr-0 sm:mt-12 md:mt-20 z-[100]'>
                 <div className='relative pt-12'>
                   <MockupFrame
                     className='animate-appear opacity-0 delay-700'
@@ -783,7 +783,7 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
     <header>
       <nav
         data-state={menuState && 'active'}
-        className='fixed z-20 w-full px-2 group'
+        className='fixed z-[9999] w-full px-2 group'
       >
         <div
           className={cn(
