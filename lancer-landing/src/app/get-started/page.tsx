@@ -387,7 +387,7 @@ export default function GetStartedPage() {
                   id='email'
                   type='email'
                   placeholder='tome@mvpmasters.co'
-                  className='text-sm'
+                  className='text-base sm:text-sm'
                   value={formData.email}
                   onChange={(e) => updateFormData('email', e.target.value)}
                 />
@@ -401,7 +401,7 @@ export default function GetStartedPage() {
                   value={formData.role}
                   onValueChange={(value) => updateFormData('role', value)}
                 >
-                  <SelectTrigger className='text-sm'>
+                  <SelectTrigger className='text-base sm:text-sm'>
                     <SelectValue placeholder='Choose an option...' />
                   </SelectTrigger>
                   <SelectContent>
@@ -448,7 +448,7 @@ export default function GetStartedPage() {
                   id='company-name'
                   type='text'
                   placeholder='Your Company Inc.'
-                  className='text-sm'
+                  className='text-base sm:text-sm'
                   value={formData.companyName}
                   onChange={(e) =>
                     updateFormData('companyName', e.target.value)
@@ -465,7 +465,7 @@ export default function GetStartedPage() {
                     value={formData.teamSize}
                     onValueChange={(value) => updateFormData('teamSize', value)}
                   >
-                    <SelectTrigger className='text-sm'>
+                    <SelectTrigger className='text-base sm:text-sm'>
                       <SelectValue placeholder='Select size of your company...' />
                     </SelectTrigger>
                     <SelectContent>
@@ -594,7 +594,7 @@ export default function GetStartedPage() {
                       id='contract-value'
                       type='number'
                       placeholder='10000'
-                      className='text-sm pl-8'
+                      className='text-base sm:text-sm pl-8'
                       value={formData.contractValue}
                       onChange={(e) =>
                         updateFormData('contractValue', e.target.value)
@@ -656,7 +656,7 @@ export default function GetStartedPage() {
                         updateFormData('hoursPerWeek', value)
                       }
                     >
-                      <SelectTrigger className='text-sm'>
+                      <SelectTrigger className='text-base sm:text-sm'>
                         <SelectValue placeholder='Choose an option...' />
                       </SelectTrigger>
                       <SelectContent>
@@ -790,7 +790,7 @@ export default function GetStartedPage() {
                       id='avg-contract-value'
                       type='number'
                       placeholder='10000'
-                      className='text-sm pl-8'
+                      className='text-base sm:text-sm pl-8'
                       value={formData.avgContractValue}
                       onChange={(e) =>
                         updateFormData('avgContractValue', e.target.value)
