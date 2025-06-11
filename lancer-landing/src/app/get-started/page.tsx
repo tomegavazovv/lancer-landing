@@ -190,9 +190,19 @@ export default function GetStartedPage() {
   const [nonUpworkChannels, setNonUpworkChannels] = useState<string[]>([]);
   const [upworkReasons, setUpworkReasons] = useState<string[]>([]);
 
+  // Email validation helper function
+  const isValidEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   // Form validation functions
   const validateStep1 = (): boolean => {
-    return formData.email.trim() !== '' && formData.role.trim() !== '';
+    return (
+      formData.email.trim() !== '' &&
+      isValidEmail(formData.email) &&
+      formData.role.trim() !== ''
+    );
   };
 
   const validateStep2 = (): boolean => {
@@ -386,11 +396,23 @@ export default function GetStartedPage() {
                 <Input
                   id='email'
                   type='email'
-                  placeholder='tome@mvpmasters.co'
-                  className='text-base sm:text-sm'
+                  placeholder='Your email address'
+                  className={`text-base sm:text-sm ${
+                    formData.email.trim() !== '' &&
+                    !isValidEmail(formData.email)
+                      ? 'border-red-500 focus:border-red-500'
+                      : ''
+                  }`}
                   value={formData.email}
+                  required
                   onChange={(e) => updateFormData('email', e.target.value)}
                 />
+                {formData.email.trim() !== '' &&
+                  !isValidEmail(formData.email) && (
+                    <p className='text-red-500 text-xs'>
+                      Please enter a valid email address
+                    </p>
+                  )}
               </div>
 
               <div className='space-y-2'>
@@ -592,6 +614,7 @@ export default function GetStartedPage() {
                     </span>
                     <Input
                       id='contract-value'
+                      required
                       type='number'
                       placeholder='10000'
                       className='text-base sm:text-sm pl-8'
@@ -788,6 +811,7 @@ export default function GetStartedPage() {
                     </span>
                     <Input
                       id='avg-contract-value'
+                      required
                       type='number'
                       placeholder='10000'
                       className='text-base sm:text-sm pl-8'
