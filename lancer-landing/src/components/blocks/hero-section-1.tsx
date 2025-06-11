@@ -543,13 +543,13 @@ export function HeroSection() {
               },
             }}
           >
-            <h3 className='text-white text-center text-2xl sm:text-4xl font-bold mb-3 flex items-center justify-center gap-2 flex-wrap'>
-              <Medal className='hidden sm:block w-10 h-10 flex-shrink-0' />
+            <h3 className='text-white text-center text-3xl sm:text-4xl font-bold mb-3 flex items-center justify-center gap-2 flex-wrap'>
+              <Medal className=' sm:block w-6 h-6 sm:w-10 sm:h-10  flex-shrink-0' />
               <span className='whitespace-nowrap'>Trusted by Upwork</span>
               <span className='whitespace-nowrap'>Professionals</span>
             </h3>
             <p className='text-gray-300 text-center text-lg  sm:max-w-[330px] md:max-w-xl mx-auto'>
-              Freelancers and agencies who've elevated their Upwork business
+              Freelancers and agencies winning more deals on Upwork
             </p>
             <div className='mt-10 max-w-4xl mx-auto relative border-2 border-white/20 rounded-3xl mx-5'>
               <BorderBeam
