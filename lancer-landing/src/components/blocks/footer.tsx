@@ -8,7 +8,9 @@ export function Footer() {
         <div className='flex flex-col items-center justify-center space-y-8'>
           {/* Logo */}
           <div className='flex justify-center'>
-            <LogoIcon size={60} />
+            <Link href='/'>
+              <LogoIcon size={60} />
+            </Link>
           </div>
 
           {/* Copyright and Links Container */}
@@ -21,13 +23,13 @@ export function Footer() {
             {/* Links */}
             <div className='flex items-center space-x-6'>
               <Link
-                href='/terms'
+                href='/terms-of-service'
                 className='text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors duration-150'
               >
                 Terms
               </Link>
               <Link
-                href='/privacy'
+                href='/privacy-policy'
                 className='text-sm text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors duration-150'
               >
                 Privacy
