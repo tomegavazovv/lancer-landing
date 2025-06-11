@@ -905,7 +905,8 @@ export default function GetStartedPage() {
                 </div>
               </div>
 
-              <div className='space-y-6 pt-4 p-4 sm:p-6 lg:p-10 rounded-lg shadow-sm border border-border/20'>
+              {/* Hide submission details on mobile */}
+              <div className='hidden md:block space-y-6 pt-4 p-4 sm:p-6 lg:p-10 rounded-lg shadow-sm border border-border/20'>
                 <div className=''>
                   <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0'>
                     <p className='text-xs sm:text-sm uppercase tracking-wider font-medium'>
@@ -1250,13 +1251,13 @@ export default function GetStartedPage() {
             </>
           ) : (
             <>
-              <div className='text-center mb-12'>
-                <div className='flex items-center justify-center mb-6'>
+              <div className='text-center mb-4 md:mb-12'>
+                <div className='flex items-center justify-center mb-3 md:mb-6'>
                   <Link href='/'>
                     <LogoIcon size={60} />
                   </Link>
                 </div>
-                <h1 className='text-2xl md:text-3xl  mb-4'>
+                <h1 className='text-xl md:text-2xl lg:text-3xl mb-2 md:mb-4'>
                   Book a demo with Lancer Specialist
                 </h1>
               </div>
