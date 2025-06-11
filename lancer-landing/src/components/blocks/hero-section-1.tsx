@@ -5,7 +5,7 @@ import { Highlight } from '@/components/ui/hero-highlight';
 import { LinkPreview } from '@/components/ui/link-preview';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import { cn } from '@/lib/utils';
-import { Medal, Menu, Sparkles, Star, X } from 'lucide-react';
+import { Medal, Sparkles, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -341,7 +341,7 @@ export function HeroSection() {
           <div className='h-[80rem] -translate-y-[350px] absolute left-0 top-0 w-56 -rotate-45 bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,0%,85%,.04)_0,hsla(0,0%,45%,.02)_80%,transparent_100%)]' />
         </div>
         <section>
-          <div className='relative pt-24 md:pt-36'>
+          <div className='relative pt-8 md:pt-36'>
             <AnimatedGroup
               variants={{
                 container: {
@@ -384,15 +384,15 @@ export function HeroSection() {
             <div className='mx-auto max-w-7xl px-6'>
               <div className='text-center sm:mx-auto lg:mr-auto lg:mt-0'>
                 <AnimatedGroup variants={transitionVariants}>
-                  <h1 className='mt-8 max-w-4xl mx-auto text-balance text-6xl font-semibold md:text-7xl lg:mt-16 xl:text-[5.25rem]'>
+                  <h1 className='mt-8 max-w-4xl mx-auto text-balance text-6xl font-semibold md:text-7xl lg:mt-24 xl:text-[5.25rem]'>
                     Your{' '}
                     <SparklesText
-                      text='Upwork Outreach'
+                      text='Upwork Outreach.'
                       colors={{ first: '#9E7AFF', second: '#FE8BBB' }}
                       sparklesCount={8}
-                    />
-                    . <br />
-                    Running Itself.
+                    />{' '}
+                    <br className='hidden md:inline' />
+                    <span className='md:block'>Running Itself.</span>
                   </h1>
                   <p className='mx-auto mt-8 max-w-3xl text-balance text-xl'>
                     From finding perfect jobs to sending winning
@@ -479,7 +479,7 @@ export function HeroSection() {
                 ...transitionVariants,
               }}
             >
-              <div className='relative flex justify-center -mr-56 mt-8 px-2 sm:mr-0 sm:mt-12 md:mt-20 z-20'>
+              <div className='relative flex justify-center mt-8 px-2 sm:mr-0 sm:mt-12 md:mt-20 z-20'>
                 <div className='relative pt-12'>
                   <MockupFrame
                     className='animate-appear opacity-0 delay-700'
@@ -492,7 +492,7 @@ export function HeroSection() {
                       />
                       <div className='bg-background relative mx-auto max-w-6xl overflow-hidden rounded-2xl p-4'>
                         <Image
-                          className='z-10 aspect-15/8 relative rounded-2xl dark:hidden'
+                          className='z-10 aspect-15/8 relative rounded-2xl dark:hidden w-full h-auto'
                           src='/product.png'
                           alt='app screen'
                           width='2700'
@@ -514,7 +514,7 @@ export function HeroSection() {
         <section
           id='testimonials'
           ref={testimonialsRef}
-          className='bg-black pb-16 pt-16 md:pb-32 -mt-1 '
+          className='bg-black pb-16 pt-16 md:pb-32 -mt-1 px-5 '
         >
           <AnimatedGroup
             preset='blur-slide'
@@ -543,11 +543,12 @@ export function HeroSection() {
               },
             }}
           >
-            <h3 className='text-white text-center text-4xl font-bold mb-3 flex items-center justify-center gap-2'>
-              <Medal className='w-10 h-10' />
-              <span>Trusted by Upwork Professionals</span>
+            <h3 className='text-white text-center text-2xl sm:text-4xl font-bold mb-3 flex items-center justify-center gap-2 flex-wrap'>
+              <Medal className='hidden sm:block w-10 h-10 flex-shrink-0' />
+              <span className='whitespace-nowrap'>Trusted by Upwork</span>
+              <span className='whitespace-nowrap'>Professionals</span>
             </h3>
-            <p className='text-gray-300 text-center text-lg max-w-xl mx-auto'>
+            <p className='text-gray-300 text-center text-lg  sm:max-w-[330px] md:max-w-xl mx-auto'>
               Freelancers and agencies who've elevated their Upwork business
             </p>
             <div className='mt-10 max-w-4xl mx-auto relative border-2 border-white/20 rounded-3xl mx-5'>
@@ -557,6 +558,7 @@ export function HeroSection() {
                 colorFrom='#ffaa40'
                 colorTo='#9c40ff'
                 delay={0}
+                className='p-5'
               />
               <AnimatedTestimonialsDemo />
             </div>
@@ -650,8 +652,21 @@ export function HeroSection() {
                 <FeatureCard
                   title={
                     <>
-                      Complete{' '}
-                      <Highlight variant='orange'>Bidding Automation</Highlight>
+                      {/* Mobile version - with line break after "Complete" */}
+                      <span className='block md:hidden'>
+                        Complete
+                        <br />
+                        <Highlight variant='orange'>
+                          Bidding Automation
+                        </Highlight>
+                      </span>
+                      {/* Desktop version - original layout */}
+                      <span className='hidden md:inline'>
+                        Complete{' '}
+                        <Highlight variant='orange'>
+                          Bidding Automation
+                        </Highlight>
+                      </span>
                     </>
                   }
                   description='Lancer connects to your agency manager account and handles the entire bidding process. From job analysis to proposal submission—your Upwork outreach runs completely hands-free while you focus on delivering work.'
@@ -768,7 +783,6 @@ const menuItems = [
 ];
 
 const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
-  const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
 
   React.useEffect(() => {
@@ -781,10 +795,7 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
 
   return (
     <header>
-      <nav
-        data-state={menuState && 'active'}
-        className='fixed z-50 w-full px-2 group'
-      >
+      <nav className='relative lg:fixed z-50 w-full px-2'>
         <div
           className={cn(
             'mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12',
@@ -792,8 +803,9 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
               'bg-background/50 max-w-4xl rounded-2xl border backdrop-blur-lg lg:px-5'
           )}
         >
-          <div className='relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4'>
-            <div className='flex w-full justify-between lg:w-auto'>
+          <div className='relative flex items-center justify-center lg:justify-between gap-6 py-3 lg:py-4'>
+            {/* Mobile: Centered logo */}
+            <div className='lg:hidden'>
               <Link
                 href='/'
                 aria-label='home'
@@ -801,17 +813,20 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
               >
                 <LogoIcon />
               </Link>
-
-              <button
-                onClick={() => setMenuState(!menuState)}
-                aria-label={menuState == true ? 'Close Menu' : 'Open Menu'}
-                className='relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden'
-              >
-                <Menu className='in-data-[state=active]:rotate-180 group-data-[state=active]:scale-0 group-data-[state=active]:opacity-0 m-auto size-6 duration-200' />
-                <X className='group-data-[state=active]:rotate-0 group-data-[state=active]:scale-100 group-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200' />
-              </button>
             </div>
 
+            {/* Desktop: Logo on left */}
+            <div className='hidden lg:block'>
+              <Link
+                href='/'
+                aria-label='home'
+                className='flex items-center space-x-2'
+              >
+                <LogoIcon />
+              </Link>
+            </div>
+
+            {/* Desktop: Navigation menu */}
             <div className='absolute inset-0 m-auto hidden size-fit lg:block'>
               <ul className='flex gap-8 text-sm'>
                 {menuItems.map((item, index) => (
@@ -830,41 +845,26 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
               </ul>
             </div>
 
-            <div className='bg-background group-data-[state=active]:block lg:group-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent'>
-              <div className='lg:hidden'>
-                <ul className='space-y-6 text-base'>
-                  {menuItems.map((item, index) => (
-                    <li key={index}>
-                      <Link
-                        href={item.href}
-                        className='text-muted-foreground hover:text-accent-foreground block duration-150'
-                      >
-                        <span>{item.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className='flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit'>
-                <Button
-                  asChild
-                  size='sm'
-                  className={cn(isScrolled && 'lg:hidden')}
-                >
-                  <Link href='/get-started'>
-                    <span>Get Started</span>
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size='sm'
-                  className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
-                >
-                  <Link href='/get-started'>
-                    <span>Get Started</span>
-                  </Link>
-                </Button>
-              </div>
+            {/* Desktop: Get Started button */}
+            <div className='hidden lg:flex'>
+              <Button
+                asChild
+                size='sm'
+                className={cn(isScrolled && 'lg:hidden')}
+              >
+                <Link href='/get-started'>
+                  <span>Get Started</span>
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size='sm'
+                className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
+              >
+                <Link href='/get-started'>
+                  <span>Get Started</span>
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
