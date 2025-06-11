@@ -145,15 +145,128 @@ const Stepper = ({
   );
 };
 
+// Form data interface
+interface FormData {
+  email: string;
+  role: string;
+  companyName: string;
+  teamSize: string;
+  usesUpwork: string;
+  contractValue: string;
+  outreachType: string;
+  hoursPerWeek: string;
+  budgetValue: number;
+  nonUpworkChannels: string[];
+  upworkReasons: string[];
+  avgContractValue: string;
+}
+
 export default function GetStartedPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 4;
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [budgetValue, setBudgetValue] = useState(2500);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Consolidated form state
+  const [formData, setFormData] = useState<FormData>({
+    email: '',
+    role: '',
+    companyName: '',
+    teamSize: '',
+    usesUpwork: '',
+    contractValue: '',
+    outreachType: '',
+    hoursPerWeek: '',
+    budgetValue: 1000,
+    nonUpworkChannels: [],
+    upworkReasons: [],
+    avgContractValue: '',
+  });
+
+  // Legacy state for backward compatibility - will be cleaned up
+  const [budgetValue, setBudgetValue] = useState(1000);
   const [outreachType, setOutreachType] = useState('');
   const [usesUpwork, setUsesUpwork] = useState('');
   const [nonUpworkChannels, setNonUpworkChannels] = useState<string[]>([]);
   const [upworkReasons, setUpworkReasons] = useState<string[]>([]);
+
+  // Form validation functions
+  const validateStep1 = (): boolean => {
+    return formData.email.trim() !== '' && formData.role.trim() !== '';
+  };
+
+  const validateStep2 = (): boolean => {
+    return (
+      formData.companyName.trim() !== '' && formData.teamSize.trim() !== ''
+    );
+  };
+
+  const validateStep3 = (): boolean => {
+    return formData.usesUpwork !== '';
+  };
+
+  const validateStep4 = (): boolean => {
+    if (formData.usesUpwork === 'yes') {
+      const hasContractValue = formData.contractValue.trim() !== '';
+      const hasOutreachType = formData.outreachType !== '';
+
+      if (formData.outreachType === 'myself') {
+        return (
+          hasContractValue && hasOutreachType && formData.hoursPerWeek !== ''
+        );
+      } else if (formData.outreachType === 'someone-else') {
+        return hasContractValue && hasOutreachType;
+      }
+      return hasContractValue && hasOutreachType;
+    } else {
+      return (
+        formData.nonUpworkChannels.length > 0 &&
+        formData.upworkReasons.length > 0 &&
+        formData.avgContractValue.trim() !== ''
+      );
+    }
+  };
+
+  const isStepValid = (step: number): boolean => {
+    switch (step) {
+      case 1:
+        return validateStep1();
+      case 2:
+        return validateStep2();
+      case 3:
+        return validateStep3();
+      case 4:
+        return validateStep4();
+      default:
+        return false;
+    }
+  };
+
+  // Update form data helper
+  const updateFormData = (field: keyof FormData, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // Helper functions for formatting display values
+  const formatRole = (role: string): string => {
+    if (!role) return 'Not specified';
+    return role.charAt(0).toUpperCase() + role.slice(1).replace('-', ' ');
+  };
+
+  const formatTeamSize = (size: string): string => {
+    if (!size) return 'Not specified';
+    return size === '50+' ? '50+ people' : `${size} people`;
+  };
+
+  const formatContractValue = (value: string): string => {
+    if (!value) return 'Not specified';
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(parseInt(value));
+  };
 
   // Options for outreach channels
   const outreachChannelOptions = [
@@ -189,16 +302,65 @@ export default function GetStartedPage() {
     { label: 'Other reason', value: 'other' },
   ];
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleNext = () => {
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
+      scrollToTop();
     }
   };
 
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+      scrollToTop();
     }
+  };
+
+  const handleSubmit = () => {
+    setIsLoading(true);
+    scrollToTop();
+
+    // Simulate processing time (2-4 seconds)
+    const processingTime = Math.random() * 2000 + 2000; // 2-4 seconds
+
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsSubmitted(true);
+    }, processingTime);
+  };
+
+  const renderLoadingContent = () => {
+    return (
+      <Card className='border-1 shadow-none'>
+        <CardContent className='p-12'>
+          <div className='flex flex-col items-center justify-center space-y-6'>
+            {/* Loading text */}
+            <div className='text-center space-y-2'>
+              <h2 className='text-xl font-medium'>
+                Processing your request...
+              </h2>
+            </div>
+
+            {/* Progress dots */}
+            <div className='flex space-x-1'>
+              <div className='w-2 h-2 bg-foreground rounded-full animate-pulse'></div>
+              <div
+                className='w-2 h-2 bg-foreground rounded-full animate-pulse'
+                style={{ animationDelay: '0.2s' }}
+              ></div>
+              <div
+                className='w-2 h-2 bg-foreground rounded-full animate-pulse'
+                style={{ animationDelay: '0.4s' }}
+              ></div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
   };
 
   const renderStepContent = () => {
@@ -226,7 +388,8 @@ export default function GetStartedPage() {
                   type='email'
                   placeholder='tome@mvpmasters.co'
                   className='text-sm'
-                  defaultValue='tome@mvpmasters.co'
+                  value={formData.email}
+                  onChange={(e) => updateFormData('email', e.target.value)}
                 />
               </div>
 
@@ -234,17 +397,20 @@ export default function GetStartedPage() {
                 <Label htmlFor='role' className='text-sm font-normal'>
                   Your Role/Position <span className='text-red-500'>*</span>
                 </Label>
-                <Select>
+                <Select
+                  value={formData.role}
+                  onValueChange={(value) => updateFormData('role', value)}
+                >
                   <SelectTrigger className='text-sm'>
                     <SelectValue placeholder='Choose an option...' />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value='freelancer'>Freelancer</SelectItem>
                     <SelectItem value='agency-owner'>Agency Owner</SelectItem>
-                    <SelectItem value='team-lead'>
+                    <SelectItem value='upwork-specialist'>
                       Upwork Outreach Specialist
                     </SelectItem>
-                    <SelectItem value='team-lead'>Sales </SelectItem>
+                    <SelectItem value='sales'>Sales</SelectItem>
                     <SelectItem value='other'>Other</SelectItem>
                   </SelectContent>
                 </Select>
@@ -252,7 +418,9 @@ export default function GetStartedPage() {
 
               <div className='pt-6 flex items-center justify-between'>
                 <span className='text-sm text-muted-foreground'></span>
-                <Button onClick={handleNext}>Next</Button>
+                <Button onClick={handleNext} disabled={!isStepValid(1)}>
+                  Next
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -281,6 +449,10 @@ export default function GetStartedPage() {
                   type='text'
                   placeholder='Your Company Inc.'
                   className='text-sm'
+                  value={formData.companyName}
+                  onChange={(e) =>
+                    updateFormData('companyName', e.target.value)
+                  }
                 />
               </div>
 
@@ -289,7 +461,10 @@ export default function GetStartedPage() {
                   <Label htmlFor='team-size' className='text-sm font-normal'>
                     Size of your company <span className='text-red-500'>*</span>
                   </Label>
-                  <Select>
+                  <Select
+                    value={formData.teamSize}
+                    onValueChange={(value) => updateFormData('teamSize', value)}
+                  >
                     <SelectTrigger className='text-sm'>
                       <SelectValue placeholder='Select size of your company...' />
                     </SelectTrigger>
@@ -312,7 +487,9 @@ export default function GetStartedPage() {
                 >
                   Back
                 </Button>
-                <Button onClick={handleNext}>Next</Button>
+                <Button onClick={handleNext} disabled={!isStepValid(2)}>
+                  Next
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -341,9 +518,12 @@ export default function GetStartedPage() {
                 <div className='flex space-x-1 bg-muted p-1 mt-2 rounded-lg'>
                   <button
                     type='button'
-                    onClick={() => setUsesUpwork('yes')}
-                    className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer border ${
-                      usesUpwork === 'yes'
+                    onClick={() => {
+                      setUsesUpwork('yes');
+                      updateFormData('usesUpwork', 'yes');
+                    }}
+                    className={`flex-1 px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer border ${
+                      formData.usesUpwork === 'yes'
                         ? 'bg-background text-foreground shadow-sm border-foreground/20'
                         : 'text-muted-foreground hover:text-foreground hover:bg-background/50 border-transparent'
                     }`}
@@ -352,9 +532,12 @@ export default function GetStartedPage() {
                   </button>
                   <button
                     type='button'
-                    onClick={() => setUsesUpwork('no')}
-                    className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer border ${
-                      usesUpwork === 'no'
+                    onClick={() => {
+                      setUsesUpwork('no');
+                      updateFormData('usesUpwork', 'no');
+                    }}
+                    className={`flex-1 px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer border ${
+                      formData.usesUpwork === 'no'
                         ? 'bg-background text-foreground shadow-sm border-foreground/20'
                         : 'text-muted-foreground hover:text-foreground hover:bg-background/50 border-transparent'
                     }`}
@@ -372,7 +555,7 @@ export default function GetStartedPage() {
                 >
                   Back
                 </Button>
-                <Button onClick={handleNext} disabled={!usesUpwork}>
+                <Button onClick={handleNext} disabled={!isStepValid(3)}>
                   Next
                 </Button>
               </div>
@@ -381,7 +564,7 @@ export default function GetStartedPage() {
         );
 
       case 4:
-        if (usesUpwork === 'yes') {
+        if (formData.usesUpwork === 'yes') {
           return (
             <Card className='border-1 shadow-none'>
               <CardHeader className='pb-6'>
@@ -412,6 +595,10 @@ export default function GetStartedPage() {
                       type='number'
                       placeholder='10000'
                       className='text-sm pl-8'
+                      value={formData.contractValue}
+                      onChange={(e) =>
+                        updateFormData('contractValue', e.target.value)
+                      }
                     />
                   </div>
                 </div>
@@ -425,9 +612,12 @@ export default function GetStartedPage() {
                   <div className='flex space-x-1 bg-muted p-1 rounded-lg'>
                     <button
                       type='button'
-                      onClick={() => setOutreachType('myself')}
-                      className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer border ${
-                        outreachType === 'myself'
+                      onClick={() => {
+                        setOutreachType('myself');
+                        updateFormData('outreachType', 'myself');
+                      }}
+                      className={`flex-1 px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer border ${
+                        formData.outreachType === 'myself'
                           ? 'bg-background text-foreground shadow-sm border-foreground/20'
                           : 'text-muted-foreground hover:text-foreground hover:bg-background/50 border-transparent'
                       }`}
@@ -436,9 +626,12 @@ export default function GetStartedPage() {
                     </button>
                     <button
                       type='button'
-                      onClick={() => setOutreachType('someone-else')}
-                      className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer border ${
-                        outreachType === 'someone-else'
+                      onClick={() => {
+                        setOutreachType('someone-else');
+                        updateFormData('outreachType', 'someone-else');
+                      }}
+                      className={`flex-1 px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer border ${
+                        formData.outreachType === 'someone-else'
                           ? 'bg-background text-foreground shadow-sm border-foreground/20'
                           : 'text-muted-foreground hover:text-foreground hover:bg-background/50 border-transparent'
                       }`}
@@ -448,7 +641,7 @@ export default function GetStartedPage() {
                   </div>
                 </div>
 
-                {outreachType === 'myself' ? (
+                {formData.outreachType === 'myself' ? (
                   <div className='space-y-2'>
                     <Label
                       htmlFor='hours-per-week'
@@ -457,7 +650,12 @@ export default function GetStartedPage() {
                       How many hours per week do you spend on Upwork outreach?{' '}
                       <span className='text-red-500'>*</span>
                     </Label>
-                    <Select>
+                    <Select
+                      value={formData.hoursPerWeek}
+                      onValueChange={(value) =>
+                        updateFormData('hoursPerWeek', value)
+                      }
+                    >
                       <SelectTrigger className='text-sm'>
                         <SelectValue placeholder='Choose an option...' />
                       </SelectTrigger>
@@ -471,7 +669,7 @@ export default function GetStartedPage() {
                     </Select>
                   </div>
                 ) : (
-                  outreachType === 'someone-else' && (
+                  formData.outreachType === 'someone-else' && (
                     <div className='space-y-4'>
                       <Label className='text-sm font-normal'>
                         What's your approximate monthly investment in outreach
@@ -482,14 +680,18 @@ export default function GetStartedPage() {
                       <div className='space-y-4 mt-2'>
                         <div className='text-center'>
                           <div className='text-md font-medium mb-4'>
-                            ${budgetValue.toLocaleString()}
+                            ${formData.budgetValue.toLocaleString()}
                           </div>
                           <div className='relative'>
                             <Slider
-                              value={[budgetValue]}
-                              onValueChange={(value) =>
-                                setBudgetValue(value[0] as number)
-                              }
+                              value={[formData.budgetValue]}
+                              onValueChange={(value) => {
+                                setBudgetValue(value[0] as number);
+                                updateFormData(
+                                  'budgetValue',
+                                  value[0] as number
+                                );
+                              }}
                               max={5000}
                               min={500}
                               step={500}
@@ -513,7 +715,9 @@ export default function GetStartedPage() {
                   >
                     Back
                   </Button>
-                  <Button onClick={() => setIsSubmitted(true)}>Submit</Button>
+                  <Button onClick={handleSubmit} disabled={!isStepValid(4)}>
+                    Submit
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -541,8 +745,11 @@ export default function GetStartedPage() {
                     <span className='text-red-500'>*</span>
                   </Label>
                   <MultiSelect
-                    value={nonUpworkChannels}
-                    onValueChange={setNonUpworkChannels}
+                    value={formData.nonUpworkChannels}
+                    onValueChange={(value) => {
+                      setNonUpworkChannels(value);
+                      updateFormData('nonUpworkChannels', value);
+                    }}
                     options={outreachChannelOptions}
                     placeholder='Select your outreach channels...'
                   />
@@ -557,8 +764,11 @@ export default function GetStartedPage() {
                     <span className='text-red-500'>*</span>
                   </Label>
                   <MultiSelect
-                    value={upworkReasons}
-                    onValueChange={setUpworkReasons}
+                    value={formData.upworkReasons}
+                    onValueChange={(value) => {
+                      setUpworkReasons(value);
+                      updateFormData('upworkReasons', value);
+                    }}
                     options={upworkReasonOptions}
                     placeholder='Choose your reasons...'
                   />
@@ -581,6 +791,10 @@ export default function GetStartedPage() {
                       type='number'
                       placeholder='10000'
                       className='text-sm pl-8'
+                      value={formData.avgContractValue}
+                      onChange={(e) =>
+                        updateFormData('avgContractValue', e.target.value)
+                      }
                     />
                   </div>
                 </div>
@@ -595,14 +809,15 @@ export default function GetStartedPage() {
                   <div className='space-y-4 mt-2'>
                     <div className='text-center'>
                       <div className='text-md font-medium mb-4'>
-                        ${budgetValue.toLocaleString()}
+                        ${formData.budgetValue.toLocaleString()}
                       </div>
                       <div className='relative'>
                         <Slider
-                          value={[budgetValue]}
-                          onValueChange={(value) =>
-                            setBudgetValue(value[0] as number)
-                          }
+                          value={[formData.budgetValue]}
+                          onValueChange={(value) => {
+                            setBudgetValue(value[0] as number);
+                            updateFormData('budgetValue', value[0] as number);
+                          }}
                           max={5000}
                           min={500}
                           step={500}
@@ -624,7 +839,9 @@ export default function GetStartedPage() {
                   >
                     Back
                   </Button>
-                  <Button onClick={() => setIsSubmitted(true)}>Submit</Button>
+                  <Button onClick={handleSubmit} disabled={!isStepValid(4)}>
+                    Submit
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -639,23 +856,24 @@ export default function GetStartedPage() {
   const renderSuccessContent = () => {
     return (
       <Card className='border-1 shadow-sm'>
-        <CardContent className='p-8'>
-          <div className='flex flex-col lg:flex-row gap-8 items-start'>
+        <CardContent className='p-4 sm:p-8'>
+          <div className='flex flex-col lg:flex-row gap-6 lg:gap-8 items-start'>
             {/* Left side - Success message */}
-            <div className='w-full lg:w-1/2 space-y-8'>
-              <div className='flex gap-3  mb-6'>
-                <CircleCheck className='w-10 h-10 text-green-600' />
-                <div>
-                  <div className='flex items-center gap-3  mb-6'>
-                    <h2 className='text-xl '>You're a great fit!</h2>
+            <div className='w-full lg:w-1/2 space-y-6 lg:space-y-8'>
+              <div className='flex gap-3 mb-4 sm:mb-6'>
+                <CircleCheck className='w-8 h-8 sm:w-10 sm:h-10 text-green-600 flex-shrink-0' />
+                <div className='flex-1'>
+                  <div className='mb-4 sm:mb-6'>
+                    <h2 className='text-lg sm:text-xl lg:text-2xl font-medium'>
+                      You're a great fit!
+                    </h2>
                   </div>
 
                   <div className='space-y-3'>
-                    <p className='text-md text-muted-foreground'>
-                      Based on your answers, Lancer looks like a great match for
-                      your needs.
+                    <p className='text-sm sm:text-base text-muted-foreground leading-relaxed'>
+                      Lancer looks like a great match for your needs.
                     </p>
-                    <p className='text-md text-muted-foreground'>
+                    <p className='text-sm sm:text-base text-muted-foreground leading-relaxed'>
                       Your request has been accepted. Book a time in the
                       calendar to speak with a Lancer specialist.
                     </p>
@@ -663,13 +881,13 @@ export default function GetStartedPage() {
                 </div>
               </div>
 
-              <div className='space-y-6 pt-4 p-10 rounded-lg shadow-sm border border-border/20'>
+              <div className='space-y-6 pt-4 p-4 sm:p-6 lg:p-10 rounded-lg shadow-sm border border-border/20'>
                 <div className=''>
-                  <div className='flex items-center justify-between'>
-                    <p className='text-sm   uppercase tracking-wider'>
+                  <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0'>
+                    <p className='text-xs sm:text-sm uppercase tracking-wider font-medium'>
                       SUBMISSION DETAILS
                     </p>
-                    <Badge className='bg-green-200 text-xs text-green-900'>
+                    <Badge className='bg-green-200 text-xs text-green-900 self-start sm:self-center'>
                       Approved
                     </Badge>
                   </div>
@@ -680,30 +898,80 @@ export default function GetStartedPage() {
 
                 <div className='space-y-4'>
                   <div className='flex gap-3'>
-                    <UserRound className='w-5 h-5 text-muted-foreground' />
-                    <div>
-                      <p className='text-sm  text-muted-foreground'>CONTACT</p>
-                      <p className='text-sm'>Sales at Mvp masters</p>
+                    <UserRound className='w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0 mt-0.5' />
+                    <div className='flex-1'>
+                      <p className='text-xs sm:text-sm text-muted-foreground font-medium'>
+                        CONTACT
+                      </p>
+                      <p className='text-sm sm:text-base'>
+                        {formData.email || 'No email provided'}
+                      </p>
                     </div>
                   </div>
 
                   <div className='flex gap-3'>
-                    <Building2 className='w-5 h-5 text-muted-foreground' />
-                    <div>
-                      <p className='text-sm  text-muted-foreground'>
+                    <Building2 className='w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0 mt-0.5' />
+                    <div className='flex-1'>
+                      <p className='text-xs sm:text-sm text-muted-foreground font-medium'>
                         ORGANIZATION
                       </p>
-                      <p className='text-sm'>Mvp masters </p>
+                      <p className='text-sm sm:text-base'>
+                        {formData.companyName || 'No company name provided'}
+                      </p>
                     </div>
                   </div>
 
                   <div className='flex gap-3'>
-                    <Users className='w-5 h-5 text-muted-foreground' />
-                    <div>
-                      <p className='text-sm  text-muted-foreground'>
+                    <Users className='w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0 mt-0.5' />
+                    <div className='flex-1'>
+                      <p className='text-xs sm:text-sm text-muted-foreground font-medium'>
                         TEAM SIZE
                       </p>
-                      <p className='text-sm'>25 employees</p>
+                      <p className='text-sm sm:text-base'>
+                        {formatTeamSize(formData.teamSize)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className='flex gap-3'>
+                    <UserRound className='w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0 mt-0.5' />
+                    <div className='flex-1'>
+                      <p className='text-xs sm:text-sm text-muted-foreground font-medium'>
+                        ROLE
+                      </p>
+                      <p className='text-sm sm:text-base'>
+                        {formatRole(formData.role)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className='flex gap-3'>
+                    <Building2 className='w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0 mt-0.5' />
+                    <div className='flex-1'>
+                      <p className='text-xs sm:text-sm text-muted-foreground font-medium'>
+                        UPWORK USAGE
+                      </p>
+                      <p className='text-sm sm:text-base'>
+                        {formData.usesUpwork === 'yes'
+                          ? 'Currently uses Upwork'
+                          : 'Does not use Upwork'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className='flex gap-3'>
+                    <Users className='w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0 mt-0.5' />
+                    <div className='flex-1'>
+                      <p className='text-xs sm:text-sm text-muted-foreground font-medium'>
+                        AVG CONTRACT VALUE
+                      </p>
+                      <p className='text-sm sm:text-base'>
+                        {formatContractValue(
+                          formData.usesUpwork === 'yes'
+                            ? formData.contractValue
+                            : formData.avgContractValue
+                        )}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -717,7 +985,7 @@ export default function GetStartedPage() {
                 <CalendlyEmbed
                   url='https://calendly.com/tome-mvpmasters/30min'
                   minimal={true}
-                  height={700}
+                  height={600}
                   backgroundColor='ffffff'
                   primaryColor='3b82f6'
                 />
@@ -747,15 +1015,70 @@ export default function GetStartedPage() {
             ...transitionVariants,
           }}
         >
-          {!isSubmitted ? (
+          {isLoading ? (
             <>
               <div className='mb-16 mt-10'>
-                <h1 className='text-7xl md:text-7xl  mb-6'>Get Started</h1>
+                <h1 className='text-4xl md:text-7xl mb-6 text-center lg:text-left'>
+                  Get Started
+                </h1>
               </div>
 
               <div className='flex flex-col lg:flex-row gap-8 items-start'>
-                {/* Left side - Testimonial */}
-                <div className='w-full lg:w-2/5 space-y-8'>
+                {/* Left side - Testimonial - Desktop Only */}
+                <div className='w-full lg:w-2/5 space-y-8 hidden lg:block'>
+                  <div className=''>
+                    <p className='text-sm font-medium text-muted-foreground uppercase tracking-wider'>
+                      / TESTIMONIAL
+                    </p>
+                    <hr className='mt-2' />
+                  </div>
+
+                  <div className='flex flex-col gap-4'>
+                    <div className='flex gap-4'>
+                      <Avatar className='w-16 h-16'>
+                        <AvatarImage
+                          src='https://cdn.prod.website-files.com/68179ca71ec155a244188f61/68190c9c64f9228f0ca216d6_855ea39788361cdaf07ae0f063d7c9899c742f6f.png'
+                          alt='Iddo Gino'
+                        />
+                        <AvatarFallback>IG</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <blockquote className='text-lg  leading-relaxed'>
+                          "I had to pause the campaign because we couldn't take
+                          on any more work"
+                        </blockquote>
+                        <p className='text-sm text-muted-foreground'>
+                          Nikola Arsovski, Top Rated Upworker
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right side - Loading */}
+                <div className='w-full lg:w-3/5 space-y-8'>
+                  <div className=''>
+                    <p className='text-sm font-medium text-muted-foreground uppercase tracking-wider'>
+                      / REQUEST
+                    </p>
+                    <hr className='mt-2' />
+                  </div>
+
+                  {renderLoadingContent()}
+                </div>
+              </div>
+            </>
+          ) : !isSubmitted ? (
+            <>
+              <div className='mb-16 mt-10'>
+                <h1 className='text-4xl md:text-7xl mb-6 text-center lg:text-left'>
+                  Get Started
+                </h1>
+              </div>
+
+              <div className='flex flex-col lg:flex-row gap-8 items-start'>
+                {/* Left side - Testimonial - Desktop Only */}
+                <div className='w-full lg:w-2/5 space-y-8 hidden lg:block'>
                   <div className=''>
                     <p className='text-sm font-medium text-muted-foreground uppercase tracking-wider'>
                       / TESTIMONIAL
@@ -784,7 +1107,7 @@ export default function GetStartedPage() {
                     </div>
                   </div>
 
-                  {/* Trusted By Section */}
+                  {/* Trusted By Section - Desktop Only */}
                   <div className='space-y-4'>
                     <div className=''>
                       <p className='text-sm font-medium text-muted-foreground uppercase tracking-wider'>
@@ -831,6 +1154,73 @@ export default function GetStartedPage() {
                   </div>
 
                   {renderStepContent()}
+                </div>
+              </div>
+
+              {/* Testimonial Section - Mobile Only (Below Form) */}
+              <div className='space-y-8 mt-16 lg:hidden'>
+                <div className=''>
+                  <p className='text-sm font-medium text-muted-foreground uppercase tracking-wider'>
+                    / TESTIMONIAL
+                  </p>
+                  <hr className='mt-2' />
+                </div>
+
+                <div className='flex flex-col gap-4'>
+                  <div className='flex gap-4'>
+                    <Avatar className='w-16 h-16'>
+                      <AvatarImage
+                        src='https://cdn.prod.website-files.com/68179ca71ec155a244188f61/68190c9c64f9228f0ca216d6_855ea39788361cdaf07ae0f063d7c9899c742f6f.png'
+                        alt='Iddo Gino'
+                      />
+                      <AvatarFallback>IG</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <blockquote className='text-lg  leading-relaxed'>
+                        "I had to pause the campaign because we couldn't take on
+                        any more work"
+                      </blockquote>
+                      <p className='text-sm text-muted-foreground'>
+                        Nikola Arsovski, Top Rated Upworker
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Trusted By Section - Mobile Only (Below Form) */}
+              <div className='space-y-4 mt-16 lg:hidden'>
+                <div className=''>
+                  <p className='text-sm font-medium text-muted-foreground uppercase tracking-wider'>
+                    / TRUSTED BY
+                  </p>
+                  <hr className='mt-2' />
+                </div>
+
+                <div className='relative w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]'>
+                  <div className='flex items-center justify-center md:justify-start [&>div]:mx-8 animate-marquee group-hover:[animation-play-state:paused] [--duration:25s]'>
+                    {trustedByLogos.map((logo, i) => (
+                      <div
+                        key={`mobile-${i}`}
+                        className='flex items-center justify-center opacity-60 hover:opacity-80 transition-opacity'
+                      >
+                        {renderLogo(logo)}
+                      </div>
+                    ))}
+                  </div>
+                  <div
+                    className='flex items-center justify-center md:justify-start [&>div]:mx-8 animate-marquee group-hover:[animation-play-state:paused] [--duration:25s] h-[30px]'
+                    aria-hidden='true'
+                  >
+                    {trustedByLogos.map((logo, i) => (
+                      <div
+                        key={`mobile-duplicate-${i}`}
+                        className='flex items-center justify-center opacity-60 hover:opacity-80 transition-opacity'
+                      >
+                        {renderLogo(logo)}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </>

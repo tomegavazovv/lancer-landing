@@ -60,7 +60,7 @@ export const AnimatedTestimonials = ({
     clearAutoplay();
     intervalRef.current = setInterval(() => {
       setActive((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
+    }, 3000);
   };
 
   const pauseAutoplay = () => {

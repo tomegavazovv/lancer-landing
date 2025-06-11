@@ -48,7 +48,7 @@ export function FeatureCard({
             <p className='text-base md:text-lg leading-relaxed text-muted-foreground'>
               {description}
             </p>
-            <div className='flex flex-col sm:flex-row items-center sm:items-center gap-4 md:items-start'>
+            <div className='flex flex-col sm:flex-row items-center sm:items-center gap-4 md:items-center'>
               {/* Mobile: Simple button without card wrapper */}
               <div className='block md:hidden w-full'>
                 <Button
