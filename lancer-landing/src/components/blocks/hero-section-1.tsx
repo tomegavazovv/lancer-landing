@@ -611,7 +611,7 @@ export function HeroSection() {
 
           <div className='mt-10 space-y-16'>
             <AnimatedGroup preset='blur-slide' threshold={0.1}>
-              <div className='relative border border-gray-200 rounded-lg dark:border-gray-700'>
+              <div className='relative border border-gray-200 rounded-xl dark:border-gray-700'>
                 <FeatureCard
                   title={
                     <>
