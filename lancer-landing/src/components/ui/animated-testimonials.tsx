@@ -79,6 +79,11 @@ export const AnimatedTestimonials = ({
     }, 10000);
   };
 
+  const handleComponentClick = () => {
+    pauseAutoplay();
+    resumeAutoplayAfterDelay();
+  };
+
   const handleNext = () => {
     pauseAutoplay();
     setActive((prev) => (prev + 1) % testimonials.length);
@@ -158,6 +163,7 @@ export const AnimatedTestimonials = ({
           'max-w-sm md:max-w-4xl mx-auto px-4 md:px-8 lg:px-12 py-20',
           className
         )}
+        onClick={handleComponentClick}
       >
         <div className='relative grid grid-cols-1 md:grid-cols-2 gap-20 '>
           <div>
