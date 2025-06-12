@@ -727,7 +727,7 @@ export function HeroSection() {
                 >
                   <TextGenerateEffect
                     words='💤 while they were sleeping 💤'
-                    className='text-sm md:text-base font-medium text-muted-foreground/80'
+                    className='text-sm md:text-base font-medium text-muted-foreground/80 text-underline'
                     duration={1}
                   />
                 </LinkPreview>
