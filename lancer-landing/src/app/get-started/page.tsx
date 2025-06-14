@@ -1008,7 +1008,7 @@ export default function GetStartedPage() {
 
               <div className='w-full'>
                 <CalendlyEmbed
-                  url='https://calendly.com/tome-mvpmasters/30min'
+                  url='https://calendly.com/ivan-mvp/lancer-1-1-demo-call'
                   minimal={true}
                   height={600}
                   backgroundColor='ffffff'
