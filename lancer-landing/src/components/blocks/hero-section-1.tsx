@@ -5,13 +5,12 @@ import { Highlight } from '@/components/ui/hero-highlight';
 import { LinkPreview } from '@/components/ui/link-preview';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import { cn } from '@/lib/utils';
-import { Medal, Sparkles, Star } from 'lucide-react';
+import { CirclePlay, Medal, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 import { BorderBeam } from '../magicui/border-beam';
-import { AvatarCircles } from '../ui/avatar-circles';
 import { Badge } from '../ui/badge';
 import { FeatureCard } from '../ui/feature-card';
 import { Glow } from '../ui/glow';
@@ -413,43 +412,7 @@ export function HeroSection() {
                     },
                     ...transitionVariants,
                   }}
-                  className='mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row'
-                >
-                  <AvatarCircles numPeople={99} avatarUrls={avatars} />
-                  <div className='flex items-center gap-2'>
-                    <div
-                      className='flex'
-                      role='img'
-                      aria-label='5 out of 5 stars'
-                    >
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className='w-4 h-4 fill-yellow-400 text-yellow-400'
-                          aria-hidden='true'
-                        />
-                      ))}
-                    </div>
-                    <span className='sr-only'>Rated 5 out of 5 stars</span>
-                    <span className='text-sm text-muted-foreground ml-1'>
-                      (99+ reviews)
-                    </span>
-                  </div>
-                </AnimatedGroup>
-
-                <AnimatedGroup
-                  variants={{
-                    container: {
-                      visible: {
-                        transition: {
-                          staggerChildren: 0.05,
-                          delayChildren: 0.75,
-                        },
-                      },
-                    },
-                    ...transitionVariants,
-                  }}
-                  className='mt-8 flex flex-col items-center justify-center gap-2 md:flex-row relative z-10'
+                  className='mt-8 flex flex-col items-center justify-center gap-4 md:flex-row relative z-10'
                 >
                   <div className='bg-foreground/10 rounded-[14px] border p-0.5 relative z-10'>
                     <Button
@@ -462,6 +425,17 @@ export function HeroSection() {
                       </Link>
                     </Button>
                   </div>
+                  <Button
+                    asChild
+                    variant='outline'
+                    size='lg'
+                    className='rounded-xl px-5 text-base relative z-10'
+                  >
+                    <Link href='#testimonials'>
+                      <CirclePlay className='w-4 h-4 mr-2' />
+                      <span className='text-nowrap'>Watch Demo</span>
+                    </Link>
+                  </Button>
                 </AnimatedGroup>
               </div>
             </div>
@@ -712,7 +686,7 @@ export function HeroSection() {
             />
             <div className='relative z-10 mx-auto max-w-7xl px-6 text-center'>
               <div className='text-8xl md:text-9xl lg:text-[12rem] font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent'>
-                1,247
+                489
               </div>
               <p className='mt-6 text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed'>
                 successful deals landed by Lancer users this month
