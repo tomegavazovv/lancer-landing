@@ -32,7 +32,7 @@ export function PricingSectionBasic() {
       company: "Flowscape",
       content: "2 weeks - 3 clients. All on autopilot. I couldn't recommend Lancer enough",
       rating: 5,
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+      avatar: "/nikola-headshot.jpeg",
     },
     {
         id: 3,
@@ -41,7 +41,7 @@ export function PricingSectionBasic() {
         company: "Cable.so",
         content: "We got 27 replies in 3 weeks. Lancer essentially converted Upwork into our best source of leads.",
         rating: 5,
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+        avatar: "zhive-headshot.jpeg",
       },
       {
         id: 4,
@@ -50,7 +50,7 @@ export function PricingSectionBasic() {
         company: "Upwork",
         content: "I was quite overwhelmed by Upwork - but Lancer made it so simple. Got my first client in 2 weeks.",
         rating: 5,
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+        avatar: "ivo-headshot.jpeg",
       },
   ]
 
