@@ -9,6 +9,7 @@ interface CalendlyEmbedProps {
   backgroundColor?: string;
   textColor?: string;
   primaryColor?: string;
+  onBookingComplete?: () => void;
 }
 
 const CalendlyEmbed = ({
@@ -18,6 +19,7 @@ const CalendlyEmbed = ({
   backgroundColor = 'ffffff',
   textColor = '4d5055',
   primaryColor = '00a2ff',
+  onBookingComplete,
 }: CalendlyEmbedProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -53,24 +55,32 @@ const CalendlyEmbed = ({
 
     document.head.appendChild(script);
 
-    // Listen for Calendly events to detect when it's fully loaded
-    const handleCalendlyLoad = (event: MessageEvent) => {
+    // Listen for Calendly events
+    const handleCalendlyEvent = (event: MessageEvent) => {
       if (event.data.type && event.data.type.indexOf('calendly') === 0) {
-        // Calendly has sent a message, likely indicating it's loaded
+        // Handle Calendly loading events
         if (
           event.data.type === 'calendly.height' ||
           event.data.type === 'calendly.profile_page_viewed'
         ) {
           setIsLoading(false);
         }
+        
+        // Handle successful booking
+        if (event.data.type === 'calendly.event_scheduled') {
+          // Call the onBookingComplete callback if provided
+          if (onBookingComplete) {
+            onBookingComplete();
+          }
+        }
       }
     };
 
-    window.addEventListener('message', handleCalendlyLoad);
+    window.addEventListener('message', handleCalendlyEvent);
 
     // Cleanup function
     return () => {
-      window.removeEventListener('message', handleCalendlyLoad);
+      window.removeEventListener('message', handleCalendlyEvent);
       const existingScript = document.querySelector(
         'script[src="https://assets.calendly.com/assets/external/widget.js"]'
       );
@@ -78,7 +88,7 @@ const CalendlyEmbed = ({
         document.head.removeChild(existingScript);
       }
     };
-  }, []);
+  }, [onBookingComplete]);
 
   // Build the URL with parameters for minimal view
   const buildCalendlyUrl = () => {

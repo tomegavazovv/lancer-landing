@@ -5,7 +5,7 @@ import { Highlight } from '@/components/ui/hero-highlight';
 import { LinkPreview } from '@/components/ui/link-preview';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import { cn } from '@/lib/utils';
-import { CirclePlay, Medal, Sparkles } from 'lucide-react';
+import { CirclePlay, Medal, Sparkles, Info } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -21,6 +21,11 @@ import { SparklesText } from '../ui/sparkles-text';
 import { FaqSection } from './faq';
 import { Footer } from './footer';
 import { Pricing } from './pricing';
+import { Input } from '../ui/input';
+import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
+import ConversionStats from './conversion-stats';
+import SalesPitch1 from './sales-pitch-1';
+import { PricingSectionBasic } from '@/components/ui/demo-single-pricing-card';
 
 const transitionVariants = {
   item: {
@@ -108,7 +113,7 @@ const demoPlans = [
       },
     ],
     description: 'Perfect for freelancers ready to level up their Upwork game.',
-    buttonText: 'Get Started',
+    buttonText: 'Book Demo',
     href: '/get-started',
     isPopular: false,
   },
@@ -145,7 +150,7 @@ const demoPlans = [
     ],
     description:
       'Built for the top 10% freelancers looking to automate their Upwork outreach and win more deals on auto-pilot.',
-    buttonText: 'Get Started',
+    buttonText: 'Book Demo',
     href: '/get-started',
     isPopular: true,
   },
@@ -182,7 +187,7 @@ const demoPlans = [
     ],
     description:
       'Created for the top 1% freelancer and agencies earning over $100,000/yr. looking to run campaigns with no limits.',
-    buttonText: 'Get Started',
+    buttonText: 'Book Demo',
     href: '/get-started',
     isPopular: false,
   },
@@ -209,7 +214,7 @@ const demoPlans = [
     ],
     description:
       'Designed for Upwork outreach experts managing high-volume campaigns for multiple clients.',
-    buttonText: 'Get Started',
+    buttonText: 'Book Demo',
     href: '/get-started',
     isPopular: false,
   },
@@ -340,7 +345,7 @@ export function HeroSection() {
           <div className='h-[80rem] -translate-y-[350px] absolute left-0 top-0 w-56 -rotate-45 bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,0%,85%,.04)_0,hsla(0,0%,45%,.02)_80%,transparent_100%)]' />
         </div>
         <section>
-          <div className='relative pt-8 md:pt-36'>
+          <div className='relative pt-4 md:pt-16'>
             <AnimatedGroup
               variants={{
                 container: {
@@ -383,20 +388,27 @@ export function HeroSection() {
             <div className='mx-auto max-w-7xl px-6'>
               <div className='text-center sm:mx-auto lg:mr-auto lg:mt-0'>
                 <AnimatedGroup variants={transitionVariants}>
-                  <h1 className='mt-8 max-w-4xl mx-auto text-balance text-6xl font-semibold md:text-7xl lg:mt-24 xl:text-[5.25rem]'>
-                    Your{' '}
-                    <SparklesText
-                      text='Upwork Outreach.'
-                      colors={{ first: '#9E7AFF', second: '#FE8BBB' }}
-                      sparklesCount={8}
-                    />{' '}
-                    <br className='hidden md:inline' />
-                    <span className='md:block'>Running Itself.</span>
-                  </h1>
-                  <p className='mx-auto mt-8 max-w-3xl text-balance text-xl'>
-                    From finding perfect jobs to sending winning
-                    proposals—Lancer handles the entire outreach process so you
-                    can stop chasing work and focus on delivering results.
+                  <div className='mt-8 lg:mt-16'>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Badge variant="secondary" className='mb-6 px-4 py-2 text-sm font-medium bg-[#D9F99D] text-black border-0 rounded-full cursor-help inline-flex items-center gap-1'>
+                          55% open rate. 33% reply rate. 12.5% win rate
+                          <Info className='w-4 h-4 align-middle -mt-0.5' />
+                        </Badge>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Average conversion numbers from users running Lancer.
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                  <SparklesText
+                    text='Land high-paying Upwork jobs on autopilot.'
+                    colors={{ first: '#9E7AFF', second: '#FE8BBB' }}
+                    sparklesCount={12}
+                    className='max-w-6xl mx-auto text-balance text-4xl font-semibold md:text-6xl xl:text-[5.25rem]'
+                  />
+                  <p className='mx-auto mt-4 mb-8 max-w-6xl text-balance text-lg md:text-xl text-muted-foreground font-normal'>
+                    Lancer works 24/7, filters the crap, writes and sends winning proposals for the right jobs in your name.
                   </p>
                 </AnimatedGroup>
 
@@ -414,14 +426,19 @@ export function HeroSection() {
                   }}
                   className='mt-8 flex flex-col items-center justify-center gap-4 md:flex-row relative z-10'
                 >
-                  <div className='bg-foreground/10 rounded-[14px] border p-0.5 relative z-10'>
+                  <div className="flex items-center gap-0 bg-white rounded-2xl shadow-md p-1 transition-all">
+                    <Input
+                      type="email"
+                      placeholder="Enter your email"
+                      className="min-w-[220px] rounded-2xl border-0 focus:ring-2 focus:ring-primary/40 focus:outline-none text-base px-5 py-3 shadow-none"
+                    />
                     <Button
                       asChild
-                      size='lg'
-                      className='rounded-xl px-5 text-base relative z-10'
+                      size="lg"
+                      className="rounded-2xl px-7 py-3 text-base font-semibold bg-black text-white hover:bg-primary transition-colors shadow-none border-0"
                     >
-                      <Link href='/get-started'>
-                        <span className='text-nowrap'>Get Started</span>
+                      <Link href="#pricing">
+                        <span className="text-nowrap">Access Launch Offer</span>
                       </Link>
                     </Button>
                   </div>
@@ -431,10 +448,10 @@ export function HeroSection() {
                     size='lg'
                     className='rounded-xl px-5 text-base relative z-10'
                   >
-                    <Link href='#testimonials'>
+                    {/* <Link href='#testimonials'>
                       <CirclePlay className='w-4 h-4 mr-2' />
                       <span className='text-nowrap'>Watch Demo</span>
-                    </Link>
+                    </Link> */}
                   </Button>
                 </AnimatedGroup>
               </div>
@@ -538,7 +555,10 @@ export function HeroSection() {
             </div>
           </AnimatedGroup>
         </section>
-
+        <ConversionStats />
+        <div className="max-w-7xl mx-auto bg-gradient-to-b from-[#18181b] to-[#23232a] rounded-3xl my-30 py-12 px-2 md:px-8 overflow-hidden flex justify-center items-center">
+          <SalesPitch1 darkBg />
+        </div>
         <section id='features' className='mx-auto max-w-7xl px-6 '>
           <AnimatedGroup
             className='mx-auto max-w-7xl px-6 py-16 flex flex-col items-center justify-center gap-5'
@@ -593,9 +613,9 @@ export function HeroSection() {
                     </>
                   }
                   description="Static filters aren't enough. Even if you filter for keywords, most jobs still won't be right for you. Lancer's AI suitability layer analyzes each job posting to determine true compatibility with your skills and preferences."
-                  buttonText='Get Started'
-                  buttonHref='/get-started'
-                  checkmarkText='No card required'
+                  buttonText='Access Launch Offer'
+                  buttonHref='#pricing'
+                  checkmarkText='10 day money back guarantee. No questions asked.'
                   imageSrc='https://i.ibb.co/Zsw2QQG/Group-8-2.png'
                   imageAlt='AI suitability filtering'
                 />
@@ -612,9 +632,9 @@ export function HeroSection() {
                     </>
                   }
                   description='Stop wasting time writing the same cover letters over and over. Lancer generates personalized proposals and answers client questions using your knowledge base—making every application sound genuinely tailored to the job.'
-                  buttonText='Get Started'
-                  buttonHref='/get-started'
-                  checkmarkText='No card required'
+                  buttonText='Access Launch Offer'
+                  buttonHref='#pricing'
+                  checkmarkText='10 day money back guarantee. No questions asked.'
                   imageSrc='https://i.ibb.co/tp9s01gx/Screenshot-2025-06-09-at-15-26-25.png'
                   imageAlt='Automated proposal generation'
                 />
@@ -644,9 +664,9 @@ export function HeroSection() {
                     </>
                   }
                   description='Lancer connects to your agency manager account and handles the entire bidding process. From job analysis to proposal submission—your Upwork outreach runs completely hands-free while you focus on delivering work.'
-                  buttonText='Get Started'
-                  buttonHref='/get-started'
-                  checkmarkText='No card required'
+                  buttonText='Access Launch Offer'
+                  buttonHref='#pricing'
+                  checkmarkText='10 day money back guarantee. No questions asked.'
                   imageSrc='https://i.ibb.co/Wp6vdZ0b/Group-7.png'
                   imageAlt='Automated bidding system'
                 />
@@ -662,9 +682,9 @@ export function HeroSection() {
                     </>
                   }
                   description='Track performance across multiple campaigns and accounts. Get detailed analytics on proposal success rates, instant notifications for new opportunities, and manage everything from one dashboard.'
-                  buttonText='Get Started'
-                  buttonHref='/get-started'
-                  checkmarkText='No card required'
+                  buttonText='Access Launch Offer'
+                  buttonHref='#pricing'
+                  checkmarkText='10 day money back guarantee. No questions asked.'
                   imageSrc='https://i.ibb.co/GQWW8PV0/image-6.png'
                   imageAlt='Analytics dashboard'
                 />
@@ -686,8 +706,7 @@ export function HeroSection() {
             />
             <div className='relative z-10 mx-auto max-w-7xl px-6 text-center'>
               <div className='text-8xl md:text-9xl lg:text-[12rem] font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent'>
-                489
-              </div>
+              46              </div>
               <p className='mt-6 text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed'>
                 successful deals landed by Lancer users this month
               </p>
@@ -714,7 +733,7 @@ export function HeroSection() {
                     className='rounded-xl px-5 text-base'
                   >
                     <Link href='/get-started'>
-                      <span className='text-nowrap'>Get Started</span>
+                      <span className='text-nowrap'>Book Demo</span>
                     </Link>
                   </Button>
                 </div>
@@ -726,7 +745,7 @@ export function HeroSection() {
             <div className='absolute inset-0 -z-10'>
               <div className='h-full w-full bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:35px_35px] opacity-40 [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]' />
             </div>
-            <PricingBasic />
+            <PricingSectionBasic />
           </section>
 
           {/* FAQ Section */}
@@ -819,7 +838,7 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
               </ul>
             </div>
 
-            {/* Desktop: Get Started button */}
+            {/* Desktop: Book Demo button */}
             <div className='hidden lg:flex'>
               <Button
                 asChild
@@ -827,7 +846,7 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
                 className={cn(isScrolled && 'lg:hidden')}
               >
                 <Link href='/get-started'>
-                  <span>Get Started</span>
+                  <span>Book Demo</span>
                 </Link>
               </Button>
               <Button
@@ -836,7 +855,7 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
                 className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
               >
                 <Link href='/get-started'>
-                  <span>Get Started</span>
+                  <span>Book Demo</span>
                 </Link>
               </Button>
             </div>

@@ -1,4 +1,4 @@
-import { CreditCard } from 'lucide-react';
+import { CreditCard, Shield } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -70,7 +70,7 @@ export function FeatureCard({
                 </Button>
               </div>
               <div className='flex items-center justify-center md:justify-start gap-2'>
-                <CreditCard className='text-gray-400 h-5 w-5' />
+                <Shield className='text-gray-400 h-5 w-5' />
                 <span className='text-sm text-gray-700'>{checkmarkText}</span>
               </div>
             </div>

@@ -111,7 +111,7 @@ export const Highlight = ({
 }: {
   children: React.ReactNode;
   className?: string;
-  variant?: 'default' | 'blue' | 'green' | 'orange' | 'pink' | 'purple';
+  variant?: 'default' | 'blue' | 'green' | 'orange' | 'pink' | 'purple' | 'red';
 }) => {
   const colorVariants = {
     default:
@@ -124,6 +124,7 @@ export const Highlight = ({
     pink: 'from-pink-200 to-rose-200 dark:from-pink-300 dark:to-rose-300',
     purple:
       'from-purple-200 to-violet-200 dark:from-purple-300 dark:to-violet-300',
+    red: 'from-red-200 to-rose-200 dark:from-red-300 dark:to-rose-300',
   };
 
   return (

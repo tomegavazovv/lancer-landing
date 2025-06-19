@@ -25,6 +25,8 @@ import { Building2, CircleCheck, UserRound, Users } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import ReactFlagsSelect from 'react-flags-select';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 const transitionVariants = {
   item: {
@@ -159,6 +161,11 @@ interface FormData {
   nonUpworkChannels: string[];
   upworkReasons: string[];
   avgContractValue: string;
+  agencyName: string;
+  location: string;
+  upworkUsage: string;
+  upworkExperience: string;
+  personnelInvestment: string;
 }
 
 export default function GetStartedPage() {
@@ -181,6 +188,11 @@ export default function GetStartedPage() {
     nonUpworkChannels: [],
     upworkReasons: [],
     avgContractValue: '',
+    agencyName: '',
+    location: '',
+    upworkUsage: '',
+    upworkExperience: '',
+    personnelInvestment: '',
   });
 
   // Legacy state for backward compatibility - will be cleaned up
@@ -206,35 +218,31 @@ export default function GetStartedPage() {
   };
 
   const validateStep2 = (): boolean => {
+    if (formData.teamSize === 'just-me') {
+      return formData.teamSize.trim() !== '' && formData.location.trim() !== '';
+    }
     return (
-      formData.companyName.trim() !== '' && formData.teamSize.trim() !== ''
+      formData.teamSize.trim() !== '' &&
+      formData.location.trim() !== '' &&
+      formData.agencyName.trim() !== ''
     );
   };
 
   const validateStep3 = (): boolean => {
-    return formData.usesUpwork !== '';
+    return formData.upworkUsage.trim() !== '' && formData.upworkExperience.trim() !== '';
   };
 
   const validateStep4 = (): boolean => {
-    if (formData.usesUpwork === 'yes') {
-      const hasContractValue = formData.contractValue.trim() !== '';
-      const hasOutreachType = formData.outreachType !== '';
-
-      if (formData.outreachType === 'myself') {
-        return (
-          hasContractValue && hasOutreachType && formData.hoursPerWeek !== ''
-        );
-      } else if (formData.outreachType === 'someone-else') {
-        return hasContractValue && hasOutreachType;
-      }
-      return hasContractValue && hasOutreachType;
-    } else {
-      return (
-        formData.nonUpworkChannels.length > 0 &&
-        formData.upworkReasons.length > 0 &&
-        formData.avgContractValue.trim() !== ''
-      );
+    const hasACV = formData.avgContractValue.trim() !== '';
+    const hasBudget = formData.budgetValue >= 300;
+    const hasOutreachType = formData.outreachType.trim() !== '';
+    if (!hasACV || !hasBudget || !hasOutreachType) return false;
+    if (formData.outreachType === 'myself') {
+      return formData.hoursPerWeek.trim() !== '';
+    } else if (formData.outreachType === 'someone-else') {
+      return formData.personnelInvestment.trim() !== '';
     }
+    return true;
   };
 
   const isStepValid = (step: number): boolean => {
@@ -391,12 +399,12 @@ export default function GetStartedPage() {
             <CardContent className='space-y-6'>
               <div className='space-y-2'>
                 <Label htmlFor='email' className='text-sm font-normal'>
-                  Company email <span className='text-red-500'>*</span>
+                  Business Email <span className='text-red-500'>*</span>
                 </Label>
                 <Input
                   id='email'
                   type='email'
-                  placeholder='Your email address'
+                  placeholder='Your business email address'
                   className={`text-base sm:text-sm ${
                     formData.email.trim() !== '' &&
                     !isValidEmail(formData.email)
@@ -417,7 +425,7 @@ export default function GetStartedPage() {
 
               <div className='space-y-2'>
                 <Label htmlFor='role' className='text-sm font-normal'>
-                  Your Role/Position <span className='text-red-500'>*</span>
+                  Which one of these best describes you? <span className='text-red-500'>*</span>
                 </Label>
                 <Select
                   value={formData.role}
@@ -429,9 +437,7 @@ export default function GetStartedPage() {
                   <SelectContent>
                     <SelectItem value='freelancer'>Freelancer</SelectItem>
                     <SelectItem value='agency-owner'>Agency Owner</SelectItem>
-                    <SelectItem value='upwork-specialist'>
-                      Upwork Outreach Specialist
-                    </SelectItem>
+                    <SelectItem value='upwork-specialist'>Upwork Outreach Specialist</SelectItem>
                     <SelectItem value='sales'>Sales</SelectItem>
                     <SelectItem value='other'>Other</SelectItem>
                   </SelectContent>
@@ -457,48 +463,61 @@ export default function GetStartedPage() {
 
               <div className='flex items-center gap-4 mb-4'>
                 <CardTitle className='text-xl font-normal'>
-                  Step 2: Company Details
+                  Step 2: Team Details
                 </CardTitle>
               </div>
             </CardHeader>
             <CardContent className='space-y-6'>
               <div className='space-y-2'>
-                <Label htmlFor='company-name' className='text-sm font-normal'>
-                  Company Name <span className='text-red-500'>*</span>
+                <Label htmlFor='team-size' className='text-sm font-normal'>
+                  Team Size <span className='text-red-500'>*</span>
                 </Label>
-                <Input
-                  id='company-name'
-                  type='text'
-                  placeholder='Your Company Inc.'
-                  className='text-base sm:text-sm'
-                  value={formData.companyName}
-                  onChange={(e) =>
-                    updateFormData('companyName', e.target.value)
-                  }
-                />
+                <Select
+                  value={formData.teamSize}
+                  onValueChange={(value) => updateFormData('teamSize', value)}
+                >
+                  <SelectTrigger className='text-base sm:text-sm'>
+                    <SelectValue placeholder='Select your team size...' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='just-me'>Just me</SelectItem>
+                    <SelectItem value='2-5'>2 - 5 people</SelectItem>
+                    <SelectItem value='6-10'>6 - 10 people</SelectItem>
+                    <SelectItem value='11-25'>11 - 25 people</SelectItem>
+                    <SelectItem value='26-50'>26 - 50 people</SelectItem>
+                    <SelectItem value='50+'>50+ people</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
-              <div className=''>
+              {formData.teamSize !== 'just-me' && (
                 <div className='space-y-2'>
-                  <Label htmlFor='team-size' className='text-sm font-normal'>
-                    Size of your company <span className='text-red-500'>*</span>
+                  <Label htmlFor='agency-name' className='text-sm font-normal'>
+                    Agency Name <span className='text-red-500'>*</span>
                   </Label>
-                  <Select
-                    value={formData.teamSize}
-                    onValueChange={(value) => updateFormData('teamSize', value)}
-                  >
-                    <SelectTrigger className='text-base sm:text-sm'>
-                      <SelectValue placeholder='Select size of your company...' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value='1-5'>1-5 people</SelectItem>
-                      <SelectItem value='6-10'>6-10 people</SelectItem>
-                      <SelectItem value='11-25'>11-25 people</SelectItem>
-                      <SelectItem value='26-50'>26-50 people</SelectItem>
-                      <SelectItem value='50+'>50+ people</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    id='agency-name'
+                    type='text'
+                    placeholder='Your agency name'
+                    className='text-base sm:text-sm'
+                    value={formData.agencyName}
+                    onChange={(e) => updateFormData('agencyName', e.target.value)}
+                  />
                 </div>
+              )}
+
+              <div className='space-y-2'>
+                <Label htmlFor='location' className='text-sm font-normal'>
+                  Location <span className='text-red-500'>*</span>
+                </Label>
+                <ReactFlagsSelect
+                  selected={formData.location}
+                  onSelect={(code: string) => updateFormData('location', code)}
+                  searchable
+                  searchPlaceholder='Type to search countries'
+                  placeholder='Select your country...'
+                  className='w-full'
+                />
               </div>
 
               <div className='pt-6 flex items-center justify-between'>
@@ -530,43 +549,45 @@ export default function GetStartedPage() {
                 </CardTitle>
               </div>
             </CardHeader>
-            <CardContent className='space-y-8'>
-              <div className='space-y-4'>
-                <Label className='text-sm font-normal'>
-                  Do you currently use Upwork for client outreach?{' '}
-                  <span className='text-red-500'>*</span>
+            <CardContent className='space-y-6'>
+              <div className='space-y-2'>
+                <Label htmlFor='upwork-usage' className='text-sm font-normal'>
+                  How do you use Upwork? <span className='text-red-500'>*</span>
                 </Label>
+                <Select
+                  value={formData.upworkUsage}
+                  onValueChange={(value) => updateFormData('upworkUsage', value)}
+                >
+                  <SelectTrigger className='text-base sm:text-sm'>
+                    <SelectValue placeholder='Choose an option...' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='consistent'>I use Upwork consistently to close deals</SelectItem>
+                    <SelectItem value='seasonal'>I use Upwork seasonally when my usual pipeline of clients dries up, or am in between projects</SelectItem>
+                    <SelectItem value='new'>I am new to Upwork and want to validate it as a sales channel</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-                <div className='flex space-x-1 bg-muted p-1 mt-2 rounded-lg'>
-                  <button
-                    type='button'
-                    onClick={() => {
-                      setUsesUpwork('yes');
-                      updateFormData('usesUpwork', 'yes');
-                    }}
-                    className={`flex-1 px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer border ${
-                      formData.usesUpwork === 'yes'
-                        ? 'bg-background text-foreground shadow-sm border-foreground/20'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-background/50 border-transparent'
-                    }`}
-                  >
-                    Yes, I use Upwork
-                  </button>
-                  <button
-                    type='button'
-                    onClick={() => {
-                      setUsesUpwork('no');
-                      updateFormData('usesUpwork', 'no');
-                    }}
-                    className={`flex-1 px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer border ${
-                      formData.usesUpwork === 'no'
-                        ? 'bg-background text-foreground shadow-sm border-foreground/20'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-background/50 border-transparent'
-                    }`}
-                  >
-                    No, I don't use Upwork
-                  </button>
-                </div>
+              <div className='space-y-2'>
+                <Label htmlFor='upwork-experience' className='text-sm font-normal'>
+                  Your experience with Upwork so far? <span className='text-red-500'>*</span>
+                </Label>
+                <Select
+                  value={formData.upworkExperience}
+                  onValueChange={(value) => updateFormData('upworkExperience', value)}
+                >
+                  <SelectTrigger className='text-base sm:text-sm'>
+                    <SelectValue placeholder='Choose an option...' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='new'>New to Upwork (Yet to close a deal)</SelectItem>
+                    <SelectItem value='rookie'>Upwork Rookie (at least one deal closed, but less than $1,000 in lifetime earnings)</SelectItem>
+                    <SelectItem value='expert'>Upwork Expert (over $5,000 in lifetime earnings)</SelectItem>
+                    <SelectItem value='pro'>Upwork Pro (over $10,000 in lifetime earnings)</SelectItem>
+                    <SelectItem value='all-star'>Upwork All-Star (over $100,000 in lifetime earnings)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className='pt-6 flex items-center justify-between'>
@@ -586,291 +607,183 @@ export default function GetStartedPage() {
         );
 
       case 4:
-        if (formData.usesUpwork === 'yes') {
-          return (
-            <Card className='border-1 shadow-none'>
-              <CardHeader className='pb-6'>
-                {/* Stepper inside the card */}
-                <Stepper currentStep={currentStep} totalSteps={totalSteps} />
+        return (
+          <Card className='border-1 shadow-none'>
+            <CardHeader className='pb-6'>
+              {/* Stepper inside the card */}
+              <Stepper currentStep={currentStep} totalSteps={totalSteps} />
 
-                <div className='flex items-center gap-4 mb-4'>
-                  <CardTitle className='text-xl font-normal'>
-                    Step 4: Upwork Budgeting
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className='space-y-8'>
-                <div className='space-y-2'>
-                  <Label
-                    htmlFor='contract-value'
-                    className='text-sm font-normal'
-                  >
-                    What is your average Upwork contract value?{' '}
-                    <span className='text-red-500'>*</span>
-                  </Label>
-                  <div className='relative'>
-                    <span className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground'>
-                      $
-                    </span>
-                    <Input
-                      id='contract-value'
-                      required
-                      type='number'
-                      placeholder='10000'
-                      className='text-base sm:text-sm pl-8'
-                      value={formData.contractValue}
-                      onChange={(e) =>
-                        updateFormData('contractValue', e.target.value)
-                      }
-                    />
-                  </div>
-                </div>
+              <div className='flex items-center gap-4 mb-4'>
+                <CardTitle className='text-xl font-normal'>
+                  Step 4: Budgeting
+                </CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className='space-y-6'>
+              <div className='space-y-2'>
+                <Label htmlFor='avg-contract-value' className='text-sm font-normal'>
+                  Your Average Contract Value (ACV) <span className='text-red-500'>*</span>
+                </Label>
+                <Select
+                  value={formData.avgContractValue}
+                  onValueChange={(value) => updateFormData('avgContractValue', value)}
+                >
+                  <SelectTrigger className='text-base sm:text-sm'>
+                    <SelectValue placeholder='Choose an option...' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='less-500'>less than $500</SelectItem>
+                    <SelectItem value='500-2000'>$500 - $2,000</SelectItem>
+                    <SelectItem value='2000-5000'>$2,000 - $5,000</SelectItem>
+                    <SelectItem value='5000-10000'>$5,000 - $10,000</SelectItem>
+                    <SelectItem value='10000-20000'>$10,000 - $20,000</SelectItem>
+                    <SelectItem value='20000-50000'>$20,000 - $50,000</SelectItem>
+                    <SelectItem value='50000+'>$50,000+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-                <div className='space-y-4'>
-                  <Label className='text-sm font-normal'>
-                    Who handles your Upwork outreach?{' '}
-                    <span className='text-red-500'>*</span>
-                  </Label>
-
-                  <div className='flex space-x-1 bg-muted p-1 rounded-lg'>
-                    <button
-                      type='button'
-                      onClick={() => {
-                        setOutreachType('myself');
-                        updateFormData('outreachType', 'myself');
-                      }}
-                      className={`flex-1 px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer border ${
-                        formData.outreachType === 'myself'
-                          ? 'bg-background text-foreground shadow-sm border-foreground/20'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-background/50 border-transparent'
-                      }`}
-                    >
-                      I do it myself
-                    </button>
-                    <button
-                      type='button'
-                      onClick={() => {
-                        setOutreachType('someone-else');
-                        updateFormData('outreachType', 'someone-else');
-                      }}
-                      className={`flex-1 px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer border ${
-                        formData.outreachType === 'someone-else'
-                          ? 'bg-background text-foreground shadow-sm border-foreground/20'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-background/50 border-transparent'
-                      }`}
-                    >
-                      Someone else
-                    </button>
-                  </div>
-                </div>
-
-                {formData.outreachType === 'myself' ? (
-                  <div className='space-y-2'>
-                    <Label
-                      htmlFor='hours-per-week'
-                      className='text-sm font-normal'
-                    >
-                      How many hours per week do you spend on Upwork outreach?{' '}
-                      <span className='text-red-500'>*</span>
-                    </Label>
-                    <Select
-                      value={formData.hoursPerWeek}
-                      onValueChange={(value) =>
-                        updateFormData('hoursPerWeek', value)
-                      }
-                    >
-                      <SelectTrigger className='text-base sm:text-sm'>
-                        <SelectValue placeholder='Choose an option...' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value='1-5'>1-5 hours</SelectItem>
-                        <SelectItem value='6-10'>6-10 hours</SelectItem>
-                        <SelectItem value='11-20'>11-20 hours</SelectItem>
-                        <SelectItem value='21-30'>21-30 hours</SelectItem>
-                        <SelectItem value='30+'>30+ hours</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                ) : (
-                  formData.outreachType === 'someone-else' && (
-                    <div className='space-y-4'>
-                      <Label className='text-sm font-normal'>
-                        What's your approximate monthly investment in outreach
-                        personnel?
-                        <span className='text-red-500'>*</span>
-                      </Label>
-
-                      <div className='space-y-4 mt-2'>
-                        <div className='text-center'>
-                          <div className='text-md font-medium mb-4'>
-                            ${formData.budgetValue.toLocaleString()}
+              <div className='space-y-4'>
+                <Label className='text-sm font-normal'>
+                  What is your currently monthly budget for Upwork Connects? <span className='text-red-500'>*</span>
+                </Label>
+                <div className='space-y-4 mt-2'>
+                  <div className='text-center'>
+                    <div className='text-md font-medium mb-4 flex flex-col items-center justify-center gap-1'>
+                      {(() => {
+                        const dollarValue = formData.budgetValue;
+                        const proposals = Math.floor(dollarValue / 3);
+                        const replies = Math.floor(proposals * 0.3);
+                        return (
+                          <div className='flex flex-col items-center'>
+                            <span className='text-2xl font-bold text-foreground'>
+                              ${dollarValue.toLocaleString()}
+                            </span>
+                            <span className='text-xs text-muted-foreground mt-1'>
+                              {proposals} proposals /
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <span className='underline decoration-dotted cursor-help ml-1'>
+                                    {replies} replies*
+                                  </span>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  Based on Lancer's reply rate of 30%
+                                </TooltipContent>
+                              </Tooltip>
+                            </span>
                           </div>
-                          <div className='relative'>
-                            <Slider
-                              value={[formData.budgetValue]}
-                              onValueChange={(value) => {
-                                setBudgetValue(value[0] as number);
-                                updateFormData(
-                                  'budgetValue',
-                                  value[0] as number
-                                );
-                              }}
-                              max={5000}
-                              min={500}
-                              step={500}
-                            />
-                          </div>
-                          <div className='flex justify-between text-xs text-muted-foreground mt-2'>
-                            <span>$500 or less</span>
-                            <span>$5,000 or more</span>
-                          </div>
-                        </div>
-                      </div>
+                        );
+                      })()}
                     </div>
-                  )
-                )}
-
-                <div className='pt-6 flex items-center justify-between'>
-                  <Button
-                    variant='ghost'
-                    onClick={handleBack}
-                    className='text-sm text-muted-foreground hover:text-foreground'
-                  >
-                    Back
-                  </Button>
-                  <Button onClick={handleSubmit} disabled={!isStepValid(4)}>
-                    Submit
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        } else {
-          return (
-            <Card className='border-1 shadow-none'>
-              <CardHeader className='pb-6'>
-                {/* Stepper inside the card */}
-                <Stepper currentStep={currentStep} totalSteps={totalSteps} />
-
-                <div className='flex items-center gap-4 mb-4'>
-                  <CardTitle className='text-xl font-normal'>
-                    Step 4: Current Outreach Strategy
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className='space-y-8'>
-                <div className='space-y-2'>
-                  <Label
-                    htmlFor='current-channels'
-                    className='text-sm font-normal'
-                  >
-                    What channels do you currently use for client outreach?{' '}
-                    <span className='text-red-500'>*</span>
-                  </Label>
-                  <MultiSelect
-                    value={formData.nonUpworkChannels}
-                    onValueChange={(value) => {
-                      setNonUpworkChannels(value);
-                      updateFormData('nonUpworkChannels', value);
-                    }}
-                    options={outreachChannelOptions}
-                    placeholder='Select your outreach channels...'
-                  />
-                </div>
-
-                <div className='space-y-2'>
-                  <Label
-                    htmlFor='upwork-reason'
-                    className='text-sm font-normal'
-                  >
-                    Why haven't you tried Upwork or are not currently using it?{' '}
-                    <span className='text-red-500'>*</span>
-                  </Label>
-                  <MultiSelect
-                    value={formData.upworkReasons}
-                    onValueChange={(value) => {
-                      setUpworkReasons(value);
-                      updateFormData('upworkReasons', value);
-                    }}
-                    options={upworkReasonOptions}
-                    placeholder='Choose your reasons...'
-                  />
-                </div>
-
-                <div className='space-y-2'>
-                  <Label
-                    htmlFor='avg-contract-value'
-                    className='text-sm font-normal'
-                  >
-                    What is your average contract value?{' '}
-                    <span className='text-red-500'>*</span>
-                  </Label>
-                  <div className='relative'>
-                    <span className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground'>
-                      $
-                    </span>
-                    <Input
-                      id='avg-contract-value'
-                      required
-                      type='number'
-                      placeholder='10000'
-                      className='text-base sm:text-sm pl-8'
-                      value={formData.avgContractValue}
-                      onChange={(e) =>
-                        updateFormData('avgContractValue', e.target.value)
-                      }
-                    />
-                  </div>
-                </div>
-
-                <div className='space-y-4'>
-                  <Label className='text-sm font-normal'>
-                    What's your approximate monthly investment in client
-                    outreach?
-                    <span className='text-red-500'>*</span>
-                  </Label>
-
-                  <div className='space-y-4 mt-2'>
-                    <div className='text-center'>
-                      <div className='text-md font-medium mb-4'>
-                        ${formData.budgetValue.toLocaleString()}
-                      </div>
-                      <div className='relative'>
-                        <Slider
-                          value={[formData.budgetValue]}
-                          onValueChange={(value) => {
-                            setBudgetValue(value[0] as number);
-                            updateFormData('budgetValue', value[0] as number);
-                          }}
-                          max={5000}
-                          min={500}
-                          step={500}
-                        />
-                      </div>
-                      <div className='flex justify-between text-xs text-muted-foreground mt-2'>
-                        <span>$500 or less</span>
-                        <span>$5,000 or more</span>
-                      </div>
+                    <div className='relative'>
+                      <Slider
+                        value={[formData.budgetValue]}
+                        onValueChange={(value) => {
+                          setBudgetValue(value[0] as number);
+                          updateFormData('budgetValue', value[0] as number);
+                        }}
+                        max={3000}
+                        min={300}
+                        step={100}
+                      />
+                    </div>
+                    <div className='flex justify-between text-xs text-muted-foreground mt-2'>
+                      <span>$300</span>
+                      <span>$3,000 or more</span>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className='pt-6 flex items-center justify-between'>
-                  <Button
-                    variant='ghost'
-                    onClick={handleBack}
-                    className='text-sm text-muted-foreground hover:text-foreground'
+              <div className='space-y-4'>
+                <Label className='text-sm font-normal'>
+                  Who handles your Upwork outreach? <span className='text-red-500'>*</span>
+                </Label>
+                <div className='flex space-x-1 bg-muted p-1 rounded-lg'>
+                  <button
+                    type='button'
+                    onClick={() => updateFormData('outreachType', 'myself')}
+                    className={`flex-1 px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer border ${
+                      formData.outreachType === 'myself'
+                        ? 'bg-background text-foreground shadow-sm border-foreground/20'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-background/50 border-transparent'
+                    }`}
                   >
-                    Back
-                  </Button>
-                  <Button onClick={handleSubmit} disabled={!isStepValid(4)}>
-                    Submit
-                  </Button>
+                    I do it myself
+                  </button>
+                  <button
+                    type='button'
+                    onClick={() => updateFormData('outreachType', 'someone-else')}
+                    className={`flex-1 px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer border ${
+                      formData.outreachType === 'someone-else'
+                        ? 'bg-background text-foreground shadow-sm border-foreground/20'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-background/50 border-transparent'
+                    }`}
+                  >
+                    Someone else
+                  </button>
                 </div>
-              </CardContent>
-            </Card>
-          );
-        }
+              </div>
+
+              {formData.outreachType === 'myself' ? (
+                <div className='space-y-2'>
+                  <Label htmlFor='hours-per-week' className='text-sm font-normal'>
+                    How many hours per week do you spend on Upwork outreach? <span className='text-red-500'>*</span>
+                  </Label>
+                  <Select
+                    value={formData.hoursPerWeek}
+                    onValueChange={(value) => updateFormData('hoursPerWeek', value)}
+                  >
+                    <SelectTrigger className='text-base sm:text-sm'>
+                      <SelectValue placeholder='Choose an option...' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value='1-5'>1-5 hours</SelectItem>
+                      <SelectItem value='6-10'>6-10 hours</SelectItem>
+                      <SelectItem value='11-20'>11-20 hours</SelectItem>
+                      <SelectItem value='21-30'>21-30 hours</SelectItem>
+                      <SelectItem value='30+'>30+ hours</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              ) : formData.outreachType === 'someone-else' && (
+                <div className='space-y-4'>
+                  <Label className='text-sm font-normal'>
+                    What's your approximate monthly investment in outreach personnel? <span className='text-red-500'>*</span>
+                  </Label>
+                  <Select
+                    value={formData.personnelInvestment}
+                    onValueChange={(value) => updateFormData('personnelInvestment', value)}
+                  >
+                    <SelectTrigger className='text-base sm:text-sm'>
+                      <SelectValue placeholder='Choose an option...' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value='500'>$500</SelectItem>
+                      <SelectItem value='500-1000'>$500 - $1,000</SelectItem>
+                      <SelectItem value='1000-2000'>$1,000 - $2,000</SelectItem>
+                      <SelectItem value='2000+' >$2,000+</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              <div className='pt-6 flex items-center justify-between'>
+                <Button
+                  variant='ghost'
+                  onClick={handleBack}
+                  className='text-sm text-muted-foreground hover:text-foreground'
+                >
+                  Back
+                </Button>
+                <Button onClick={handleSubmit} disabled={!isStepValid(4)}>
+                  Submit
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        );
 
       default:
         return null;
