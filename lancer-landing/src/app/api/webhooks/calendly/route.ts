@@ -14,7 +14,7 @@ const verifyCalendlyWebhook = (signature: string, payload: string) => {
 
 export async function POST(request: Request) {
   try {
-    const headersList = headers();
+    const headersList = await headers();
     const signature = headersList.get('calendly-webhook-signature');
     
     if (!signature) {
