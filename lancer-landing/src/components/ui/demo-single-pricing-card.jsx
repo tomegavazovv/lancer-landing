@@ -23,7 +23,7 @@ export function PricingSectionBasic() {
       company: "Wolfware Labs",
       content: "We closed a $12,000 MVP client within our first week using Lancer. It's a no-brainer.",
       rating: 5,
-      avatar: "/martin-headshot.png",
+      avatar: "/martin-headshot.jpg",
     },
     {
       id: 2,
