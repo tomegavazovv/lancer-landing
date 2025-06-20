@@ -49,9 +49,9 @@ export default function ConversionStats() {
             {/* Won */}
             <div className="flex flex-col items-center py-8 px-4">
               <Trophy className="w-10 h-10 mb-2 text-purple-600" />
-              <div className="text-4xl font-bold mb-1">5</div>
+              <div className="text-4xl font-bold mb-1">6</div>
               <div className="text-base font-medium mb-1">deals</div>
-              <div className="text-sm text-muted-foreground">(10.5% win rate)</div>
+              <div className="text-sm text-muted-foreground">(12.5% win rate)</div>
             </div>
           </div>
         </div>
