@@ -172,7 +172,7 @@ function SinglePricingCardContent({
           </div>
           <div className="mt-auto space-y-3">
             <Button asChild className="w-full gap-2 group" size="lg">
-              <Link href="https://buy.stripe.com/eVqbJ11eT1K31AialN8k802">
+              <Link href="https://buy.stripe.com/3cI3cv3n1fAT4Mu79B8k803">
                 <PrimaryButtonIcon className="h-4 w-4" />
                 <span>{primaryButton.text}</span>
                 {ChevronIcon && (
