@@ -4,7 +4,7 @@ import { Check, ChevronRight, CreditCard, Crown, ExternalLink, Heart, Infinity, 
 import { SinglePricingCard } from "@/components/ui/single-pricing-card"
 import { Highlight } from "@/components/ui/hero-highlight"
 
-export function PricingSectionBasic() {
+export function PricingSectionBasic({ onBookDemo }) {
   const features = [
     "24/7 Real-Time Job Scanning",
     "Connect any Upwork Account",
@@ -109,6 +109,7 @@ export function PricingSectionBasic() {
           secondaryButton={{
             text: "Book Demo",
             icon: ExternalLink,
+            onClick: onBookDemo,
           }}
           testimonials={testimonials}
           testimonialRotationSpeed={5000}

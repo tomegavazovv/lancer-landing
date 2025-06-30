@@ -5,6 +5,7 @@ import { Highlight } from '@/components/ui/hero-highlight';
 import { LinkPreview } from '@/components/ui/link-preview';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import { cn } from '@/lib/utils';
+import { submitToZapier, WebhookPayload } from '@/lib/config';
 import { CirclePlay, Medal, Sparkles, Info } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -26,6 +27,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '../ui/tooltip';
 import ConversionStats from './conversion-stats';
 import SalesPitch1 from './sales-pitch-1';
 import { PricingSectionBasic } from '@/components/ui/demo-single-pricing-card';
+import { CalendlyModal } from '../ui/calendly-modal';
 
 const transitionVariants = {
   item: {
@@ -114,7 +116,6 @@ const demoPlans = [
     ],
     description: 'Perfect for freelancers ready to level up their Upwork game.',
     buttonText: 'Book Demo',
-    href: '/get-started',
     isPopular: false,
   },
   {
@@ -151,7 +152,6 @@ const demoPlans = [
     description:
       'Built for the top 10% freelancers looking to automate their Upwork outreach and win more deals on auto-pilot.',
     buttonText: 'Book Demo',
-    href: '/get-started',
     isPopular: true,
   },
   {
@@ -188,7 +188,6 @@ const demoPlans = [
     description:
       'Created for the top 1% freelancer and agencies earning over $100,000/yr. looking to run campaigns with no limits.',
     buttonText: 'Book Demo',
-    href: '/get-started',
     isPopular: false,
   },
   {
@@ -199,32 +198,46 @@ const demoPlans = [
       {
         title: 'White-label included',
         description:
-          'Run campaigns under your agency brand — no mention of Lancer anywhere.',
+          'Offer Lancer as your own service to clients with custom branding and pricing.',
       },
       {
-        title: 'Multiple organizations',
+        title: 'Dedicated account manager',
         description:
-          'Manage Upwork outreach for multiple clients or brands under one subscription.',
+          'Get a personal account manager to handle all your needs and optimize performance.',
       },
       {
-        title: 'Multiple knowledge bases',
+        title: 'Custom integrations',
         description:
-          'Create distinct AI knowledge bases for each client to ensure proposal accuracy.',
+          'Integrate with your existing tools and workflows for seamless operation.',
+      },
+      {
+        title: 'Priority feature requests',
+        description:
+          'Get new features and improvements prioritized based on your specific needs.',
+      },
+      {
+        title: 'Weekly strategy calls',
+        description:
+          'Regular strategy sessions to maximize your ROI and scale your operations.',
       },
     ],
     description:
-      'Designed for Upwork outreach experts managing high-volume campaigns for multiple clients.',
+      'For agencies and consultants who want to offer Lancer as a service to their clients.',
     buttonText: 'Book Demo',
-    href: '/get-started',
     isPopular: false,
   },
 ];
 
-function PricingBasic() {
+function PricingBasic({ onBookDemo }: { onBookDemo: () => void }) {
+  const plansWithHandlers = demoPlans.map(plan => ({
+    ...plan,
+    onButtonClick: onBookDemo
+  }));
+
   return (
     <div className='rounded-lg'>
       <Pricing
-        plans={demoPlans}
+        plans={plansWithHandlers}
         title='Choose your growth plan'
         description="Lancer's pricing is built around how you work, whether you are starting, growing, or managing clients."
       />
@@ -274,6 +287,14 @@ export { AnimatedTestimonialsDemo };
 
 export function HeroSection() {
   const [isOverDarkSection, setIsOverDarkSection] = React.useState(false);
+  const [isCalendlyModalOpen, setIsCalendlyModalOpen] = React.useState(false);
+  
+  // Email form state
+  const [email, setEmail] = React.useState('');
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [submitStatus, setSubmitStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = React.useState('');
+
   const { ref: testimonialsRef, inView: testimonialsInView } = useInView({
     threshold: 0,
     rootMargin: '0px 0px -100% 0px',
@@ -286,6 +307,65 @@ export function HeroSection() {
       setIsOverDarkSection(false);
     }
   }, [testimonialsInView]);
+
+  // Email validation function
+  const isValidEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Webhook submission function
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validate email
+    if (!email.trim()) {
+      setErrorMessage('Please enter your email address');
+      setSubmitStatus('error');
+      return;
+    }
+    
+    if (!isValidEmail(email)) {
+      setErrorMessage('Please enter a valid email address');
+      setSubmitStatus('error');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      const payload: WebhookPayload = {
+        email: email.trim(),
+        timestamp: new Date().toISOString(),
+        source: 'hero_cta'
+      };
+
+      const success = await submitToZapier(payload);
+
+      if (success) {
+        setSubmitStatus('success');
+        setEmail(''); // Clear form on success
+        
+        // Scroll to pricing section after successful submission
+        setTimeout(() => {
+          const pricingSection = document.getElementById('pricing');
+          if (pricingSection) {
+            pricingSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 1000);
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch (error) {
+      console.error('Webhook submission error:', error);
+      setErrorMessage('Something went wrong. Please try again.');
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const faqData = [
     {
@@ -334,7 +414,7 @@ export function HeroSection() {
 
   return (
     <>
-      <HeroHeader isOverDarkSection={isOverDarkSection} />
+      <HeroHeader isOverDarkSection={isOverDarkSection} onBookDemo={() => setIsCalendlyModalOpen(true)} />
       <main className='overflow-hidden'>
         <div
           aria-hidden
@@ -426,21 +506,53 @@ export function HeroSection() {
                   }}
                   className='mt-8 flex flex-col items-center justify-center gap-4 md:flex-row relative z-10'
                 >
-                  <div className="flex items-center gap-0 bg-white rounded-2xl shadow-md p-1 transition-all">
-                    <Input
-                      type="email"
-                      placeholder="Enter your email"
-                      className="min-w-[220px] rounded-2xl border-0 focus:ring-2 focus:ring-primary/40 focus:outline-none text-base px-5 py-3 shadow-none"
-                    />
-                    <Button
-                      asChild
-                      size="lg"
-                      className="rounded-2xl px-7 py-3 text-base font-semibold bg-black text-white hover:bg-primary transition-colors shadow-none border-0"
-                    >
-                      <Link href="#pricing">
-                        <span className="text-nowrap">Access Launch Offer</span>
-                      </Link>
-                    </Button>
+                  <div className="flex flex-col items-center gap-4">
+                    <form onSubmit={handleEmailSubmit} className="flex items-center gap-0 bg-white rounded-2xl shadow-md p-1 transition-all">
+                      <Input
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          if (submitStatus === 'error') {
+                            setSubmitStatus('idle');
+                            setErrorMessage('');
+                          }
+                        }}
+                        className="min-w-[220px] rounded-2xl border-0 focus:ring-2 focus:ring-primary/40 focus:outline-none text-base px-5 py-3 shadow-none"
+                        disabled={isSubmitting || submitStatus === 'success'}
+                      />
+                      <Button
+                        type="submit"
+                        size="lg"
+                        disabled={isSubmitting || submitStatus === 'success'}
+                        className="rounded-2xl px-7 py-3 text-base font-semibold bg-black text-white hover:bg-primary transition-colors shadow-none border-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isSubmitting ? (
+                          <span className="flex items-center gap-2">
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            Submitting...
+                          </span>
+                        ) : submitStatus === 'success' ? (
+                          <span className="text-green-500">✓ Success!</span>
+                        ) : (
+                          <span className="text-nowrap">Access Launch Offer</span>
+                        )}
+                      </Button>
+                    </form>
+                    
+                    {/* Status Messages */}
+                    {submitStatus === 'error' && errorMessage && (
+                      <div className="text-red-500 text-sm bg-red-50 px-4 py-2 rounded-lg border border-red-200">
+                        {errorMessage}
+                      </div>
+                    )}
+                    
+                    {submitStatus === 'success' && (
+                      <div className="text-green-600 text-sm bg-green-50 px-4 py-2 rounded-lg border border-green-200 text-center">
+                        🎉 Great! We've logged your request, scroll down to see our pricing.
+                      </div>
+                    )}
                   </div>
                   <Button
                     asChild
@@ -728,13 +840,11 @@ export function HeroSection() {
               <div className='mt-8 flex flex-col items-center justify-center gap-2 md:flex-row'>
                 <div className='bg-foreground/10 rounded-[14px] border p-0.5'>
                   <Button
-                    asChild
                     size='lg'
                     className='rounded-xl px-5 text-base'
+                    onClick={() => setIsCalendlyModalOpen(true)}
                   >
-                    <Link href='/get-started'>
-                      <span className='text-nowrap'>Book Demo</span>
-                    </Link>
+                    <span className='text-nowrap'>Book Demo</span>
                   </Button>
                 </div>
               </div>
@@ -745,7 +855,7 @@ export function HeroSection() {
             <div className='absolute inset-0 -z-10'>
               <div className='h-full w-full bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:35px_35px] opacity-40 [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]' />
             </div>
-            <PricingSectionBasic />
+            <PricingSectionBasic onBookDemo={() => setIsCalendlyModalOpen(true)} />
           </section>
 
           {/* FAQ Section */}
@@ -765,6 +875,10 @@ export function HeroSection() {
         </section>
       </main>
       <Footer />
+      <CalendlyModal 
+        isOpen={isCalendlyModalOpen} 
+        onClose={() => setIsCalendlyModalOpen(false)} 
+      />
     </>
   );
 }
@@ -775,7 +889,7 @@ const menuItems = [
   { name: 'Pricing', href: '#pricing' },
 ];
 
-const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
+const HeroHeader = ({ isOverDarkSection, onBookDemo }: { isOverDarkSection: boolean; onBookDemo: () => void }) => {
   const [isScrolled, setIsScrolled] = React.useState(false);
 
   React.useEffect(() => {
@@ -841,22 +955,18 @@ const HeroHeader = ({ isOverDarkSection }: { isOverDarkSection: boolean }) => {
             {/* Desktop: Book Demo button */}
             <div className='hidden lg:flex'>
               <Button
-                asChild
                 size='sm'
                 className={cn(isScrolled && 'lg:hidden')}
+                onClick={onBookDemo}
               >
-                <Link href='/get-started'>
-                  <span>Book Demo</span>
-                </Link>
+                <span>Book Demo</span>
               </Button>
               <Button
-                asChild
                 size='sm'
                 className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
+                onClick={onBookDemo}
               >
-                <Link href='/get-started'>
-                  <span>Book Demo</span>
-                </Link>
+                <span>Book Demo</span>
               </Button>
             </div>
           </div>

@@ -23,9 +23,10 @@ interface PricingPlan {
   }[];
   description: string;
   buttonText: string;
-  href: string;
+  href?: string;
   isPopular: boolean;
   includesFrom?: string; // e.g., "Everything in Starter plus:"
+  onButtonClick?: () => void;
 }
 
 interface PricingProps {
@@ -159,13 +160,18 @@ export function Pricing({
               <hr className='w-full my-6 mt-8' />
               <div className='bg-foreground/10 rounded-[14px] border p-0.5'>
                 <Button
-                  asChild
                   size='lg'
                   className='rounded-xl px-5 text-base w-full'
+                  onClick={plan.onButtonClick}
+                  asChild={!plan.onButtonClick && plan.href ? true : undefined}
                 >
-                  <Link href={plan.href}>
+                  {!plan.onButtonClick && plan.href ? (
+                    <Link href={plan.href}>
+                      <span className='text-nowrap'>{plan.buttonText}</span>
+                    </Link>
+                  ) : (
                     <span className='text-nowrap'>{plan.buttonText}</span>
-                  </Link>
+                  )}
                 </Button>
               </div>
             </div>

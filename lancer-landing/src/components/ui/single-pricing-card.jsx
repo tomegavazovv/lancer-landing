@@ -181,12 +181,24 @@ function SinglePricingCardContent({
               </Link>
             </Button>
             {secondaryButton && (
-              <Button asChild variant="outline" className="w-full gap-2" size="lg">
-                <Link href="/get-started">
+              secondaryButton.onClick ? (
+                <Button 
+                  variant="outline" 
+                  className="w-full gap-2" 
+                  size="lg"
+                  onClick={secondaryButton.onClick}
+                >
                   <span>{secondaryButton.text}</span>
                   <SecondaryButtonIcon className="h-4 w-4 ml-auto" />
-                </Link>
-              </Button>
+                </Button>
+              ) : (
+                <Button asChild variant="outline" className="w-full gap-2" size="lg">
+                  <Link href="/get-started">
+                    <span>{secondaryButton.text}</span>
+                    <SecondaryButtonIcon className="h-4 w-4 ml-auto" />
+                  </Link>
+                </Button>
+              )
             )}
           </div>
         </div>
