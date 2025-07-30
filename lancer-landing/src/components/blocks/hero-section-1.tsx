@@ -6,7 +6,7 @@ import { LinkPreview } from '@/components/ui/link-preview';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import { cn } from '@/lib/utils';
 import { submitToZapier, WebhookPayload } from '@/lib/config';
-import { CirclePlay, Medal, Sparkles, Info, Play } from 'lucide-react';
+import { CirclePlay, Medal, Sparkles, Info, Play, Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -563,7 +563,7 @@ export function HeroSection() {
                     onClick={() => setIsVideoModalOpen(true)}
                     variant='outline'
                     size='lg'
-                    className='rounded-xl px-5 text-base relative z-10 flex items-center gap-2'
+                    className='rounded-xl px-5 text-base relative z-10 flex items-center gap-2 hidden md:flex'
                   >
                     <CirclePlay className='w-4 h-4' />
                     <span className='text-nowrap'>Watch Demo</span>
@@ -596,8 +596,8 @@ export function HeroSection() {
                 ...transitionVariants,
               }}
             >
-              <div className='relative flex justify-center mt-8 px-2 sm:mr-0 sm:mt-12 md:mt-20 z-20'>
-                <div className='relative pt-12'>
+              <div className='relative flex justify-center mt-4 px-2 sm:mr-0 sm:mt-8 md:mt-12 z-10 mb-[-5%]'>
+                <div className='relative pt-8'>
                   <MockupFrame
                     className='animate-appear opacity-0 delay-700'
                     size='small'
@@ -607,23 +607,24 @@ export function HeroSection() {
                         aria-hidden
                         className='bg-gradient-to-b to-background absolute inset-0 z-10 from-transparent from-35%'
                       />
-                      <div className='bg-background relative mx-auto max-w-6xl overflow-hidden rounded-2xl p-4'>
-                        <Image
-                          className='z-10 aspect-15/8 relative rounded-2xl dark:hidden w-full h-auto'
-                          src='/product.png'
-                          alt='app screen'
-                          width='2700'
-                          height='1440'
-                        />
-                        {/* Video Overlay Button */}
-                        <div className="absolute inset-0 flex items-center justify-center z-20">
-                          <Button
-                            onClick={() => setIsVideoModalOpen(true)}
-                            size="lg"
-                            className="bg-red-600 hover:bg-red-700 text-white rounded-full w-20 h-20 shadow-2xl backdrop-blur-sm border-4 border-white hover:scale-110 transition-all duration-300 animate-pulse flex items-center justify-center"
-                          >
-                            <Play className='w-20 h-20' fill="currentColor" />
-                          </Button>
+                      <div className='relative mx-auto max-w-6xl overflow-hidden rounded-2xl'>
+                        <div className="relative aspect-15/8 rounded-2xl overflow-hidden">
+                          <Image
+                            src="https://img.youtube.com/vi/2B_q2alwPFA/maxresdefault.jpg"
+                            alt="Lancer Demo Video Thumbnail"
+                            className="w-full h-full object-cover rounded-2xl"
+                            width={2700}
+                            height={1440}
+                          />
+                          {/* Video Overlay Button */}
+                          <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/20 hover:bg-black/30 transition-colors cursor-pointer" onClick={() => setIsVideoModalOpen(true)}>
+                            <Button
+                              size="lg"
+                              className="bg-red-600 hover:bg-red-700 text-white rounded-full w-20 h-20 shadow-2xl backdrop-blur-sm border-4 border-white hover:scale-110 transition-all duration-300 animate-pulse flex items-center justify-center"
+                            >
+                              <Play className='w-20 h-20' fill="currentColor" />
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </Mockup>
@@ -641,7 +642,7 @@ export function HeroSection() {
         <section
           id='testimonials'
           ref={testimonialsRef}
-          className='bg-black pb-16 pt-16 md:pb-32 -mt-1 px-5 '
+          className='bg-black pb-16 pt-16 md:pb-32 -mt-1 px-5 relative z-20'
         >
           <AnimatedGroup
             preset='blur-slide'
@@ -924,6 +925,7 @@ const menuItems = [
 
 const HeroHeader = ({ isOverDarkSection, onBookDemo, onGetStarted }: { isOverDarkSection: boolean; onBookDemo: () => void; onGetStarted: () => void }) => {
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -943,20 +945,9 @@ const HeroHeader = ({ isOverDarkSection, onBookDemo, onGetStarted }: { isOverDar
               'bg-background/50 max-w-4xl rounded-2xl border backdrop-blur-lg lg:px-5'
           )}
         >
-          <div className='relative flex items-center justify-center lg:justify-between gap-6 py-3 lg:py-4'>
-            {/* Mobile: Centered logo */}
-            <div className='lg:hidden'>
-              <Link
-                href='/'
-                aria-label='home'
-                className='flex items-center space-x-2'
-              >
-                <LogoIcon />
-              </Link>
-            </div>
-
-            {/* Desktop: Logo on left */}
-            <div className='hidden lg:block'>
+          <div className='relative flex items-center justify-between gap-6 py-3 lg:py-4'>
+            {/* Logo */}
+            <div>
               <Link
                 href='/'
                 aria-label='home'
@@ -1021,7 +1012,76 @@ const HeroHeader = ({ isOverDarkSection, onBookDemo, onGetStarted }: { isOverDar
                 <span>Demo</span>
               </Button>
             </div>
+
+            {/* Mobile: Hamburger menu button */}
+            <div className='lg:hidden'>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className={cn(
+                  'text-muted-foreground hover:text-accent-foreground',
+                  isOverDarkSection && 'text-white/80 hover:text-white'
+                )}
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
+              </Button>
+            </div>
           </div>
+
+          {/* Mobile: Navigation menu */}
+          {isMobileMenuOpen && (
+            <div className='lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-lg border-t border-border mt-2 rounded-b-2xl shadow-lg'>
+              <div className='px-6 py-4 space-y-4'>
+                {/* Mobile menu items */}
+                <ul className='space-y-3'>
+                  {menuItems.map((item, index) => (
+                    <li key={index}>
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          'text-muted-foreground hover:text-accent-foreground block py-2 duration-150',
+                          isOverDarkSection && 'text-white/80 hover:text-white'
+                        )}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <span>{item.name}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                
+                {/* Mobile action buttons */}
+                <div className='flex flex-col gap-2 pt-4 border-t border-border'>
+                  <Button
+                    size='sm'
+                    variant="outline"
+                    onClick={() => {
+                      onGetStarted();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className='w-full'
+                  >
+                    <span>Get Started</span>
+                  </Button>
+                  <Button
+                    size='sm'
+                    onClick={() => {
+                      onBookDemo();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className='w-full'
+                  >
+                    <span>Demo With Founder</span>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
     </header>
