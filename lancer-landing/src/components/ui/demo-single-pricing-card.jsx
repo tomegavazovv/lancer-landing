@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, ChevronRight, CreditCard, Crown, ExternalLink, Heart, Infinity, RocketIcon, Shield, ShoppingCart, Stars } from "lucide-react"
+import { Check, ChevronRight, CreditCard, Crown, ExternalLink, Heart, Infinity, RocketIcon, Shield, ShoppingCart, Stars, Rocket, Phone } from "lucide-react"
 import { SinglePricingCard } from "@/components/ui/single-pricing-card"
 import { Highlight } from "@/components/ui/hero-highlight"
 
@@ -102,13 +102,13 @@ export function PricingSectionBasic({ onBookDemo }) {
             text: "All Features",
           }}
           primaryButton={{
-            text: "Buy Now",
-            icon: ShoppingCart,
+            text: "Get Started",
+            icon: Rocket,
             chevronIcon: ChevronRight,
           }}
           secondaryButton={{
-            text: "Book Demo",
-            icon: ExternalLink,
+            text: "Demo With Founder",
+            icon: Phone,
             onClick: onBookDemo,
           }}
           testimonials={testimonials}

@@ -2,7 +2,7 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Star } from 'lucide-react';
+import { Star, Linkedin, Instagram, Youtube, Globe } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import CalendlyEmbed from './calendly-embed';
 
@@ -121,12 +121,60 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
           {/* Right Side - Calendly */}
           <div className="lg:w-3/5 bg-white">
             <div className="p-4 lg:p-6 border-b border-gray-200">
-              <h3 className="text-lg lg:text-xl font-semibold text-gray-900">
-                Book a Demo with us
-              </h3>
-              <p className="text-gray-600 text-sm lg:text-base mt-1">
-                Choose a time that works for you
-              </p>
+              <div className="flex items-center gap-4">
+                <Avatar className="w-16 h-16">
+                  <AvatarImage src="/ivan-headshot.png" alt="Ivan" />
+                  <AvatarFallback>I</AvatarFallback>
+                </Avatar>
+                <div>
+                  <h3 className="text-xl lg:text-2xl font-bold text-gray-900">
+                    Book Demo with Ivan
+                  </h3>
+                  <div className="text-gray-600 text-sm">Founder & CEO</div>
+                  <div className="text-gray-500 text-xs mt-1">I'll personally walk you through how Lancer can transform your Upwork success</div>
+                </div>
+              </div>
+              
+              {/* Social Media Row */}
+              <div className="mt-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-500 text-xs">Find him on:</span>
+                  <div className="flex gap-3">
+                    <a
+                      href="https://www.linkedin.com/in/ivan-nedlekovski/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-blue-600 transition-colors"
+                    >
+                      <Linkedin className="w-5 h-5" />
+                    </a>
+                    <a
+                      href="https://www.instagram.com/nedelkov.ski/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-pink-600 transition-colors"
+                    >
+                      <Instagram className="w-5 h-5" />
+                    </a>
+                    <a
+                      href="https://www.youtube.com/@ivan.nedelkovski"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-red-600 transition-colors"
+                    >
+                      <Youtube className="w-5 h-5" />
+                    </a>
+                    <a
+                      href="https://www.nedelkov.ski/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-gray-700 transition-colors"
+                    >
+                      <Globe className="w-5 h-5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
             
             <div className="p-0">

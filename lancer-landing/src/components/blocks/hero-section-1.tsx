@@ -6,7 +6,7 @@ import { LinkPreview } from '@/components/ui/link-preview';
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 import { cn } from '@/lib/utils';
 import { submitToZapier, WebhookPayload } from '@/lib/config';
-import { CirclePlay, Medal, Sparkles, Info } from 'lucide-react';
+import { CirclePlay, Medal, Sparkles, Info, Play } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -28,6 +28,8 @@ import ConversionStats from './conversion-stats';
 import SalesPitch1 from './sales-pitch-1';
 import { PricingSectionBasic } from '@/components/ui/demo-single-pricing-card';
 import { CalendlyModal } from '../ui/calendly-modal';
+import { EmailModal } from '../ui/email-modal';
+import { VideoModal } from '../ui/video-modal';
 
 const transitionVariants = {
   item: {
@@ -287,7 +289,9 @@ export { AnimatedTestimonialsDemo };
 
 export function HeroSection() {
   const [isOverDarkSection, setIsOverDarkSection] = React.useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = React.useState(false);
   const [isCalendlyModalOpen, setIsCalendlyModalOpen] = React.useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = React.useState(false);
   
   // Email form state
   const [email, setEmail] = React.useState('');
@@ -414,7 +418,7 @@ export function HeroSection() {
 
   return (
     <>
-      <HeroHeader isOverDarkSection={isOverDarkSection} onBookDemo={() => setIsCalendlyModalOpen(true)} />
+              <HeroHeader isOverDarkSection={isOverDarkSection} onBookDemo={() => setIsCalendlyModalOpen(true)} onGetStarted={() => setIsEmailModalOpen(true)} />
       <main className='overflow-hidden'>
         <div
           aria-hidden
@@ -554,6 +558,16 @@ export function HeroSection() {
                       </div>
                     )}
                   </div>
+                  
+                  <Button
+                    onClick={() => setIsVideoModalOpen(true)}
+                    variant='outline'
+                    size='lg'
+                    className='rounded-xl px-5 text-base relative z-10 flex items-center gap-2'
+                  >
+                    <CirclePlay className='w-4 h-4' />
+                    <span className='text-nowrap'>Watch Demo</span>
+                  </Button>
                   <Button
                     asChild
                     variant='outline'
@@ -601,6 +615,16 @@ export function HeroSection() {
                           width='2700'
                           height='1440'
                         />
+                        {/* Video Overlay Button */}
+                        <div className="absolute inset-0 flex items-center justify-center z-20">
+                          <Button
+                            onClick={() => setIsVideoModalOpen(true)}
+                            size="lg"
+                            className="bg-red-600 hover:bg-red-700 text-white rounded-full w-20 h-20 shadow-2xl backdrop-blur-sm border-4 border-white hover:scale-110 transition-all duration-300 animate-pulse flex items-center justify-center"
+                          >
+                            <Play className='w-20 h-20' fill="currentColor" />
+                          </Button>
+                        </div>
                       </div>
                     </Mockup>
                   </MockupFrame>
@@ -844,7 +868,7 @@ export function HeroSection() {
                     className='rounded-xl px-5 text-base'
                     onClick={() => setIsCalendlyModalOpen(true)}
                   >
-                    <span className='text-nowrap'>Book Demo</span>
+                    <span className='text-nowrap'>Boom Demo With Founder</span>
                   </Button>
                 </div>
               </div>
@@ -879,17 +903,26 @@ export function HeroSection() {
         isOpen={isCalendlyModalOpen} 
         onClose={() => setIsCalendlyModalOpen(false)} 
       />
+      <EmailModal 
+        isOpen={isEmailModalOpen} 
+        onClose={() => setIsEmailModalOpen(false)} 
+      />
+      <VideoModal 
+        isOpen={isVideoModalOpen} 
+        onClose={() => setIsVideoModalOpen(false)} 
+      />
     </>
   );
 }
 
 const menuItems = [
+  { name: 'Calculate Wins', href: 'https://calculator.lancer.app' },
   { name: 'Testimonials', href: '#testimonials' },
   { name: 'Features', href: '#features' },
   { name: 'Pricing', href: '#pricing' },
 ];
 
-const HeroHeader = ({ isOverDarkSection, onBookDemo }: { isOverDarkSection: boolean; onBookDemo: () => void }) => {
+const HeroHeader = ({ isOverDarkSection, onBookDemo, onGetStarted }: { isOverDarkSection: boolean; onBookDemo: () => void; onGetStarted: () => void }) => {
   const [isScrolled, setIsScrolled] = React.useState(false);
 
   React.useEffect(() => {
@@ -935,7 +968,10 @@ const HeroHeader = ({ isOverDarkSection, onBookDemo }: { isOverDarkSection: bool
 
             {/* Desktop: Navigation menu */}
             <div className='absolute inset-0 m-auto hidden size-fit lg:block'>
-              <ul className='flex gap-8 text-sm'>
+              <ul className={cn(
+                'flex text-sm',
+                isScrolled ? 'gap-4' : 'gap-8'
+              )}>
                 {menuItems.map((item, index) => (
                   <li key={index}>
                     <Link
@@ -952,21 +988,37 @@ const HeroHeader = ({ isOverDarkSection, onBookDemo }: { isOverDarkSection: bool
               </ul>
             </div>
 
-            {/* Desktop: Book Demo button */}
-            <div className='hidden lg:flex'>
+            {/* Desktop: Navigation buttons */}
+            <div className='hidden lg:flex gap-1'>
+              <Button
+                size='sm'
+                variant="outline"
+                className={cn(isScrolled && 'lg:hidden')}
+                onClick={onGetStarted}
+              >
+                <span>Get Started</span>
+              </Button>
+              <Button
+                size='sm'
+                variant="outline"
+                className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
+                onClick={onGetStarted}
+              >
+                <span>Get Started</span>
+              </Button>
               <Button
                 size='sm'
                 className={cn(isScrolled && 'lg:hidden')}
                 onClick={onBookDemo}
               >
-                <span>Book Demo</span>
+                <span>Demo With Founder</span>
               </Button>
               <Button
                 size='sm'
                 className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
                 onClick={onBookDemo}
               >
-                <span>Book Demo</span>
+                <span>Demo</span>
               </Button>
             </div>
           </div>
