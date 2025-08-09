@@ -139,6 +139,12 @@ export default function RootLayout({
             }("Z6PVLHPMY06R");
           `}
         </Script>
+        <Script 
+          id="tolt-affiliate-tracking"
+          src="https://cdn.tolt.io/tolt.js"
+          data-tolt="pk_kF4zkzLaaTifeVEbiMbPJkdb"
+          strategy="afterInteractive"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

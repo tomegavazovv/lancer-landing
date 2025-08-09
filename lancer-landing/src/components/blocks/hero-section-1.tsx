@@ -869,7 +869,7 @@ export function HeroSection() {
                     className='rounded-xl px-5 text-base'
                     onClick={() => setIsCalendlyModalOpen(true)}
                   >
-                    <span className='text-nowrap'>Boom Demo With Founder</span>
+                    <span className='text-nowrap'>Book Demo With Founder</span>
                   </Button>
                 </div>
               </div>

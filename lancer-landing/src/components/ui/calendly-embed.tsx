@@ -154,11 +154,11 @@ const CalendlyEmbed = ({
   );
 
   return (
-    <div className='relative'>
+    <div className='relative touch-auto'>
       {isLoading && <LoadingSkeleton />}
       <div
         className={`calendly-inline-widget transition-opacity duration-500 ${
-          isLoading ? 'opacity-0 absolute inset-0' : 'opacity-100'
+          isLoading ? 'opacity-0 absolute inset-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
         }`}
         data-url={buildCalendlyUrl()}
         style={{
@@ -166,6 +166,9 @@ const CalendlyEmbed = ({
           width: '100%',
           border: 'none',
           overflow: 'hidden',
+          position: 'relative',
+          zIndex: 1,
+          touchAction: 'auto',
         }}
       />
     </div>
