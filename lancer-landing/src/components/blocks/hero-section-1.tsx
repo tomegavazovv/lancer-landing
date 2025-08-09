@@ -752,7 +752,7 @@ export function HeroSection() {
                   description="Static filters aren't enough. Even if you filter for keywords, most jobs still won't be right for you. Lancer's AI suitability layer analyzes each job posting to determine true compatibility with your skills and preferences."
                   buttonText='Access Launch Offer'
                   buttonHref='#pricing'
-                  checkmarkText='10 day money back guarantee. No questions asked.'
+
                   imageSrc='https://i.ibb.co/Zsw2QQG/Group-8-2.png'
                   imageAlt='AI suitability filtering'
                 />
@@ -771,7 +771,7 @@ export function HeroSection() {
                   description='Stop wasting time writing the same cover letters over and over. Lancer generates personalized proposals and answers client questions using your knowledge base—making every application sound genuinely tailored to the job.'
                   buttonText='Access Launch Offer'
                   buttonHref='#pricing'
-                  checkmarkText='10 day money back guarantee. No questions asked.'
+
                   imageSrc='https://i.ibb.co/tp9s01gx/Screenshot-2025-06-09-at-15-26-25.png'
                   imageAlt='Automated proposal generation'
                 />
@@ -803,7 +803,7 @@ export function HeroSection() {
                   description='Lancer connects to your agency manager account and handles the entire bidding process. From job analysis to proposal submission—your Upwork outreach runs completely hands-free while you focus on delivering work.'
                   buttonText='Access Launch Offer'
                   buttonHref='#pricing'
-                  checkmarkText='10 day money back guarantee. No questions asked.'
+
                   imageSrc='https://i.ibb.co/Wp6vdZ0b/Group-7.png'
                   imageAlt='Automated bidding system'
                 />
@@ -821,7 +821,7 @@ export function HeroSection() {
                   description='Track performance across multiple campaigns and accounts. Get detailed analytics on proposal success rates, instant notifications for new opportunities, and manage everything from one dashboard.'
                   buttonText='Access Launch Offer'
                   buttonHref='#pricing'
-                  checkmarkText='10 day money back guarantee. No questions asked.'
+
                   imageSrc='https://i.ibb.co/GQWW8PV0/image-6.png'
                   imageAlt='Analytics dashboard'
                 />

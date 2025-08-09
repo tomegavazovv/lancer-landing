@@ -10,7 +10,7 @@ interface FeatureCardProps {
   description: string;
   buttonText: string;
   buttonHref: string;
-  checkmarkText: string;
+  checkmarkText?: string;
   imageSrc: string;
   imageAlt: string;
   imageWidth?: number;
@@ -69,10 +69,12 @@ export function FeatureCard({
                   </Link>
                 </Button>
               </div>
-              <div className='flex items-center justify-center md:justify-start gap-2'>
-                <Shield className='text-gray-400 h-5 w-5' />
-                <span className='text-sm text-gray-700'>{checkmarkText}</span>
-              </div>
+              {checkmarkText && (
+                <div className='flex items-center justify-center md:justify-start gap-2'>
+                  <Shield className='text-gray-400 h-5 w-5' />
+                  <span className='text-sm text-gray-700'>{checkmarkText}</span>
+                </div>
+              )}
             </div>
           </div>
           <div className='md:flex-[0.4] flex justify-center'>

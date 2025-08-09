@@ -90,10 +90,6 @@ export function PricingSectionBasic({ onBookDemo }) {
               text: "Unlimited Proposals Sent",
               icon: Infinity,
             },
-            {
-              text: "10-day money back guarantee",
-              icon: Shield,
-            },
           ]}
           features={features}
           featuresIcon={Check}
