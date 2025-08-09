@@ -843,7 +843,7 @@ export function HeroSection() {
             />
             <div className='relative z-10 mx-auto max-w-7xl px-6 text-center'>
               <div className='text-8xl md:text-9xl lg:text-[12rem] font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent'>
-              46              </div>
+              104              </div>
               <p className='mt-6 text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed'>
                 successful deals landed by Lancer users this month
               </p>
