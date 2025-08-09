@@ -112,34 +112,6 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
   const [isVideoMuted, setIsVideoMuted] = useState(true);
   const [isCalendlyLoaded, setIsCalendlyLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Auto-rotate testimonials every 5 seconds (unless video is unmuted)
-  useEffect(() => {
-    if (!isOpen || !isVideoMuted) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-      return;
-    }
-    
-    intervalRef.current = setInterval(() => {
-      setCurrentTestimonialIndex((prev) => {
-        const next = (prev + 1) % testimonials.length;
-        setCurrentVideoIndex(next); // Keep video and testimonial in sync
-        setIsVideoMuted(true); // Reset to muted for new video
-        return next;
-      });
-    }, 5000);
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-  }, [isOpen, isVideoMuted]);
 
   // Reset video to muted when video changes
   useEffect(() => {

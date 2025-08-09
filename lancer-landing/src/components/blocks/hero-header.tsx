@@ -72,15 +72,15 @@ export const HeroHeader = () => {
               </ul>
             </div>
 
-            {/* Desktop: Get Started button */}
+            {/* Desktop: Log In button */}
             <div className='hidden lg:flex'>
               <Button
                 asChild
                 size='sm'
                 className={cn(isScrolled && 'lg:hidden')}
               >
-                <Link href='/get-started'>
-                  <span>Get Started</span>
+                <Link href='https://1.lancer.app' target='_blank'>
+                  <span>Log In</span>
                 </Link>
               </Button>
               <Button
@@ -88,8 +88,8 @@ export const HeroHeader = () => {
                 size='sm'
                 className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
               >
-                <Link href='/get-started'>
-                  <span>Get Started</span>
+                <Link href='https://1.lancer.app' target='_blank'>
+                  <span>Log In</span>
                 </Link>
               </Button>
             </div>

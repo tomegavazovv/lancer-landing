@@ -418,7 +418,7 @@ export function HeroSection() {
 
   return (
     <>
-              <HeroHeader isOverDarkSection={isOverDarkSection} onBookDemo={() => setIsCalendlyModalOpen(true)} onGetStarted={() => setIsEmailModalOpen(true)} />
+              <HeroHeader isOverDarkSection={isOverDarkSection} onBookDemo={() => setIsCalendlyModalOpen(true)} onGetStarted={() => window.open('https://1.lancer.app', '_blank')} />
       <main className='overflow-hidden'>
         <div
           aria-hidden
@@ -987,7 +987,7 @@ const HeroHeader = ({ isOverDarkSection, onBookDemo, onGetStarted }: { isOverDar
                 className={cn(isScrolled && 'lg:hidden')}
                 onClick={onGetStarted}
               >
-                <span>Get Started</span>
+                <span>Log In</span>
               </Button>
               <Button
                 size='sm'
@@ -995,7 +995,7 @@ const HeroHeader = ({ isOverDarkSection, onBookDemo, onGetStarted }: { isOverDar
                 className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
                 onClick={onGetStarted}
               >
-                <span>Get Started</span>
+                <span>Log In</span>
               </Button>
               <Button
                 size='sm'
@@ -1066,7 +1066,7 @@ const HeroHeader = ({ isOverDarkSection, onBookDemo, onGetStarted }: { isOverDar
                     }}
                     className='w-full'
                   >
-                    <span>Get Started</span>
+                    <span>Log In</span>
                   </Button>
                   <Button
                     size='sm'
