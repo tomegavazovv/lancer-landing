@@ -3,6 +3,7 @@ import { HeroHeader } from '@/components/blocks/hero-header';
 import { AnimatedGroup } from '@/components/ui/animated-group';
 import { Mail } from 'lucide-react';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 const transitionVariants = {
   item: {
@@ -27,7 +28,9 @@ const transitionVariants = {
 export default function PrivacyPolicy() {
   return (
     <>
-      <HeroHeader />
+      <Suspense fallback={<div></div>}>
+        <HeroHeader />
+      </Suspense>
       <main className='overflow-hidden'>
         <div
           aria-hidden
