@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { LogoIcon } from '@/components/ui/logo-icon';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
 const menuItems = [
@@ -14,6 +15,19 @@ const menuItems = [
 
 export const HeroHeader = () => {
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const searchParams = useSearchParams();
+
+  // Build login URL with preserved ref parameter
+  const getLoginUrl = () => {
+    const baseUrl = 'https://1.lancer.app';
+    const ref = searchParams.get('ref');
+
+    if (ref) {
+      return `${baseUrl}?ref=${encodeURIComponent(ref)}`;
+    }
+
+    return baseUrl;
+  };
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -79,7 +93,7 @@ export const HeroHeader = () => {
                 size='sm'
                 className={cn(isScrolled && 'lg:hidden')}
               >
-                <Link href='https://1.lancer.app' target='_blank'>
+                <Link href={getLoginUrl()} target='_blank'>
                   <span>Log In</span>
                 </Link>
               </Button>
@@ -88,7 +102,7 @@ export const HeroHeader = () => {
                 size='sm'
                 className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
               >
-                <Link href='https://1.lancer.app' target='_blank'>
+                <Link href={getLoginUrl()} target='_blank'>
                   <span>Log In</span>
                 </Link>
               </Button>
