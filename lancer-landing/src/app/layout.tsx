@@ -145,6 +145,14 @@ export default function RootLayout({
           data-tolt="pk_kF4zkzLaaTifeVEbiMbPJkdb"
           strategy="afterInteractive"
         />
+        <Script
+          id="analytics-tracking"
+          src="https://datafa.st/js/script.js"
+          data-website-id="68ceaf857210f2ab3906b5dc"
+          data-domain="lancer.app"
+          defer
+          strategy="afterInteractive"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
