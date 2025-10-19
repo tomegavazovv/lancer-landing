@@ -1,0 +1,84 @@
+<AnimatedGroup
+                  variants={{
+                    container: {
+                      visible: {
+                        transition: {
+                          staggerChildren: 0.05,
+                          delayChildren: 0.75,
+                        },
+                      },
+                    },
+                    ...transitionVariants,
+                  }}
+                  className='mt-8 flex flex-col items-center justify-center gap-4 md:flex-row relative z-10'
+                >
+                  <div className="flex flex-col items-center gap-4">
+                    <form onSubmit={handleEmailSubmit} className="flex items-center gap-0 bg-white rounded-2xl shadow-md p-1 transition-all">
+                      <Input
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          if (submitStatus === 'error') {
+                            setSubmitStatus('idle');
+                            setErrorMessage('');
+                          }
+                        }}
+                        className="min-w-[220px] rounded-2xl border-0 focus:ring-2 focus:ring-primary/40 focus:outline-none text-base px-5 py-3 shadow-none"
+                        disabled={isSubmitting || submitStatus === 'success'}
+                      />
+                      <Button
+                        type="submit"
+                        size="lg"
+                        disabled={isSubmitting || submitStatus === 'success'}
+                        className="rounded-2xl px-7 py-3 text-base font-semibold bg-black text-white hover:bg-primary transition-colors shadow-none border-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isSubmitting ? (
+                          <span className="flex items-center gap-2">
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            Submitting...
+                          </span>
+                        ) : submitStatus === 'success' ? (
+                          <span className="text-green-500">✓ Success!</span>
+                        ) : (
+                          <span className="text-nowrap">Access Launch Offer</span>
+                        )}
+                      </Button>
+                    </form>
+                    
+                    {/* Status Messages */}
+                    {submitStatus === 'error' && errorMessage && (
+                      <div className="text-red-500 text-sm bg-red-50 px-4 py-2 rounded-lg border border-red-200">
+                        {errorMessage}
+                      </div>
+                    )}
+                    
+                    {submitStatus === 'success' && (
+                      <div className="text-green-600 text-sm bg-green-50 px-4 py-2 rounded-lg border border-green-200 text-center">
+                        🎉 Great! We've logged your request, scroll down to see our pricing.
+                      </div>
+                    )}
+                  </div>
+                  
+                  <Button
+                    onClick={() => setIsVideoModalOpen(true)}
+                    variant='outline'
+                    size='lg'
+                    className='rounded-xl px-5 text-base relative z-10 flex items-center gap-2 hidden md:flex'
+                  >
+                    <CirclePlay className='w-4 h-4' />
+                    <span className='text-nowrap'>Watch Demo</span>
+                  </Button>
+                  <Button
+                    asChild
+                    variant='outline'
+                    size='lg'
+                    className='rounded-xl px-5 text-base relative z-10'
+                  >
+                    {/* <Link href='#testimonials'>
+                      <CirclePlay className='w-4 h-4 mr-2' />
+                      <span className='text-nowrap'>Watch Demo</span>
+                    </Link> */}
+                  </Button>
+                </AnimatedGroup>

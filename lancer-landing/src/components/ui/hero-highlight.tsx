@@ -111,20 +111,27 @@ export const Highlight = ({
 }: {
   children: React.ReactNode;
   className?: string;
-  variant?: 'default' | 'blue' | 'green' | 'orange' | 'pink' | 'purple' | 'red';
+  variant?: 'default' | 'blue' | 'green' | 'orange' | 'pink' | 'purple' | 'red' | 'yellow' | 'teal';
 }) => {
   const colorVariants = {
     default:
       'from-indigo-200 to-purple-200 dark:from-indigo-300 dark:to-purple-300',
-    blue: 'from-blue-200 to-cyan-200 dark:from-blue-300 dark:to-cyan-300',
+    blue:
+      'from-blue-200 to-cyan-200 dark:from-blue-300 dark:to-cyan-300',
     green:
       'from-green-200 to-emerald-200 dark:from-green-300 dark:to-emerald-300',
     orange:
       'from-orange-200 to-amber-200 dark:from-orange-300 dark:to-amber-300',
-    pink: 'from-pink-200 to-rose-200 dark:from-pink-300 dark:to-rose-300',
+    pink:
+      'from-pink-200 to-rose-200 dark:from-pink-300 dark:to-rose-300',
     purple:
       'from-purple-200 to-violet-200 dark:from-purple-300 dark:to-violet-300',
-    red: 'from-red-200 to-rose-200 dark:from-red-300 dark:to-rose-300',
+    red:
+      'from-red-200 to-rose-200 dark:from-red-300 dark:to-rose-300',
+    yellow:
+      'from-yellow-200 to-amber-100 dark:from-yellow-300 dark:to-amber-200',
+    teal:
+      'from-teal-200 to-cyan-100 dark:from-teal-300 dark:to-cyan-200',
   };
 
   return (

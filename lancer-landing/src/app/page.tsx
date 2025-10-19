@@ -1,10 +1,10 @@
 'use client';
-import { HeroSection } from '@/components/blocks/hero-section-1';
+import { LandingPage } from '@/components/blocks/landing-page';
 
 export default function Home() {
   return (
     <div>
-      <HeroSection />
+      <LandingPage />
     </div>
   );
 }

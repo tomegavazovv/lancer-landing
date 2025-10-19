@@ -2,7 +2,6 @@ import { CreditCard, Shield } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import Tilt from 'react-parallax-tilt';
 import { Button } from './button';
 
 interface FeatureCardProps {
@@ -16,6 +15,7 @@ interface FeatureCardProps {
   imageWidth?: number;
   imageHeight?: number;
   className?: string;
+  isVideo?: boolean;
 }
 
 export function FeatureCard({
@@ -29,21 +29,45 @@ export function FeatureCard({
   imageWidth = 500,
   imageHeight = 300,
   className,
+  isVideo = false,
 }: FeatureCardProps) {
+  // Check if the image is a GIF
+  const isGif = imageSrc.toLowerCase().endsWith('.gif');
+
   return (
-    <Tilt
-      glareEnable={true}
-      glareMaxOpacity={0.1}
-      glareColor='#ffffff'
-      tiltMaxAngleX={2}
-      tiltMaxAngleY={2}
-      perspective={1000}
-      scale={1.02}
-      className={className}
-    >
-      <div className='relative max-w-7xl border-1 border-gray-200 py-6 px-6 md:py-10 md:pl-10 md:pr-0 rounded-xl overflow-hidden bg-white/50 backdrop-blur-sm'>
+    <div className={className}>
+      <div className='relative max-w-7xl border-1 border-gray-200 py-6 px-6 md:py-10 md:px-10 rounded-xl overflow-hidden bg-white/50 backdrop-blur-sm'>
         <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-0'>
-          <div className='flex flex-col gap-6 md:gap-10 md:flex-[0.6]'>
+          {/* Video/Image - Shows first on mobile, second on desktop */}
+          <div className='order-1 md:order-2 md:flex-[0.4] flex justify-center w-full'>
+            <div className='relative rounded-xl overflow-hidden w-full md:max-w-none border border-gray-300'>
+              {isVideo ? (
+                <video
+                  src={imageSrc}
+                  className='object-cover rounded-xl w-full h-auto'
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload='metadata'
+                  aria-label={imageAlt}
+                />
+              ) : (
+                <Image
+                  src={imageSrc}
+                  alt={imageAlt}
+                  width={imageWidth}
+                  height={imageHeight}
+                  className='object-cover rounded-xl w-full h-auto'
+                  unoptimized={isGif}
+                  loading='lazy'
+                />
+              )}
+            </div>
+          </div>
+          
+          {/* Text Content - Shows second on mobile, first on desktop */}
+          <div className='order-2 md:order-1 flex flex-col gap-6 md:gap-10 md:flex-[0.6]'>
             <h3 className='text-2xl md:text-3xl font-semibold'>{title}</h3>
             <p className='text-base md:text-lg leading-relaxed text-muted-foreground'>
               {description}
@@ -77,19 +101,8 @@ export function FeatureCard({
               )}
             </div>
           </div>
-          <div className='md:flex-[0.4] flex justify-center'>
-            <div className='relative rounded-xl overflow-hidden w-full max-w-sm md:max-w-none'>
-              <Image
-                src={imageSrc}
-                alt={imageAlt}
-                width={imageWidth}
-                height={imageHeight}
-                className='object-cover rounded-xl w-full h-auto'
-              />
-            </div>
-          </div>
         </div>
       </div>
-    </Tilt>
+    </div>
   );
 }

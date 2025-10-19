@@ -146,6 +146,39 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
+  
+  /* Lancer Brand Accent Colors */
+  /* 
+    Lime Green (previous):
+    --accent-color: #D9F99D;
+    --accent-color-hover: #c5e889;
+    --accent-color-light: #f0fde4;
+    --accent-text-color: #000000;
+    --accent-color-dark: #4d7c0f;
+    --accent-border-color: rgba(217, 249, 157, 0.3);
+    
+    Lancer Red (alternative):
+    --accent-color: #D94C58;
+    --accent-color-hover: #c23d48;
+    --accent-color-light: #fef2f3;
+    --accent-text-color: #ffffff;
+    --accent-color-dark: #D94C58;
+    --accent-border-color: rgba(217, 76, 88, 0.3);
+    
+    Black (current):
+    --accent-color: #000000;
+    --accent-color-hover: #1a1a1a;
+    --accent-color-light: #f5f5f5;
+    --accent-text-color: #ffffff;
+    --accent-color-dark: #000000;
+    --accent-border-color: rgba(0, 0, 0, 0.2);
+  */
+  --accent-color: #000000;
+  --accent-color-hover: #1a1a1a;
+  --accent-color-light: #f5f5f5;
+  --accent-text-color: #ffffff; /* Text color on accent backgrounds */
+  --accent-color-dark: #000000; /* Darker accent for text on light backgrounds */
+  --accent-border-color: rgba(0, 0, 0, 0.2); /* Border color for accent elements */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -228,4 +261,38 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Infinite scroll animations for user cards carousel */
+@keyframes scroll-right-to-left {
+  0% {
+    transform: translateX(-20%);
+  }
+  100% {
+    transform: translateX(-200%);
+  }
+}
+
+@keyframes scroll-left-to-right {
+  0% {
+    transform: translateX(-200%);
+  }
+  100% {
+    transform: translateX(-20%);
+  }
+}
+
+.animate-scroll-rtl {
+  animation: scroll-right-to-left 90s linear infinite;
+  will-change: transform;
+}
+
+.animate-scroll-ltr {
+  animation: scroll-left-to-right 180s linear infinite;
+  will-change: transform;
+}
+
+.animate-scroll-rtl:hover,
+.animate-scroll-ltr:hover {
+  animation-play-state: paused;
 }

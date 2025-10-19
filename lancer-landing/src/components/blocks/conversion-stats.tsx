@@ -6,7 +6,11 @@ export default function ConversionStats() {
     <section className="w-full py-16 bg-background">
       <div className="mx-auto max-w-6xl px-4">
         <div className="text-center mb-8">
-          <Badge variant="secondary" className="mb-4 px-4 py-2 text-sm font-medium bg-[#D9F99D] text-black border-0 rounded-full">
+          <Badge
+            variant="secondary"
+            className="mb-4 px-4 py-2 text-sm font-medium border-0 rounded-full"
+            style={{ backgroundColor: '#d9f99d', color: '#000000' }}
+          >
             $20.2 per meeting booked.
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold mb-2">

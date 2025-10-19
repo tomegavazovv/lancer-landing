@@ -239,19 +239,19 @@ export const AnimatedTestimonials = ({
                 ease: 'easeInOut',
               }}
             >
-              <h3 className='text-2xl font-bold text-white'>
+              <h3 className='text-2xl font-bold text-black'>
                 <Link href={testimonials[active].socialLink}>
                   {testimonials[active].name}
                 </Link>
               </h3>
 
-              <p className='text-sm font-medium text-gray-300 mt-1'>
+              <p className='text-sm font-medium text-gray-600 mt-1'>
                 {testimonials[active].socialLink ? (
                   <a
                     href={testimonials[active].socialLink}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='hover:text-white transition-colors duration-200'
+                    className='hover:text-black transition-colors duration-200'
                   >
                     {testimonials[active].designation}
                   </a>
@@ -272,7 +272,7 @@ export const AnimatedTestimonials = ({
                   />
                 ))}
               </div>
-              <motion.p className='text-lg text-gray-300 mt-8'>
+              <motion.p className='text-lg text-gray-700 mt-8'>
                 {testimonials[active].quote.split(' ').map((word, index) => (
                   <motion.span
                     key={index}
