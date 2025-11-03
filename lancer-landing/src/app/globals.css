@@ -288,11 +288,17 @@
 }
 
 .animate-scroll-ltr {
-  animation: scroll-left-to-right 180s linear infinite;
+  animation: scroll-left-to-right 90s linear infinite;
   will-change: transform;
 }
 
-.animate-scroll-rtl:hover,
-.animate-scroll-ltr:hover {
-  animation-play-state: paused;
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .animate-scroll-rtl {
+    animation: scroll-right-to-left 30s linear infinite; /* 200% faster (90s -> 30s) */
+  }
+  
+  .animate-scroll-ltr {
+    animation: scroll-left-to-right 30s linear infinite; /* Matches middle column speed */
+  }
 }

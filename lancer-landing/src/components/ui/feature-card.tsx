@@ -1,8 +1,9 @@
-import { CreditCard, Shield } from 'lucide-react';
+import { CreditCard, Shield, Play } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from './button';
+import { VideoModal } from './video-modal';
 
 interface FeatureCardProps {
   title: React.ReactNode;
@@ -16,6 +17,7 @@ interface FeatureCardProps {
   imageHeight?: number;
   className?: string;
   isVideo?: boolean;
+  videoUrl?: string;
 }
 
 export function FeatureCard({
@@ -30,9 +32,22 @@ export function FeatureCard({
   imageHeight = 300,
   className,
   isVideo = false,
+  videoUrl,
 }: FeatureCardProps) {
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  
   // Check if the image is a GIF
   const isGif = imageSrc.toLowerCase().endsWith('.gif');
+  
+  // Handle video button click
+  const handleVideoClick = () => {
+    if (isVideo) {
+      setIsVideoModalOpen(true);
+    } else {
+      // Fallback to original behavior for non-video buttons
+      window.location.href = buttonHref;
+    }
+  };
 
   return (
     <div className={className}>
@@ -76,21 +91,19 @@ export function FeatureCard({
               {/* Mobile: Simple button without card wrapper */}
               <div className='block md:hidden w-full'>
                 <Button
-                  asChild
+                  onClick={handleVideoClick}
                   size='default'
                   className='rounded-xl px-4 text-sm w-full'
                 >
-                  <Link href={buttonHref}>
-                    <span className='text-nowrap'>{buttonText}</span>
-                  </Link>
+                  {isVideo && <Play className='w-4 h-4 mr-2' />}
+                  <span className='text-nowrap'>{buttonText}</span>
                 </Button>
               </div>
               {/* Desktop: Button with card wrapper */}
               <div className='hidden md:block bg-foreground/10 rounded-xl border p-0.5'>
-                <Button asChild size='lg' className='rounded-xl px-5 text-base'>
-                  <Link href={buttonHref}>
-                    <span className='text-nowrap'>{buttonText}</span>
-                  </Link>
+                <Button onClick={handleVideoClick} size='lg' className='rounded-xl px-5 text-base'>
+                  {isVideo && <Play className='w-4 h-4 mr-2' />}
+                  <span className='text-nowrap'>{buttonText}</span>
                 </Button>
               </div>
               {checkmarkText && (
@@ -103,6 +116,14 @@ export function FeatureCard({
           </div>
         </div>
       </div>
+      
+      {/* Video Modal */}
+      <VideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        videoUrl={videoUrl}
+        title={typeof title === 'string' ? title : 'Feature Demo'}
+      />
     </div>
   );
 }

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+  <defs>
+    <!-- Background circle color: light gray -->
+    <circle id="bg-circle" cx="20" cy="20" r="19" fill="none" stroke="#e0e0e0" stroke-width="2"/>
+    
+    <!-- Progress circle color: blue -->
+    <circle id="fg-circle" cx="20" cy="20" r="19" fill="none" stroke="#006dd1" stroke-width="6" stroke-linecap="round"/>
+  </defs>
+  
+  <!-- Background circle -->
+  <use href="#bg-circle"/>
+  
+  <!-- Progress circle (full) - 100% complete -->
+  <circle cx="20" cy="20" r="19" fill="none" stroke="#006dd1" stroke-width="6" stroke-linecap="round" stroke-dasharray="119.38052083641213 119.38052083641213"/>
+  
+  <!-- House icon centered inside -->
+  <g transform="translate(8, 5)">
+    <path fill="#001e00" fill-rule="evenodd" d="M18.37 19.002H5.63v-1.867h12.74v1.867zm.02-3.736H5.608L3 8.314l4.992 1.664L12 5l4.008 4.978L21 8.314l-2.61 6.952z" clip-rule="evenodd"/>
+  </g>
+</svg>
+

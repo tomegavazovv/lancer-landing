@@ -1,10 +1,12 @@
 'use client';
 
-import { Star } from 'lucide-react';
+import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { AnimatedGroup } from '@/components/ui/animated-group';
 import { Badge } from '@/components/ui/badge';
 import { LazySection } from '@/components/ui/lazy-section';
+import { useMediaQuery } from '@/hooks/use-media-query';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 
 const testimonials = [
   {
@@ -232,6 +234,102 @@ const testimonials = [
 ];
 
 export function Testimonials() {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  // Auto-rotation every 5 seconds
+  useEffect(() => {
+    if (!isMobile || !isAutoPlaying) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => 
+        prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isMobile, isAutoPlaying]);
+
+  const nextTestimonial = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1
+    );
+    setIsAutoPlaying(false);
+  };
+
+  const prevTestimonial = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
+    );
+    setIsAutoPlaying(false);
+  };
+
+  const goToTestimonial = (index: number) => {
+    setCurrentIndex(index);
+    setIsAutoPlaying(false);
+  };
+
+  const renderTestimonialCard = (testimonial: any, key: string) => (
+    <div
+      key={key}
+      className={`flex-none rounded-2xl border-2 border-border p-6 bg-background/50 backdrop-blur-sm flex flex-col transition-all duration-300 hover:shadow-xl hover:border-primary hover:-translate-y-1 ${
+        isMobile ? 'w-full max-w-sm mx-auto' : 'w-[400px]'
+      }`}
+    >
+      {/* Company Logo and Name */}
+      <div className='flex items-center justify-between mb-4'>
+        <div className='flex items-center gap-3'>
+          {testimonial.logo && (
+            <Image
+              src={testimonial.logo}
+              alt={`${testimonial.company} logo`}
+              width={32}
+              height={32}
+              className='rounded'
+            />
+          )}
+          <h3 className='text-lg font-bold'>{testimonial.company}</h3>
+        </div>
+      </div>
+
+      {/* Star Rating */}
+      <div className='flex gap-1 mb-4'>
+        {Array.from({ length: testimonial.stars }).map((_, i) => (
+          <Star
+            key={i}
+            className='w-5 h-5 fill-yellow-400 text-yellow-400'
+          />
+        ))}
+      </div>
+
+      {/* Testimonial Text */}
+      <div className='flex-1 mb-6'>
+        <p className='text-base leading-relaxed text-foreground'>
+          {testimonial.testimonial}
+        </p>
+      </div>
+
+      {/* Author */}
+      <div className='flex items-center gap-3 pt-4 border-t border-border'>
+        <Image
+          src={testimonial.author.image}
+          alt={testimonial.author.name}
+          width={48}
+          height={48}
+          className='rounded-full'
+        />
+        <div>
+          <p className='font-semibold text-sm'>
+            {testimonial.author.name}
+          </p>
+          <p className='text-sm text-muted-foreground'>
+            {testimonial.author.title}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
   return (
     <section className='py-24 bg-background relative overflow-hidden'>
       <div className='w-full px-4'>
@@ -263,136 +361,77 @@ export function Testimonials() {
           </p>
         </AnimatedGroup>
 
-        {/* Scrolling Testimonials */}
+        {/* Testimonials Content */}
         <LazySection>
           <div className='relative w-full'>
+            {isMobile ? (
+              /* Mobile Slider */
+              <div className='relative'>
+                {/* Single Testimonial Card */}
+                <div className='w-full px-4'>
+                  {renderTestimonialCard(testimonials[currentIndex], `mobile-${currentIndex}`)}
+                </div>
 
-            {/* Scrolling Container */}
-            <div className='overflow-hidden w-full pt-2'>
-              <div className='flex gap-6 animate-scroll' style={{
-                width: '200%'
-              }}>
-                {/* First set of testimonials */}
-                {testimonials.map((testimonial) => (
-                <div
-                  key={testimonial.id}
-                  className='flex-none w-[400px] rounded-2xl border-2 border-border p-6 bg-background/50 backdrop-blur-sm flex flex-col transition-all duration-300 hover:shadow-xl hover:border-primary hover:-translate-y-1'
-                >
-                  {/* Company Logo and Name */}
-                  <div className='flex items-center justify-between mb-4'>
-                    <div className='flex items-center gap-3'>
-                      {testimonial.logo && (
-                        <Image
-                          src={testimonial.logo}
-                          alt={`${testimonial.company} logo`}
-                          width={32}
-                          height={32}
-                          className='rounded'
-                        />
-                      )}
-                      <h3 className='text-lg font-bold'>{testimonial.company}</h3>
-                    </div>
-                  </div>
+                {/* Navigation Controls */}
+                <div className='flex items-center justify-center gap-4 mt-8'>
+                  <button
+                    onClick={prevTestimonial}
+                    className='p-2 rounded-full border border-border hover:bg-accent transition-colors'
+                    aria-label='Previous testimonial'
+                  >
+                    <ChevronLeft className='w-5 h-5' />
+                  </button>
 
-                  {/* Star Rating */}
-                  <div className='flex gap-1 mb-4'>
-                    {Array.from({ length: testimonial.stars }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className='w-5 h-5 fill-yellow-400 text-yellow-400'
+                  {/* Dots Indicator */}
+                  <div className='flex gap-2'>
+                    {testimonials.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => goToTestimonial(index)}
+                        className={`w-2 h-2 rounded-full transition-colors ${
+                          index === currentIndex 
+                            ? 'bg-primary' 
+                            : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                        }`}
+                        aria-label={`Go to testimonial ${index + 1}`}
                       />
                     ))}
                   </div>
 
-                  {/* Testimonial Text */}
-                  <div className='flex-1 mb-6'>
-                    <p className='text-base leading-relaxed text-foreground'>
-                      {testimonial.testimonial}
-                    </p>
-                  </div>
-
-                  {/* Author */}
-                  <div className='flex items-center gap-3 pt-4 border-t border-border'>
-                    <Image
-                      src={testimonial.author.image}
-                      alt={testimonial.author.name}
-                      width={48}
-                      height={48}
-                      className='rounded-full'
-                    />
-                    <div>
-                      <p className='font-semibold text-sm'>
-                        {testimonial.author.name}
-                      </p>
-                      <p className='text-sm text-muted-foreground'>
-                        {testimonial.author.title}
-                      </p>
-                    </div>
-                  </div>
+                  <button
+                    onClick={nextTestimonial}
+                    className='p-2 rounded-full border border-border hover:bg-accent transition-colors'
+                    aria-label='Next testimonial'
+                  >
+                    <ChevronRight className='w-5 h-5' />
+                  </button>
                 </div>
-              ))}
 
-              {/* Second set of testimonials for infinite scroll */}
-              {testimonials.map((testimonial) => (
-                <div
-                  key={`duplicate-${testimonial.id}`}
-                  className='flex-none w-[400px] rounded-2xl border-2 border-border p-6 bg-background/50 backdrop-blur-sm flex flex-col transition-all duration-300 hover:shadow-xl hover:border-primary hover:-translate-y-1'
-                >
-                  {/* Company Logo and Name */}
-                  <div className='flex items-center justify-between mb-4'>
-                    <div className='flex items-center gap-3'>
-                      {testimonial.logo && (
-                        <Image
-                          src={testimonial.logo}
-                          alt={`${testimonial.company} logo`}
-                          width={32}
-                          height={32}
-                          className='rounded'
-                        />
-                      )}
-                      <h3 className='text-lg font-bold'>{testimonial.company}</h3>
-                    </div>
-                  </div>
-
-                  {/* Star Rating */}
-                  <div className='flex gap-1 mb-4'>
-                    {Array.from({ length: testimonial.stars }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className='w-5 h-5 fill-yellow-400 text-yellow-400'
-                      />
-                    ))}
-                  </div>
-
-                  {/* Testimonial Text */}
-                  <div className='flex-1 mb-6'>
-                    <p className='text-base leading-relaxed text-foreground'>
-                      {testimonial.testimonial}
-                    </p>
-                  </div>
-
-                  {/* Author */}
-                  <div className='flex items-center gap-3 pt-4 border-t border-border'>
-                    <Image
-                      src={testimonial.author.image}
-                      alt={testimonial.author.name}
-                      width={48}
-                      height={48}
-                      className='rounded-full'
-                    />
-                    <div>
-                      <p className='font-semibold text-sm'>
-                        {testimonial.author.name}
-                      </p>
-                      <p className='text-sm text-muted-foreground'>
-                        {testimonial.author.title}
-                      </p>
-                    </div>
-                  </div>
+                {/* Auto-play indicator */}
+                <div className='text-center mt-4'>
+                  <p className='text-xs text-muted-foreground'>
+                    Auto-advancing every 5 seconds
+                  </p>
                 </div>
-              ))}
               </div>
-            </div>
+            ) : (
+              /* Desktop Scrolling */
+              <div className='overflow-hidden w-full pt-2'>
+                <div className='flex gap-6 animate-scroll' style={{
+                  width: '200%'
+                }}>
+                  {/* First set of testimonials */}
+                  {testimonials.map((testimonial) => 
+                    renderTestimonialCard(testimonial, `desktop-${testimonial.id}`)
+                  )}
+
+                  {/* Second set of testimonials for infinite scroll */}
+                  {testimonials.map((testimonial) => 
+                    renderTestimonialCard(testimonial, `desktop-duplicate-${testimonial.id}`)
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </LazySection>
       </div>
@@ -407,22 +446,15 @@ export function Testimonials() {
           }
         }
 
-        /* Desktop - slower speed */
-        @media (min-width: 768px) {
+        /* Desktop - faster speed (25% increase) */
+        @media (min-width: 769px) {
           .animate-scroll {
-            animation: scroll 45s linear infinite;
+            animation: scroll 34s linear infinite;
           }
-        }
-
-        /* Mobile - faster speed */
-        @media (max-width: 767px) {
-          .animate-scroll {
-            animation: scroll 13.5s linear infinite;
+          
+          .animate-scroll:hover {
+            animation-play-state: paused;
           }
-        }
-
-        .animate-scroll:hover {
-          animation-play-state: paused;
         }
       `}</style>
     </section>

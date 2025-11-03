@@ -20,6 +20,7 @@ const featuresData = [
     imageSrc: '/gifs/ai-filtering.mp4',
     imageAlt: 'AI suitability filtering',
     isVideo: true,
+    videoUrl: 'https://youtu.be/hA93aGhQvt0', // AI Analysis
   },
   {
     title: (
@@ -34,6 +35,7 @@ const featuresData = [
     imageSrc: '/gifs/unlimited-campaigns.mp4',
     imageAlt: 'AI suitability filtering',
     isVideo: true,
+    videoUrl: 'https://youtu.be/EcDPRDXV5OM', // Unlimited Campaigns
   },
   {
     title: (
@@ -48,6 +50,7 @@ const featuresData = [
     imageSrc: '/gifs/personalized-proposals.mp4',
     imageAlt: 'Automated proposal generation',
     isVideo: true,
+    videoUrl: 'https://youtu.be/kUEqz4Bsr5Q', // Cover Letter Templates
   },
   {
     title: (
@@ -62,6 +65,7 @@ const featuresData = [
     imageSrc: '/gifs/notifications.mp4',
     imageAlt: 'Automated bidding system',
     isVideo: true,
+    videoUrl: 'https://youtu.be/m800yJv9DEU', // Notifications
   },
   {
     title: (
@@ -76,6 +80,7 @@ const featuresData = [
     imageSrc: '/gifs/bidding-control.mp4',
     imageAlt: 'Analytics dashboard',
     isVideo: true,
+    videoUrl: 'https://www.youtube.com/watch?v=OE_IrVv8JWk', // Bidding Control
   },
   {
     title: (
@@ -87,9 +92,10 @@ const featuresData = [
       'Track performance across multiple campaigns and accounts. Get detailed analytics on proposal success rates, instant notifications for new opportunities, and manage everything from one dashboard.',
     buttonText: 'Play Video',
     buttonHref: '#pricing',
-    imageSrc: '/gifs/bidding-control.mp4',
+    imageSrc: '/gifs/analytics.mp4',
     imageAlt: 'Analytics dashboard',
     isVideo: true,
+    videoUrl: 'https://youtu.be/DkQqLZkwAbc', // Advanced Analytics
   },
   {
     title: (
@@ -101,9 +107,10 @@ const featuresData = [
       'Track performance across multiple campaigns and accounts. Get detailed analytics on proposal success rates, instant notifications for new opportunities, and manage everything from one dashboard.',
     buttonText: 'Play Video',
     buttonHref: '#pricing',
-    imageSrc: '/gifs/bidding-control.mp4',
+    imageSrc: '/gifs/academy.mp4',
     imageAlt: 'Analytics dashboard',
     isVideo: true,
+    videoUrl: 'https://youtu.be/YW01EmpQYGs', // Academy
   },
 ];
 
@@ -165,6 +172,7 @@ export function Features() {
                 imageSrc={feature.imageSrc}
                 imageAlt={feature.imageAlt}
                 isVideo={feature.isVideo}
+                videoUrl={feature.videoUrl}
               />
             </div>
           </AnimatedGroup>

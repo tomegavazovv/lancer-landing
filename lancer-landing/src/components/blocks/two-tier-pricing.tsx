@@ -231,11 +231,11 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
           <div className='rounded-2xl border-2 border-border p-8 bg-background flex flex-col transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-primary'>
             {/* Billing Cycle Toggle - Inside card (Mobile only) */}
             <div className='flex md:hidden items-center justify-center mb-6 relative'>
-              <div className='rounded-full border border-gray-200 p-1 bg-gray-50 inline-flex items-center gap-1 text-sm'>
+              <div className='rounded-full border border-gray-200 p-1 bg-gray-50 inline-flex items-center gap-1 text-sm w-full max-w-xs'>
                 <button
                   onClick={() => setBillingCycle('monthly')}
                   className={cn(
-                    'px-4 py-2 rounded-full font-medium transition-all',
+                    'px-2 py-2 rounded-full font-medium transition-all text-xs flex-1',
                     billingCycle === 'monthly'
                       ? 'bg-black text-white'
                       : 'text-gray-700 hover:text-gray-900'
@@ -246,7 +246,7 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                 <button
                   onClick={() => setBillingCycle('quarterly')}
                   className={cn(
-                    'px-4 py-2 rounded-full font-medium transition-all inline-flex items-center gap-1.5',
+                    'px-2 py-2 rounded-full font-medium transition-all inline-flex items-center gap-1 text-xs flex-1',
                     billingCycle === 'quarterly'
                       ? 'bg-black text-white'
                       : 'text-gray-700 hover:text-gray-900'
@@ -257,13 +257,13 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                     'text-xs font-semibold',
                     billingCycle === 'quarterly' ? 'opacity-80' : ''
                   )} style={{ color: '#d94c58' }}>
-                    20% off
+                    20%
                   </span>
                 </button>
                 <button
                   onClick={() => setBillingCycle('yearly')}
                   className={cn(
-                    'px-4 py-2 rounded-full font-medium transition-all inline-flex items-center gap-1.5',
+                    'px-2 py-2 rounded-full font-medium transition-all inline-flex items-center gap-1 text-xs flex-1',
                     billingCycle === 'yearly'
                       ? 'bg-black text-white'
                       : 'text-gray-700 hover:text-gray-900'
@@ -274,7 +274,7 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                     'text-xs font-semibold',
                     billingCycle === 'yearly' ? 'opacity-80' : ''
                   )} style={{ color: '#d94c58' }}>
-                    40% off
+                    40%
                   </span>
                 </button>
               </div>

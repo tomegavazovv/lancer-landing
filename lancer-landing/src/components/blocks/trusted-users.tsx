@@ -1,63 +1,57 @@
 import React from 'react';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 export default function TrustedUsers() {
-  // Row 1: Left to right initial position, scrolls right-to-left
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  
+  // Responsive card dimensions
+  const cardWidth = isMobile ? 336 : 480; // 30% smaller on mobile
+  const cardHeight = isMobile ? 132 : 189; // 30% smaller on mobile
+  // Row 1: First 5 cards, duplicated for smooth infinite scroll
   const row1Cards = [
-      '/user-cards/row-1-column-1.png',
-      '/user-cards/row-1-column-2.png',
-      '/user-cards/row-1-column-3.png',
-      '/user-cards/row-1-column-4.png',
-      '/user-cards/row-1-column-5.png',
-      '/user-cards/row-1-column-1.png',
-      '/user-cards/row-1-column-2.png',
-      '/user-cards/row-1-column-3.png',
-      '/user-cards/row-1-column-4.png',
-      '/user-cards/row-1-column-5.png',
-      '/user-cards/row-1-column-1.png',
-      '/user-cards/row-1-column-2.png',
-      '/user-cards/row-1-column-3.png',
-      '/user-cards/row-1-column-4.png',
-      '/user-cards/row-1-column-5.png',
+    '/new-cards/Property 1=Default.png',
+    '/new-cards/Property 1=Variant10.png',
+    '/new-cards/Property 1=Variant11-1.png',
+    '/new-cards/Property 1=Variant11.png',
+    '/new-cards/Property 1=Variant13.png',
+    // Duplicate for smooth infinite scroll
+    '/new-cards/Property 1=Default.png',
+    '/new-cards/Property 1=Variant10.png',
+    '/new-cards/Property 1=Variant11-1.png',
+    '/new-cards/Property 1=Variant11.png',
+    '/new-cards/Property 1=Variant13.png',
   ];
 
-  // Row 2: Right to left initial position, scrolls left-to-right
+  // Row 2: Next 5 cards, duplicated for smooth infinite scroll
   const row2Cards = [
-    '/user-cards/row-2-column-1.png',
-    '/user-cards/row-2-column-2.png',
-    '/user-cards/row-2-column-3.png',
-    '/user-cards/row-2-column-4.png',
-    '/user-cards/row-2-column-5.png',
-    '/user-cards/row-2-column-1.png',
-    '/user-cards/row-2-column-2.png',
-    '/user-cards/row-2-column-3.png',
-    '/user-cards/row-2-column-4.png',
-    '/user-cards/row-2-column-5.png',
-    '/user-cards/row-2-column-1.png',
-    '/user-cards/row-2-column-2.png',
-    '/user-cards/row-2-column-3.png',
-    '/user-cards/row-2-column-4.png',
-    '/user-cards/row-2-column-5.png',
+    '/new-cards/Property 1=Variant14.png',
+    '/new-cards/Property 1=Variant15.png',
+    '/new-cards/Property 1=Variant16-1.png',
+    '/new-cards/Property 1=Variant16-2.png',
+    '/new-cards/Property 1=Variant16.png',
+    // Duplicate for smooth infinite scroll
+    '/new-cards/Property 1=Variant14.png',
+    '/new-cards/Property 1=Variant15.png',
+    '/new-cards/Property 1=Variant16-1.png',
+    '/new-cards/Property 1=Variant16-2.png',
+    '/new-cards/Property 1=Variant16.png',
   ];
 
-  // Row 3: Left to right initial position, scrolls right-to-left
+  // Row 3: Last 5 cards, duplicated for smooth infinite scroll
   const row3Cards = [
-    '/user-cards/row-3-column-1.png',
-    '/user-cards/row-3-column-2.png',
-    '/user-cards/row-3-column-3.png',
-    '/user-cards/row-3-column-4.png',
-    '/user-cards/row-3-column-5.png',
-    '/user-cards/row-3-column-1.png',
-    '/user-cards/row-3-column-2.png',
-    '/user-cards/row-3-column-3.png',
-    '/user-cards/row-3-column-4.png',
-    '/user-cards/row-3-column-5.png',
-    '/user-cards/row-3-column-1.png',
-    '/user-cards/row-3-column-2.png',
-    '/user-cards/row-3-column-3.png',
-    '/user-cards/row-3-column-4.png',
-    '/user-cards/row-3-column-5.png',
+    '/new-cards/Property 1=Variant3.png',
+    '/new-cards/Property 1=Variant5.png',
+    '/new-cards/Property 1=Variant6.png',
+    '/new-cards/Property 1=Variant7.png',
+    '/new-cards/Property 1=Variant9.png',
+    // Duplicate for smooth infinite scroll
+    '/new-cards/Property 1=Variant3.png',
+    '/new-cards/Property 1=Variant5.png',
+    '/new-cards/Property 1=Variant6.png',
+    '/new-cards/Property 1=Variant7.png',
+    '/new-cards/Property 1=Variant9.png',
   ];
 
   return (
@@ -79,17 +73,17 @@ export default function TrustedUsers() {
         </div>
 
         <div className="space-y-6">
-          {/* Row 1: Scrolls right-to-left */}
+          {/* Row 1: Scrolls left-to-right */}
           <div className="relative">
-            <div className="flex gap-4 animate-scroll-rtl">
+            <div className="flex gap-4 animate-scroll-ltr">
               {/* Duplicate cards for seamless infinite scroll */}
               {row1Cards.map((card, index) => (
                 <div key={`row1-${index}`} className="flex-shrink-0">
                   <Image
                     src={card}
-                    alt={`User card ${index + 1}`}
-                    width={320}
-                    height={126}
+                    alt={`New card variant ${index + 1}`}
+                    width={cardWidth}
+                    height={cardHeight}
                     className="rounded-lg"
                   />
                 </div>
@@ -97,17 +91,17 @@ export default function TrustedUsers() {
             </div>
           </div>
 
-          {/* Row 2: Scrolls left-to-right */}
+          {/* Row 2: Scrolls right-to-left (opposite direction) */}
           <div className="relative">
-            <div className="flex gap-4 animate-scroll-ltr">
+            <div className="flex gap-4 animate-scroll-rtl">
               {/* Duplicate cards for seamless infinite scroll */}
               {row2Cards.map((card, index) => (
                 <div key={`row2-${index}`} className="flex-shrink-0">
                   <Image
                     src={card}
-                    alt={`User card ${index + 1}`}
-                    width={320}
-                    height={126}
+                    alt={`New card variant ${index + 1}`}
+                    width={cardWidth}
+                    height={cardHeight}
                     className="rounded-lg"
                   />
                 </div>
@@ -115,17 +109,17 @@ export default function TrustedUsers() {
             </div>
           </div>
 
-          {/* Row 3: Scrolls right-to-left */}
+          {/* Row 3: Scrolls left-to-right */}
           <div className="relative">
-            <div className="flex gap-4 animate-scroll-rtl">
+            <div className="flex gap-4 animate-scroll-ltr">
               {/* Duplicate cards for seamless infinite scroll */}
               {row3Cards.map((card, index) => (
                 <div key={`row3-${index}`} className="flex-shrink-0">
                   <Image
                     src={card}
-                    alt={`User card ${index + 1}`}
-                    width={320}
-                    height={126}
+                    alt={`New card variant ${index + 1}`}
+                    width={cardWidth}
+                    height={cardHeight}
                     className="rounded-lg"
                   />
                 </div>

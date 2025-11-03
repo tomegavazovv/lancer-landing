@@ -1,7 +1,7 @@
 import { Badge } from '../ui/badge';
 import Image from 'next/image';
 
-export default function ConversionStats() {
+export default function ConversionStatsV2() {
   return (
     <section className="w-full py-16 bg-background">
       <div className="mx-auto max-w-6xl px-4">
@@ -17,7 +17,7 @@ export default function ConversionStats() {
             Convert Upwork Into Your Best Performing Outreach Channel
           </h2>
           <p className="text-lg text-muted-foreground mb-4">
-            Conversion Numbers that Destroy LinkedIn & Email Outreach. Screenshot taken from a user's dashboard.
+            Conversion Numbers that Destroy LinkedIn & Email Outreach
           </p>
         </div>
         <div className="flex justify-center">
@@ -35,4 +35,4 @@ export default function ConversionStats() {
       </div>
     </section>
   );
-} 
+}

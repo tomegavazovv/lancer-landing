@@ -14,6 +14,7 @@ import ConversionStats from './conversion-stats';
 import SalesPitch1 from './sales-pitch-1';
 import { Features } from './features';
 import { PricingSection } from './pricing-section';
+import { Testimonials } from './testimonials';
 
 export function LandingPage() {
   const [isOverDarkSection, setIsOverDarkSection] = React.useState(false);
@@ -55,6 +56,9 @@ export function LandingPage() {
         </LazySection>
         <LazySection>
           <Features />
+        </LazySection>
+        <LazySection>
+          <Testimonials />
         </LazySection>
         <LazySection>
           <PricingSection onBookDemo={() => setIsCalendlyModalOpen(true)} />

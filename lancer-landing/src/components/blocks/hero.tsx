@@ -84,14 +84,16 @@ export function Hero({ onVideoClick }: HeroProps) {
                   <TooltipTrigger asChild>
                     <Badge
                       variant='secondary'
-                      className='mb-6 px-4 py-2 text-sm font-medium border-0 rounded-full cursor-help inline-flex items-center gap-1'
+                      className='mb-6 px-3 py-2 text-xs md:text-sm font-medium border-0 rounded-full cursor-help inline-flex items-center gap-1 max-w-full'
                       style={{
                         backgroundColor: '#d9f99d',
                         color: '#000000',
                       }}
                     >
-                      55% open rate. 33% reply rate. 12.5% win rate
-                      <Info className='w-4 h-4 align-middle -mt-0.5' />
+                      <span className='truncate'>
+                        55% open rate. 33% reply rate. 12.5% win rate
+                      </span>
+                      <Info className='w-3 h-3 md:w-4 md:h-4 align-middle -mt-0.5 flex-shrink-0' />
                     </Badge>
                   </TooltipTrigger>
                   <TooltipContent>
