@@ -3,13 +3,13 @@ import Image from 'next/image';
 function MeetingBookedStat({ value, color }: { value: string; color: string }) {
   return (
     <>
-      <div className='w-full border-t border-white/10 my-4' />
+      <div className='w-full border-t border-white/10 my-3 sm:my-4' />
       <div
-        className={`text-xl md:text-2xl lg:text-3xl font-extrabold mt-2 mb-0 ${color}`}
+        className={`text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold mt-2 mb-0 ${color}`}
         style={{ letterSpacing: '-0.01em' }}
       >
         {value}{' '}
-        <span className='text-sm md:text-base font-semibold text-white/60 ml-1'>
+        <span className='text-xs sm:text-sm md:text-base font-semibold text-white/60 ml-1'>
           per meeting booked
         </span>
       </div>
@@ -25,47 +25,33 @@ export default function SalesPitch1() {
     >
       {/* Stats Banner */}
       <div className='flex items-center justify-center mb-8'>
-        <div className='relative group inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[#D9F99D] border border-[#D9F99D] cursor-help'>
-          <span className='text-sm font-semibold text-[#000000]'>
+        <div className='inline-flex items-center justify-center px-4 sm:px-6 py-2 rounded-full bg-[#D9F99D] border border-[#D9F99D]'>
+          <span className='text-xs sm:text-sm font-semibold text-[#000000] text-center'>
             60% open rate. 21.8% reply rate. 12.5% win rate
           </span>
-          <svg
-            className='w-4 h-4 text-[#000000]'
-            fill='currentColor'
-            viewBox='0 0 20 20'
-          >
-            <path
-              fillRule='evenodd'
-              d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z'
-              clipRule='evenodd'
-            />
-          </svg>
-          <div className='absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-black/90 text-white text-sm rounded-lg whitespace-nowrap opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none'>
-            Average conversion rate from our users
-            <div className='absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 border-4 border-transparent border-t-black/90'></div>
-          </div>
         </div>
       </div>
-      <div className='max-w-6xl mx-auto border py-16 border-white/10 bg-white/5 backdrop-blur-sm shadow-sm rounded-3xl p-24'>
+      <div className='max-w-6xl mx-auto border py-8 md:py-16 border-white/10 bg-white/5 backdrop-blur-sm shadow-sm rounded-3xl px-4 sm:px-8 md:px-16 lg:px-24'>
         <div className='text-center mb-8 md:mb-12'>
-          <h2 className='text-2xl md:text-4xl font-bold mb-2 text-white'>
-            The Lowest Cost Per Meeting Booked In The Game
+          <h2 className='text-xl sm:text-2xl md:text-4xl font-bold mb-2 text-white'>
+            The Lowest Cost Per Meeting{' '}
+            <span className='block sm:inline'>Booked In The Game</span>
           </h2>
-          <p className='text-base md:text-lg mb-4 text-white/80'>
+          <p className='text-sm sm:text-base md:text-lg mb-4 text-white/80'>
             Hire the best Upwork AI Agent and let it outcompete every SDR on the
             planet.
           </p>
         </div>
         <div className='relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 mt-6 md:mt-8'>
           {/* WITHOUT LANCER */}
-          <div className='bg-black/40 border-2 border-[#F86367] shadow-[0_4px_32px_0_rgba(248,99,103,0.2)] ring-1 ring-[#F86367]/30 rounded-2xl p-4 md:p-8 w-full max-w-[420px] mx-auto transition-all duration-300 ease-out hover:scale-105 hover:shadow-[0_8px_48px_0_rgba(248,99,103,0.3)]'>
+          <div className='bg-black/40 border-2 border-[#F86367] shadow-[0_4px_32px_0_rgba(248,99,103,0.2)] ring-1 ring-[#F86367]/30 rounded-2xl p-5 sm:p-6 md:p-8 w-full max-w-full sm:max-w-[420px] mx-auto transition-all duration-300 ease-out hover:scale-105 hover:shadow-[0_8px_48px_0_rgba(248,99,103,0.3)]'>
             <div className='flex w-full items-center'>
               {/* Left: Heading and subheading */}
               <div className='flex-1 flex flex-col justify-center'>
-                <h3 className='text-lg md:text-xl font-bold text-white mb-1'>
+                <h3 className='text-base sm:text-lg md:text-xl font-bold text-white mb-1'>
                   Without Lancer
                 </h3>
-                <div className='text-xs md:text-sm text-white/70 mb-4'>
+                <div className='text-[11px] sm:text-xs md:text-sm text-white/70 mb-4'>
                   Jobs missed, hours wasted, high cost per meeting booked
                 </div>
               </div>
@@ -76,12 +62,12 @@ export default function SalesPitch1() {
                   alt='Transparent Lancer Icon'
                   width={40}
                   height={40}
-                  className='md:w-[60px] md:h-[60px]'
+                  className='w-10 h-10 sm:w-12 sm:h-12 md:w-[60px] md:h-[60px]'
                 />
               </div>
             </div>
             <div className='w-full border-b border-white/10 mb-4' />
-            <ul className='space-y-3 md:space-y-4 text-sm md:text-base text-white/90 w-full'>
+            <ul className='space-y-2 sm:space-y-3 md:space-y-4 text-xs sm:text-sm md:text-base text-white/90 w-full'>
               <li className='flex items-center'>
                 <svg
                   className='w-3 h-3 md:w-4 md:h-4 mr-2 flex-shrink-0 text-white/60'
@@ -175,14 +161,14 @@ export default function SalesPitch1() {
             </div>
           </div>
           {/* WITH LANCER */}
-          <div className='bg-black/40 border-2 border-[#3DDF72] shadow-[0_4px_32px_0_rgba(61,223,114,0.2)] ring-1 ring-[#3DDF72]/30 rounded-2xl p-4 md:p-8 w-full max-w-[420px] mx-auto transition-all duration-300 ease-out hover:scale-105 hover:shadow-[0_8px_48px_0_rgba(61,223,114,0.3)]'>
+          <div className='bg-black/40 border-2 border-[#3DDF72] shadow-[0_4px_32px_0_rgba(61,223,114,0.2)] ring-1 ring-[#3DDF72]/30 rounded-2xl p-5 sm:p-6 md:p-8 w-full max-w-full sm:max-w-[420px] mx-auto transition-all duration-300 ease-out hover:scale-105 hover:shadow-[0_8px_48px_0_rgba(61,223,114,0.3)]'>
             <div className='flex w-full items-center'>
               {/* Left: Heading and subheading */}
               <div className='flex-1 flex flex-col justify-center'>
-                <h3 className='text-lg md:text-xl font-bold text-white mb-1'>
+                <h3 className='text-base sm:text-lg md:text-xl font-bold text-white mb-1'>
                   With Lancer
                 </h3>
-                <div className='text-xs md:text-sm text-white/70 mb-4'>
+                <div className='text-[11px] sm:text-xs md:text-sm text-white/70 mb-4'>
                   Zero jobs missed, zero hours wasted, the best conversion rate
                   in the game
                 </div>
@@ -194,12 +180,12 @@ export default function SalesPitch1() {
                   alt='Lancer White Red Icon'
                   width={40}
                   height={40}
-                  className='md:w-[60px] md:h-[60px]'
+                  className='w-10 h-10 sm:w-12 sm:h-12 md:w-[60px] md:h-[60px]'
                 />
               </div>
             </div>
             <div className='w-full border-b border-white/10 mb-4' />
-            <ul className='space-y-3 md:space-y-4 text-sm md:text-base text-white/90 w-full'>
+            <ul className='space-y-2 sm:space-y-3 md:space-y-4 text-xs sm:text-sm md:text-base text-white/90 w-full'>
               <li className='flex items-center'>
                 <svg
                   className='w-3 h-3 md:w-4 md:h-4 mr-2 flex-shrink-0 text-white/60'

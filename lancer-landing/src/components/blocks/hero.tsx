@@ -83,10 +83,10 @@ export function Hero({ onVideoClick }: HeroProps) {
                 sparklesCount={8}
                 className='max-w-full md:max-w-6xl mx-auto text-balance text-5xl font-bold md:text-6xl md:font-semibold xl:text-[5.25rem] text-white'
               />
-              <p className='mx-auto mt-8 mb-8 max-w-[800px] text-balance text-2xl font-normal text-white/100'>
+              <p className='mx-auto mt-8 mb-8 max-w-[800px] text-balance text-lg sm:text-xl md:text-2xl font-normal text-white/100'>
                 For{' '}
                 <span
-                  className='inline-block px-4 py-[2px] mx-1 rounded-full font-semibold'
+                  className='inline-block px-2 sm:px-3 md:px-4 py-[2px] mx-0.5 sm:mx-1 rounded-full font-semibold text-base sm:text-lg md:text-2xl'
                   style={{
                     backgroundColor: 'rgba(109, 40, 217, 0.25)',
                     color: '#a78bfa',
@@ -97,7 +97,7 @@ export function Hero({ onVideoClick }: HeroProps) {
                 </span>{' '}
                 and{' '}
                 <span
-                  className='inline-block px-4 py-[2px] mx-1 rounded-full font-semibold'
+                  className='inline-block px-2 sm:px-3 md:px-4 py-[2px] mx-0.5 sm:mx-1 rounded-full font-semibold text-base sm:text-lg md:text-2xl'
                   style={{
                     backgroundColor: 'rgba(194, 65, 12, 0.25)',
                     color: '#fb923c',
