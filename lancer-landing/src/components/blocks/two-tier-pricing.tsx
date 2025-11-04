@@ -151,7 +151,7 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
             The Best Offer On The Market
           </h2>
           <p className='max-w-[700px] md:text-xl/relaxed text-white/80'>
-            Start for free, pay as you scale.
+            Pay as you scale - no hidden fees.
           </p>
         </div>
 
@@ -279,7 +279,7 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               Start Now
             </CTAButton>
             <p className='text-xs text-center mt-3 text-white/60'>
-              $79/mo • $1.49 per after 30 proposals
+              $79/mo • $1.99 per after 30 proposals
             </p>
           </div>
 

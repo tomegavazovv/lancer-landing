@@ -9,7 +9,6 @@ import { CTAButton } from '../ui/cta-button';
 import { LogoIcon } from '../ui/logo-icon';
 
 const menuItems = [
-  { name: 'Calculate Wins', href: 'https://calculator.lancer.app' },
   { name: 'Testimonials', href: '#testimonials' },
   { name: 'Features', href: '#features' },
   { name: 'Pricing', href: '#pricing' },

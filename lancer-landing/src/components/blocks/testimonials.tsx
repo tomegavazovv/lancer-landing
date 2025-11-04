@@ -407,6 +407,7 @@ export function Testimonials() {
   );
   return (
     <section
+      id='testimonials'
       className='py-24 relative overflow-hidden'
       style={{ backgroundColor: '#0A0A0A' }}
     >

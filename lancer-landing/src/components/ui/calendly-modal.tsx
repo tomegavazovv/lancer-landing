@@ -73,50 +73,50 @@ const videoTestimonials = [
 // Testimonial Skeleton Loader Component
 function TestimonialSkeleton() {
   return (
-    <div className='hidden lg:flex lg:w-2/5 bg-gradient-to-br from-blue-50 to-indigo-100 lg:p-8 flex-col justify-center lg:min-h-[600px]'>
+    <div className='hidden lg:flex lg:w-2/5 bg-[#0A0A0A] lg:p-8 flex-col justify-center lg:min-h-[600px] border-r border-white/10'>
       <div className='pb-3 lg:pb-6'>
-        <div className='h-6 lg:h-8 bg-gray-200 rounded-md mb-2 animate-pulse'></div>
-        <div className='h-4 lg:h-5 bg-gray-200 rounded-md w-3/4 animate-pulse'></div>
+        <div className='h-6 lg:h-8 bg-white/10 rounded-md mb-2 animate-pulse'></div>
+        <div className='h-4 lg:h-5 bg-white/10 rounded-md w-3/4 animate-pulse'></div>
       </div>
 
       <div className='flex-1 flex flex-col justify-center'>
         <div className='space-y-4'>
           {/* Video Skeleton */}
           <div className='mb-4'>
-            <div className='relative rounded-lg overflow-hidden bg-gray-200 animate-pulse'>
-              <div className='w-full h-48 lg:h-56 bg-gray-300'></div>
-              <div className='absolute bottom-3 right-3 w-10 h-10 bg-gray-400 rounded-full'></div>
+            <div className='relative rounded-lg overflow-hidden bg-white/5 animate-pulse'>
+              <div className='w-full h-48 lg:h-56 bg-white/10'></div>
+              <div className='absolute bottom-3 right-3 w-10 h-10 bg-white/20 rounded-full'></div>
             </div>
           </div>
 
           {/* Quote Skeleton */}
           <div className='space-y-2'>
-            <div className='h-4 lg:h-5 bg-gray-200 rounded animate-pulse'></div>
-            <div className='h-4 lg:h-5 bg-gray-200 rounded animate-pulse'></div>
-            <div className='h-4 lg:h-5 bg-gray-200 rounded w-3/4 animate-pulse'></div>
+            <div className='h-4 lg:h-5 bg-white/10 rounded animate-pulse'></div>
+            <div className='h-4 lg:h-5 bg-white/10 rounded animate-pulse'></div>
+            <div className='h-4 lg:h-5 bg-white/10 rounded w-3/4 animate-pulse'></div>
           </div>
 
           {/* Author Skeleton */}
           <div className='flex items-center gap-3'>
-            <div className='w-12 h-12 bg-gray-200 rounded-full animate-pulse'></div>
+            <div className='w-12 h-12 bg-white/10 rounded-full animate-pulse'></div>
             <div className='space-y-1'>
-              <div className='h-4 bg-gray-200 rounded w-24 animate-pulse'></div>
-              <div className='h-3 bg-gray-200 rounded w-20 animate-pulse'></div>
+              <div className='h-4 bg-white/10 rounded w-24 animate-pulse'></div>
+              <div className='h-3 bg-white/10 rounded w-20 animate-pulse'></div>
             </div>
           </div>
 
           {/* Navigation Skeleton */}
           <div className='flex justify-center items-center gap-6 mt-6'>
-            <div className='w-8 h-8 bg-gray-200 rounded-full animate-pulse'></div>
+            <div className='w-8 h-8 bg-white/10 rounded-full animate-pulse'></div>
             <div className='flex gap-2'>
               {[1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className='w-2 h-2 bg-gray-200 rounded-full animate-pulse'
+                  className='w-2 h-2 bg-white/10 rounded-full animate-pulse'
                 ></div>
               ))}
             </div>
-            <div className='w-8 h-8 bg-gray-200 rounded-full animate-pulse'></div>
+            <div className='w-8 h-8 bg-white/10 rounded-full animate-pulse'></div>
           </div>
         </div>
       </div>
@@ -201,18 +201,18 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className='sm:max-w-[1000px] max-h-[90vh] overflow-hidden p-0'>
-        <div className='flex flex-col lg:flex-row lg:min-h-[600px] h-full overflow-y-auto'>
+      <DialogContent className='sm:max-w-[1000px] max-h-[90vh] overflow-hidden p-0 bg-[#0A0A0A] border-white/10'>
+        <div className='flex flex-col lg:flex-row lg:min-h-[600px] h-full overflow-y-auto bg-[#0A0A0A]'>
           {/* Left Side - Testimonials or Skeleton - Hidden on mobile */}
           {!isCalendlyLoaded ? (
             <TestimonialSkeleton />
           ) : (
-            <div className='hidden lg:flex lg:w-2/5 bg-gradient-to-br from-blue-50 to-indigo-100 lg:p-8 flex-col justify-center lg:min-h-[600px]'>
+            <div className='hidden lg:flex lg:w-2/5 bg-[#0A0A0A] lg:p-8 flex-col justify-center lg:min-h-[600px] border-r border-white/10'>
               <DialogHeader className='pb-3 lg:pb-6'>
-                <DialogTitle className='text-lg lg:text-2xl font-semibold text-gray-900'>
+                <DialogTitle className='text-lg lg:text-2xl font-semibold text-white'>
                   High-Quality Deals. Zero Fluff.
                 </DialogTitle>
-                <p className='text-gray-600 text-sm lg:text-base'>
+                <p className='text-white/60 text-sm lg:text-base'>
                   Freelancers are closing work in just days.
                 </p>
               </DialogHeader>
@@ -222,7 +222,7 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
                 <div className='space-y-4'>
                   {/* Video Player */}
                   <div className='mb-4'>
-                    <div className='relative rounded-lg overflow-hidden bg-gray-100'>
+                    <div className='relative rounded-lg overflow-hidden bg-white/5'>
                       <video
                         ref={videoRef}
                         key={currentVideo.videoSrc}
@@ -236,7 +236,7 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
                       />
                       <button
                         onClick={toggleMute}
-                        className='absolute bottom-3 right-3 bg-black/70 hover:bg-black/80 rounded-full p-2 transition-colors'
+                        className='absolute bottom-3 right-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-colors'
                       >
                         {isVideoMuted ? (
                           <svg
@@ -260,7 +260,7 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
                   </div>
 
                   {/* Quote */}
-                  <blockquote className='text-gray-800 text-base lg:text-lg leading-relaxed'>
+                  <blockquote className='text-white/80 text-base lg:text-lg leading-relaxed'>
                     "{currentTestimonial.quote}"
                   </blockquote>
 
@@ -279,10 +279,10 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className='font-semibold text-gray-900'>
+                      <div className='font-semibold text-white'>
                         {currentTestimonial.name}
                       </div>
-                      <div className='text-gray-600 text-sm'>
+                      <div className='text-white/60 text-sm'>
                         {currentTestimonial.designation}
                       </div>
                     </div>
@@ -293,10 +293,10 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
                 <div className='flex justify-center items-center gap-6 mt-6'>
                   <button
                     onClick={goToPrevious}
-                    className='flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors'
+                    className='flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-colors'
                     aria-label='Previous testimonial'
                   >
-                    <ChevronLeft className='w-4 h-4 text-gray-600' />
+                    <ChevronLeft className='w-4 h-4 text-white' />
                   </button>
 
                   <div className='flex gap-2'>
@@ -310,8 +310,8 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
                         }}
                         className={`w-2 h-2 rounded-full transition-all ${
                           index === currentTestimonialIndex
-                            ? 'bg-blue-600 w-6'
-                            : 'bg-blue-200 hover:bg-blue-300'
+                            ? 'bg-white w-6'
+                            : 'bg-white/30 hover:bg-white/50'
                         }`}
                         aria-label={`View testimonial ${index + 1}`}
                       />
@@ -320,10 +320,10 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
 
                   <button
                     onClick={goToNext}
-                    className='flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors'
+                    className='flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-colors'
                     aria-label='Next testimonial'
                   >
-                    <ChevronRight className='w-4 h-4 text-gray-600' />
+                    <ChevronRight className='w-4 h-4 text-white' />
                   </button>
                 </div>
               </div>
@@ -331,19 +331,19 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
           )}
 
           {/* Right Side - Calendly */}
-          <div className='w-full lg:w-3/5 bg-white touch-auto'>
-            <div className='p-4 lg:p-6 border-b border-gray-200'>
+          <div className='w-full lg:w-3/5 bg-[#0A0A0A] touch-auto'>
+            <div className='p-4 lg:p-6 border-b border-white/10'>
               <div className='flex items-center gap-4'>
                 <Avatar className='w-16 h-16'>
                   <AvatarImage src='/ivan-headshot.png' alt='Ivan' />
                   <AvatarFallback>I</AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className='text-xl lg:text-2xl font-bold text-gray-900'>
+                  <h3 className='text-xl lg:text-2xl font-bold text-white'>
                     Book Demo with Ivan
                   </h3>
-                  <div className='text-gray-600 text-sm'>Founder & CEO</div>
-                  <div className='text-gray-500 text-xs mt-1'>
+                  <div className='text-white/60 text-sm'>Founder & CEO</div>
+                  <div className='text-white/50 text-xs mt-1'>
                     I'll personally walk you through how Lancer can transform
                     your Upwork success
                   </div>
@@ -353,13 +353,13 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
               {/* Social Media Row */}
               <div className='mt-3'>
                 <div className='flex items-center gap-3'>
-                  <span className='text-gray-500 text-xs'>Find him on:</span>
+                  <span className='text-white/50 text-xs'>Find him on:</span>
                   <div className='flex gap-3'>
                     <a
                       href='https://www.linkedin.com/in/ivan-nedlekovski/'
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='text-gray-600 hover:text-blue-600 transition-colors'
+                      className='text-white/60 hover:text-blue-400 transition-colors'
                     >
                       <Linkedin className='w-5 h-5' />
                     </a>
@@ -367,7 +367,7 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
                       href='https://www.instagram.com/nedelkov.ski/'
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='text-gray-600 hover:text-pink-600 transition-colors'
+                      className='text-white/60 hover:text-pink-400 transition-colors'
                     >
                       <Instagram className='w-5 h-5' />
                     </a>
@@ -375,7 +375,7 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
                       href='https://www.youtube.com/@ivan.nedelkovski'
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='text-gray-600 hover:text-red-600 transition-colors'
+                      className='text-white/60 hover:text-red-400 transition-colors'
                     >
                       <Youtube className='w-5 h-5' />
                     </a>
@@ -383,7 +383,7 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
                       href='https://www.nedelkov.ski/'
                       target='_blank'
                       rel='noopener noreferrer'
-                      className='text-gray-600 hover:text-gray-700 transition-colors'
+                      className='text-white/60 hover:text-white/80 transition-colors'
                     >
                       <Globe className='w-5 h-5' />
                     </a>
@@ -392,13 +392,13 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
               </div>
             </div>
 
-            <div className='p-0 min-h-[520px] lg:min-h-[520px] relative z-10 touch-auto'>
+            <div className='p-0 min-h-[520px] lg:min-h-[520px] relative z-10 touch-auto bg-white'>
               <CalendlyEmbed
                 url='https://calendly.com/ivan-mvp/lancer-1-1-demo-call'
                 minimal={true}
                 height={520}
                 backgroundColor='ffffff'
-                primaryColor='3b82f6'
+                primaryColor='000000'
               />
             </div>
           </div>
