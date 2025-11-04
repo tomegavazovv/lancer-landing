@@ -1,6 +1,7 @@
+import { useInView } from '@/hooks/use-in-view';
 import { Play, Shield } from 'lucide-react';
 import Image from 'next/image';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from './button';
 import { VideoModal } from './video-modal';
 
@@ -36,6 +37,13 @@ export function FeatureCard({
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Use the intersection observer hook with 300px offset
+  const { ref: containerRef, isInView } = useInView<HTMLDivElement>({
+    threshold: 0,
+    rootMargin: '-300px 0px -300px 0px', // Element must be 300px into viewport to trigger
+    triggerOnce: false, // Keep observing so video pauses when out of view
+  });
+
   // Check if the image is a GIF
   const isGif = imageSrc.toLowerCase().endsWith('.gif');
 
@@ -49,28 +57,24 @@ export function FeatureCard({
     }
   };
 
-  // Handle hover to play/pause video
-  const handleMouseEnter = () => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 1.25; // Speed up by 1.25x
-      videoRef.current.play();
-    }
-  };
+  // Auto-play/pause video based on visibility
+  useEffect(() => {
+    if (!videoRef.current) return;
 
-  const handleMouseLeave = () => {
-    if (videoRef.current) {
+    if (isInView) {
+      videoRef.current.playbackRate = 1.25; // Speed up by 1.25x
+      videoRef.current.play().catch(() => {
+        // Handle autoplay failure silently
+      });
+    } else {
       videoRef.current.pause();
       videoRef.current.currentTime = 0; // Reset to start
     }
-  };
+  }, [isInView]);
 
   return (
-    <div className={className}>
-      <div
-        className='relative max-w-7xl border-[3px] border-white/20 py-6 px-6 md:py-10 md:px-10 rounded-xl overflow-hidden bg-black/40 backdrop-blur-sm'
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+    <div className={className} ref={containerRef}>
+      <div className='relative max-w-7xl border-[3px] border-white/20 py-6 px-6 md:py-10 md:px-10 rounded-xl overflow-hidden bg-black/40 backdrop-blur-sm'>
         <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-0'>
           {/* Video/Image - Shows first on mobile, second on desktop */}
           <div className='order-1 md:order-2 md:flex-[0.4] flex justify-center w-full'>
