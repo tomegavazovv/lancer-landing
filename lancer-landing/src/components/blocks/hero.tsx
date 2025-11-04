@@ -1,12 +1,10 @@
 'use client';
 
 import { AnimatedGroup } from '@/components/ui/animated-group';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { BackgroundSnippets } from '@/components/ui/background-snippets';
+import { Button } from '@/components/ui/button';
 import { SparklesText } from '@/components/ui/sparkles-text';
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-import { Info, Play } from 'lucide-react';
+import { Play } from 'lucide-react';
 import Image from 'next/image';
 
 const transitionVariants = {
@@ -35,8 +33,8 @@ interface HeroProps {
 
 export function Hero({ onVideoClick }: HeroProps) {
   return (
-    <section>
-      <div className='relative pt-4 md:pt-16'>
+    <section style={{ backgroundColor: '#0A0A0A' }}>
+      <div className='relative pt-4 md:pt-26'>
         <AnimatedGroup
           variants={{
             container: {
@@ -74,42 +72,42 @@ export function Hero({ onVideoClick }: HeroProps) {
         </AnimatedGroup>
         <div
           aria-hidden
-          className='absolute inset-0 -z-10 size-full [background:radial-gradient(125%_125%_at_50%_100%,transparent_0%,var(--background)_75%)]'
+          className='absolute inset-0 -z-10 size-full [background:radial-gradient(125%_125%_at_50%_100%,transparent_0%,#0A0A0A_75%)]'
         />
         <div className='mx-auto max-w-7xl px-6'>
-          <div className='text-center sm:mx-auto lg:mr-auto lg:mt-0'>
+          <div className='text-center sm:mx-auto lg:mr-auto mt-20'>
             <AnimatedGroup variants={transitionVariants}>
-              <div className='mt-8 lg:mt-16'>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Badge
-                      variant='secondary'
-                      className='mb-6 px-3 py-2 text-xs md:text-sm font-medium border-0 rounded-full cursor-help inline-flex items-center gap-1 max-w-full'
-                      style={{
-                        backgroundColor: '#d9f99d',
-                        color: '#000000',
-                      }}
-                    >
-                      <span className='truncate'>
-                        55% open rate. 33% reply rate. 12.5% win rate
-                      </span>
-                      <Info className='w-3 h-3 md:w-4 md:h-4 align-middle -mt-0.5 flex-shrink-0' />
-                    </Badge>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    Average conversion numbers from users running Lancer.
-                  </TooltipContent>
-                </Tooltip>
-              </div>
               <SparklesText
-                text='Land high-paying Upwork jobs on autopilot.'
+                text='Land Upwork jobs 24/7 Without The Grind.'
                 colors={{ first: '#9E7AFF', second: '#FE8BBB' }}
-                sparklesCount={12}
-                className='max-w-full md:max-w-6xl mx-auto text-balance text-5xl font-bold md:text-6xl md:font-semibold xl:text-[5.25rem]'
+                sparklesCount={8}
+                className='max-w-full md:max-w-6xl mx-auto text-balance text-5xl font-bold md:text-6xl md:font-semibold xl:text-[5.25rem] text-white'
               />
-              <p className='mx-auto mt-4 mb-8 max-w-full md:max-w-6xl text-balance text-lg md:text-xl text-muted-foreground font-normal'>
-                Lancer works 24/7, filters the crap, writes and sends winning
-                proposals for the right jobs in your name.
+              <p className='mx-auto mt-8 mb-8 max-w-[800px] text-balance text-2xl font-normal text-white/100'>
+                For{' '}
+                <span
+                  className='inline-block px-4 py-[2px] mx-1 rounded-full font-semibold'
+                  style={{
+                    backgroundColor: 'rgba(109, 40, 217, 0.25)',
+                    color: '#a78bfa',
+                    border: '1px solid rgba(109, 40, 217, 0.4)',
+                  }}
+                >
+                  freelancers
+                </span>{' '}
+                and{' '}
+                <span
+                  className='inline-block px-4 py-[2px] mx-1 rounded-full font-semibold'
+                  style={{
+                    backgroundColor: 'rgba(194, 65, 12, 0.25)',
+                    color: '#fb923c',
+                    border: '1px solid rgba(194, 65, 12, 0.4)',
+                  }}
+                >
+                  agencies
+                </span>{' '}
+                who want to automate their Upwork outreach and never miss an
+                opportunity.
               </p>
             </AnimatedGroup>
           </div>
@@ -128,7 +126,7 @@ export function Hero({ onVideoClick }: HeroProps) {
             ...transitionVariants,
           }}
         >
-          <div className='relative flex justify-center mt-4 px-2 sm:mr-0 sm:mt-8 md:mt-12 z-10 mb-16'>
+          <div className='relative flex justify-center mt-4 px-2 sm:mr-0 sm:mt-8 md:mt-12 z-10 pb-16'>
             <BackgroundSnippets />
             <div className='relative pt-8'>
               <div className='relative mx-auto max-w-6xl overflow-hidden rounded-2xl border border-border bg-white/80 dark:bg-muted/60 shadow-sm'>
@@ -173,4 +171,3 @@ export function Hero({ onVideoClick }: HeroProps) {
     </section>
   );
 }
-

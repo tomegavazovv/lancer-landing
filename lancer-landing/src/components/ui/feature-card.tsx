@@ -1,7 +1,6 @@
-import { CreditCard, Shield, Play } from 'lucide-react';
+import { Play, Shield } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button } from './button';
 import { VideoModal } from './video-modal';
 
@@ -35,10 +34,11 @@ export function FeatureCard({
   videoUrl,
 }: FeatureCardProps) {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   // Check if the image is a GIF
   const isGif = imageSrc.toLowerCase().endsWith('.gif');
-  
+
   // Handle video button click
   const handleVideoClick = () => {
     if (isVideo) {
@@ -49,18 +49,37 @@ export function FeatureCard({
     }
   };
 
+  // Handle hover to play/pause video
+  const handleMouseEnter = () => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 1.25; // Speed up by 1.25x
+      videoRef.current.play();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0; // Reset to start
+    }
+  };
+
   return (
     <div className={className}>
-      <div className='relative max-w-7xl border-1 border-gray-200 py-6 px-6 md:py-10 md:px-10 rounded-xl overflow-hidden bg-white/50 backdrop-blur-sm'>
+      <div
+        className='relative max-w-7xl border-[3px] border-white/20 py-6 px-6 md:py-10 md:px-10 rounded-xl overflow-hidden bg-black/40 backdrop-blur-sm'
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-0'>
           {/* Video/Image - Shows first on mobile, second on desktop */}
           <div className='order-1 md:order-2 md:flex-[0.4] flex justify-center w-full'>
-            <div className='relative rounded-xl overflow-hidden w-full md:max-w-none border border-gray-300'>
+            <div className='relative rounded-xl overflow-hidden w-full md:max-w-none border border-white/20'>
               {isVideo ? (
                 <video
+                  ref={videoRef}
                   src={imageSrc}
                   className='object-cover rounded-xl w-full h-auto'
-                  autoPlay
                   loop
                   muted
                   playsInline
@@ -80,11 +99,13 @@ export function FeatureCard({
               )}
             </div>
           </div>
-          
+
           {/* Text Content - Shows second on mobile, first on desktop */}
           <div className='order-2 md:order-1 flex flex-col gap-6 md:gap-10 md:flex-[0.6]'>
-            <h3 className='text-2xl md:text-3xl font-semibold'>{title}</h3>
-            <p className='text-base md:text-lg leading-relaxed text-muted-foreground'>
+            <h3 className='text-2xl md:text-3xl font-semibold text-white'>
+              {title}
+            </h3>
+            <p className='text-base md:text-lg leading-relaxed text-white/80'>
               {description}
             </p>
             <div className='flex flex-col sm:flex-row items-center sm:items-center gap-4 md:items-center'>
@@ -100,23 +121,27 @@ export function FeatureCard({
                 </Button>
               </div>
               {/* Desktop: Button with card wrapper */}
-              <div className='hidden md:block bg-foreground/10 rounded-xl border p-0.5'>
-                <Button onClick={handleVideoClick} size='lg' className='rounded-xl px-5 text-base'>
+              <div className='hidden md:block bg-white/10 rounded-xl border border-white/20 p-0.5'>
+                <Button
+                  onClick={handleVideoClick}
+                  size='lg'
+                  className='rounded-xl px-5 text-base'
+                >
                   {isVideo && <Play className='w-4 h-4 mr-2' />}
                   <span className='text-nowrap'>{buttonText}</span>
                 </Button>
               </div>
               {checkmarkText && (
                 <div className='flex items-center justify-center md:justify-start gap-2'>
-                  <Shield className='text-gray-400 h-5 w-5' />
-                  <span className='text-sm text-gray-700'>{checkmarkText}</span>
+                  <Shield className='text-white/60 h-5 w-5' />
+                  <span className='text-sm text-white/80'>{checkmarkText}</span>
                 </div>
               )}
             </div>
           </div>
         </div>
       </div>
-      
+
       {/* Video Modal */}
       <VideoModal
         isOpen={isVideoModalOpen}

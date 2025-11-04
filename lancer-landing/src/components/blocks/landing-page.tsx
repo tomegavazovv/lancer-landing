@@ -4,20 +4,18 @@ import React from 'react';
 import { CalendlyModal } from '../ui/calendly-modal';
 import { EmailModal } from '../ui/email-modal';
 import { VideoModal } from '../ui/video-modal';
-import { Footer } from './footer';
-import { Navbar } from './navbar';
-import { Hero } from './hero';
-import { StatisticsSection } from './statistics-section';
-import TrustedUsers from './trusted-users';
-import { LazySection } from '@/components/ui/lazy-section';
-import ConversionStats from './conversion-stats';
-import SalesPitch1 from './sales-pitch-1';
 import { Features } from './features';
+import { Footer } from './footer';
+import { Hero } from './hero';
+import { Navbar } from './navbar';
 import { PricingSection } from './pricing-section';
+import SalesPitch1 from './sales-pitch-1';
+import { StatisticsSection } from './statistics-section';
 import { Testimonials } from './testimonials';
+import TrustedUsers from './trusted-users';
 
 export function LandingPage() {
-  const [isOverDarkSection, setIsOverDarkSection] = React.useState(false);
+  const [isOverDarkSection, setIsOverDarkSection] = React.useState(true);
   const [isEmailModalOpen, setIsEmailModalOpen] = React.useState(false);
   const [isCalendlyModalOpen, setIsCalendlyModalOpen] = React.useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = React.useState(false);
@@ -40,29 +38,13 @@ export function LandingPage() {
         </div>
 
         <Hero onVideoClick={() => setIsVideoModalOpen(true)} />
-        <LazySection>
-          <StatisticsSection />
-        </LazySection>
-        <LazySection>
-          <TrustedUsers />
-        </LazySection>
-        <div className='hidden md:block'>
-          <LazySection>
-            <ConversionStats />
-          </LazySection>
-        </div>
-        <LazySection>
-          <SalesPitch1 />
-        </LazySection>
-        <LazySection>
-          <Features />
-        </LazySection>
-        <LazySection>
-          <Testimonials />
-        </LazySection>
-        <LazySection>
-          <PricingSection onBookDemo={() => setIsCalendlyModalOpen(true)} />
-        </LazySection>
+        <StatisticsSection />
+        <TrustedUsers />
+        <div className='hidden md:block'></div>
+        <Features />
+        <SalesPitch1 />
+        <Testimonials />
+        <PricingSection onBookDemo={() => setIsCalendlyModalOpen(true)} />
       </main>
 
       <Footer />
@@ -82,4 +64,3 @@ export function LandingPage() {
     </>
   );
 }
-

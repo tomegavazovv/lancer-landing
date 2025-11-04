@@ -1,11 +1,9 @@
-import React from 'react';
-import Image from 'next/image';
-import { Badge } from '@/components/ui/badge';
 import { useMediaQuery } from '@/hooks/use-media-query';
+import Image from 'next/image';
 
 export default function TrustedUsers() {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  
+
   // Responsive card dimensions
   const cardWidth = isMobile ? 336 : 480; // 30% smaller on mobile
   const cardHeight = isMobile ? 132 : 189; // 30% smaller on mobile
@@ -55,36 +53,34 @@ export default function TrustedUsers() {
   ];
 
   return (
-    <section className="bg-white py-16 px-4 md:px-0 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <Badge
-            variant="outline"
-            className="mb-4 px-4 py-2 text-sm font-medium rounded-full"
-          >
-            ⭐ Trusted Users
-          </Badge>
-          <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4'>
+    <section
+      className='py-16 px-4 md:px-0 overflow-hidden'
+      style={{ backgroundColor: '#0A0A0A' }}
+    >
+      <div className='max-w-7xl mx-auto'>
+        <div className='text-center mb-12'>
+          <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4 text-white'>
             Trusted by the top 1% of Upwork
           </h2>
-          <p className='max-w-[700px] mx-auto text-muted-foreground md:text-xl/relaxed'>
-            You are in good company. Lancer is used by top-performing Upwork users to win deals, across different niches, worldwide.
+          <p className='max-w-[700px] mx-auto md:text-xl/relaxed text-white/80'>
+            You are in good company. Lancer is used by top-performing Upwork
+            users to win deals, across different niches, worldwide.
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className='space-y-6'>
           {/* Row 1: Scrolls left-to-right */}
-          <div className="relative">
-            <div className="flex gap-4 animate-scroll-ltr">
+          <div className='relative'>
+            <div className='flex gap-4 animate-scroll-ltr'>
               {/* Duplicate cards for seamless infinite scroll */}
               {row1Cards.map((card, index) => (
-                <div key={`row1-${index}`} className="flex-shrink-0">
+                <div key={`row1-${index}`} className='flex-shrink-0'>
                   <Image
                     src={card}
                     alt={`New card variant ${index + 1}`}
                     width={cardWidth}
                     height={cardHeight}
-                    className="rounded-lg"
+                    className='rounded-lg'
                   />
                 </div>
               ))}
@@ -92,17 +88,17 @@ export default function TrustedUsers() {
           </div>
 
           {/* Row 2: Scrolls right-to-left (opposite direction) */}
-          <div className="relative">
-            <div className="flex gap-4 animate-scroll-rtl">
+          <div className='relative'>
+            <div className='flex gap-4 animate-scroll-rtl'>
               {/* Duplicate cards for seamless infinite scroll */}
               {row2Cards.map((card, index) => (
-                <div key={`row2-${index}`} className="flex-shrink-0">
+                <div key={`row2-${index}`} className='flex-shrink-0'>
                   <Image
                     src={card}
                     alt={`New card variant ${index + 1}`}
                     width={cardWidth}
                     height={cardHeight}
-                    className="rounded-lg"
+                    className='rounded-lg'
                   />
                 </div>
               ))}
@@ -110,17 +106,17 @@ export default function TrustedUsers() {
           </div>
 
           {/* Row 3: Scrolls left-to-right */}
-          <div className="relative">
-            <div className="flex gap-4 animate-scroll-ltr">
+          <div className='relative'>
+            <div className='flex gap-4 animate-scroll-ltr'>
               {/* Duplicate cards for seamless infinite scroll */}
               {row3Cards.map((card, index) => (
-                <div key={`row3-${index}`} className="flex-shrink-0">
+                <div key={`row3-${index}`} className='flex-shrink-0'>
                   <Image
                     src={card}
                     alt={`New card variant ${index + 1}`}
                     width={cardWidth}
                     height={cardHeight}
-                    className="rounded-lg"
+                    className='rounded-lg'
                   />
                 </div>
               ))}
@@ -131,4 +127,3 @@ export default function TrustedUsers() {
     </section>
   );
 }
-

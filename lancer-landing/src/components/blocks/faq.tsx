@@ -24,14 +24,7 @@ interface FaqSectionProps extends React.HTMLAttributes<HTMLElement> {
 const FaqSection = React.forwardRef<HTMLElement, FaqSectionProps>(
   ({ className, title, description, items, contactInfo, ...props }, ref) => {
     return (
-      <section
-        ref={ref}
-        className={cn(
-          'py-2 w-full bg-gradient-to-b from-transparent via-muted/50 to-transparent',
-          className
-        )}
-        {...props}
-      >
+      <section ref={ref} className={cn('py-2 w-full', className)} {...props}>
         <div className='container'>
           {/* Header */}
           <motion.div
@@ -40,11 +33,9 @@ const FaqSection = React.forwardRef<HTMLElement, FaqSectionProps>(
             transition={{ duration: 0.5 }}
             className='max-w-2xl mx-auto text-center mb-12'
           >
-            <h2 className='text-3xl font-semibold mb-3 bg-gradient-to-r from-foreground via-foreground/80 to-foreground bg-clip-text text-transparent'>
-              {title}
-            </h2>
+            <h2 className='text-3xl font-semibold mb-3 text-white'>{title}</h2>
             {description && (
-              <p className='text-sm text-muted-foreground'>{description}</p>
+              <p className='text-sm text-white/80'>{description}</p>
             )}
           </motion.div>
 
@@ -110,10 +101,8 @@ const FaqItem = React.forwardRef<
       className={cn(
         'group rounded-lg',
         'transition-all duration-200 ease-in-out',
-        'border border-border/50',
-        isOpen
-          ? 'bg-gradient-to-br from-background via-muted/50 to-background'
-          : 'hover:bg-muted/50'
+        'border border-white/10',
+        isOpen ? 'bg-white/5' : 'hover:bg-white/5'
       )}
     >
       <Button
@@ -124,9 +113,9 @@ const FaqItem = React.forwardRef<
         <h3
           className={cn(
             'text-sm sm:text-base font-medium transition-colors duration-200 text-left',
-            'text-foreground/70 break-words pr-2 flex-1 min-w-0',
+            'text-white/70 break-words pr-2 flex-1 min-w-0',
             'whitespace-normal overflow-wrap-anywhere leading-snug',
-            isOpen && 'text-foreground'
+            isOpen && 'text-white'
           )}
         >
           {question}
@@ -140,7 +129,7 @@ const FaqItem = React.forwardRef<
           className={cn(
             'p-0.5 rounded-full flex-shrink-0 ml-2 mt-0.5',
             'transition-colors duration-200',
-            isOpen ? 'text-primary' : 'text-muted-foreground'
+            isOpen ? 'text-white' : 'text-white/60'
           )}
         >
           <ChevronDown className='h-3 w-3 sm:h-4 sm:w-4' />
@@ -166,7 +155,7 @@ const FaqItem = React.forwardRef<
                 initial={{ y: -10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -10, opacity: 0 }}
-                className='text-sm text-muted-foreground leading-relaxed break-words hyphens-auto overflow-wrap-anywhere'
+                className='text-sm text-white/80 leading-relaxed break-words hyphens-auto overflow-wrap-anywhere'
               >
                 {answer}
               </motion.p>

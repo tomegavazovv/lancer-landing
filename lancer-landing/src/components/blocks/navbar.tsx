@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
+import { CTAButton } from '../ui/cta-button';
 import { LogoIcon } from '../ui/logo-icon';
 
 const menuItems = [
@@ -43,7 +44,7 @@ export function Navbar({
           className={cn(
             'mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12',
             isScrolled &&
-              'bg-background/50 max-w-4xl rounded-2xl border backdrop-blur-lg lg:px-5'
+              'bg-black/50 max-w-4xl rounded-2xl border border-white/10 backdrop-blur-lg lg:px-5'
           )}
         >
           <div className='relative flex items-center justify-between gap-6 py-3 lg:py-4'>
@@ -67,10 +68,7 @@ export function Navbar({
                   <li key={index}>
                     <Link
                       href={item.href}
-                      className={cn(
-                        'text-muted-foreground hover:text-accent-foreground block duration-150',
-                        isOverDarkSection && 'text-white/80 hover:text-white'
-                      )}
+                      className='text-white/80 hover:text-white block duration-150'
                     >
                       <span>{item.name}</span>
                     </Link>
@@ -81,36 +79,9 @@ export function Navbar({
 
             {/* Desktop: Navigation buttons */}
             <div className='hidden lg:flex gap-1'>
-              <Button
-                size='sm'
-                variant='outline'
-                className={cn(isScrolled && 'lg:hidden')}
-                onClick={onGetStarted}
-              >
-                <span>Log In</span>
-              </Button>
-              <Button
-                size='sm'
-                variant='outline'
-                className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
-                onClick={onGetStarted}
-              >
-                <span>Log In</span>
-              </Button>
-              <Button
-                size='sm'
-                className={cn(isScrolled && 'lg:hidden')}
-                onClick={onBookDemo}
-              >
-                <span>Demo With Founder</span>
-              </Button>
-              <Button
-                size='sm'
-                className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}
-                onClick={onBookDemo}
-              >
-                <span>Demo</span>
-              </Button>
+              <CTAButton size='sm' onClick={onGetStarted}>
+                <span className='text-nowrap'>Get Started</span>
+              </CTAButton>
             </div>
 
             {/* Mobile: Hamburger menu button */}
@@ -119,10 +90,7 @@ export function Navbar({
                 variant='ghost'
                 size='sm'
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={cn(
-                  'text-muted-foreground hover:text-accent-foreground',
-                  isOverDarkSection && 'text-white/80 hover:text-white'
-                )}
+                className='text-white/80 hover:text-white'
               >
                 {isMobileMenuOpen ? (
                   <X className='w-5 h-5' />
@@ -135,7 +103,7 @@ export function Navbar({
 
           {/* Mobile: Navigation menu */}
           {isMobileMenuOpen && (
-            <div className='lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-lg border-t border-border mt-2 rounded-b-2xl shadow-lg'>
+            <div className='lg:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-lg border-t border-white/10 mt-2 rounded-b-2xl shadow-lg'>
               <div className='px-6 py-4 space-y-4'>
                 {/* Mobile menu items */}
                 <ul className='space-y-3'>
@@ -143,10 +111,7 @@ export function Navbar({
                     <li key={index}>
                       <Link
                         href={item.href}
-                        className={cn(
-                          'text-muted-foreground hover:text-accent-foreground block py-2 duration-150',
-                          isOverDarkSection && 'text-white/80 hover:text-white'
-                        )}
+                        className='text-white/80 hover:text-white block py-2 duration-150'
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         <span>{item.name}</span>
@@ -156,28 +121,10 @@ export function Navbar({
                 </ul>
 
                 {/* Mobile action buttons */}
-                <div className='flex flex-col gap-2 pt-4 border-t border-border'>
-                  <Button
-                    size='sm'
-                    variant='outline'
-                    onClick={() => {
-                      onGetStarted();
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className='w-full'
-                  >
-                    <span>Log In</span>
-                  </Button>
-                  <Button
-                    size='sm'
-                    onClick={() => {
-                      onBookDemo();
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className='w-full'
-                  >
-                    <span>Demo With Founder</span>
-                  </Button>
+                <div className='flex flex-col gap-2 pt-4 border-t border-white/10'>
+                  <CTAButton onClick={onGetStarted}>
+                    <span className='text-nowrap'>Get Started</span>
+                  </CTAButton>
                 </div>
               </div>
             </div>
@@ -187,4 +134,3 @@ export function Navbar({
     </header>
   );
 }
-

@@ -111,27 +111,32 @@ export const Highlight = ({
 }: {
   children: React.ReactNode;
   className?: string;
-  variant?: 'default' | 'blue' | 'green' | 'orange' | 'pink' | 'purple' | 'red' | 'yellow' | 'teal';
+  variant?:
+    | 'default'
+    | 'blue'
+    | 'green'
+    | 'orange'
+    | 'pink'
+    | 'purple'
+    | 'red'
+    | 'yellow'
+    | 'teal';
 }) => {
   const colorVariants = {
     default:
-      'from-indigo-200 to-purple-200 dark:from-indigo-300 dark:to-purple-300',
-    blue:
-      'from-blue-200 to-cyan-200 dark:from-blue-300 dark:to-cyan-300',
+      'from-indigo-700 to-purple-700 dark:from-indigo-600 dark:to-purple-600',
+    blue: 'from-blue-700 to-cyan-700 dark:from-blue-600 dark:to-cyan-600',
     green:
-      'from-green-200 to-emerald-200 dark:from-green-300 dark:to-emerald-300',
+      'from-green-700 to-emerald-700 dark:from-green-600 dark:to-emerald-600',
     orange:
-      'from-orange-200 to-amber-200 dark:from-orange-300 dark:to-amber-300',
-    pink:
-      'from-pink-200 to-rose-200 dark:from-pink-300 dark:to-rose-300',
+      'from-orange-700 to-amber-700 dark:from-orange-600 dark:to-amber-600',
+    pink: 'from-pink-700 to-rose-700 dark:from-pink-600 dark:to-rose-600',
     purple:
-      'from-purple-200 to-violet-200 dark:from-purple-300 dark:to-violet-300',
-    red:
-      'from-red-200 to-rose-200 dark:from-red-300 dark:to-rose-300',
+      'from-purple-700 to-violet-700 dark:from-purple-600 dark:to-violet-600',
+    red: 'from-red-700 to-rose-700 dark:from-red-600 dark:to-rose-600',
     yellow:
-      'from-yellow-200 to-amber-100 dark:from-yellow-300 dark:to-amber-200',
-    teal:
-      'from-teal-200 to-cyan-100 dark:from-teal-300 dark:to-cyan-200',
+      'from-yellow-700 to-amber-700 dark:from-yellow-600 dark:to-amber-600',
+    teal: 'from-teal-700 to-cyan-700 dark:from-teal-600 dark:to-cyan-600',
   };
 
   return (

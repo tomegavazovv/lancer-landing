@@ -41,8 +41,7 @@ const faqData = [
       "Yes. You're always in control. You can play around with Lancer's outputs until you are satisfied. However, once you are confident in it's performance we recommend letting Lancer do it's thing on auto-pilot.",
   },
   {
-    question:
-      'What types of freelancers benefit most from Upwork automation?',
+    question: 'What types of freelancers benefit most from Upwork automation?',
     answer:
       'Lancer is best suited for: Solo freelancers who want to save time and focus on client work, Agencies who need to scale outreach across multiple accounts, Anyone tired of writing repetitive proposals but still wants to win top jobs.',
   },
@@ -50,20 +49,12 @@ const faqData = [
 
 export function FaqWrapper() {
   return (
-    <div className='relative mx-auto max-w-7xl px-6 mb-10'>
+    <div className='relative mx-auto max-w-7xl px-6 pb-10'>
       {/* Gradient transition from testimonials to FAQ */}
       <div
         className='absolute inset-0 -z-10'
         style={{
-          background: `
-            linear-gradient(to bottom, 
-              transparent 0%, 
-              rgba(255, 255, 255, 0.1) 20%, 
-              rgba(255, 255, 255, 0.3) 40%, 
-              rgba(255, 255, 255, 0.8) 60%, 
-              rgba(255, 255, 255, 1) 80%
-            )
-          `,
+          background: 'transparent',
         }}
       />
       <AnimatedGroup preset='blur-slide' threshold={0.2} rootMargin='-50px'>
@@ -76,4 +67,3 @@ export function FaqWrapper() {
     </div>
   );
 }
-

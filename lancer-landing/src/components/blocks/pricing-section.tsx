@@ -1,7 +1,7 @@
 'use client';
 
-import { TwoTierPricing } from './two-tier-pricing';
 import { FaqWrapper } from './faq-wrapper';
+import { TwoTierPricing } from './two-tier-pricing';
 
 interface PricingSectionProps {
   onBookDemo: () => void;
@@ -9,10 +9,9 @@ interface PricingSectionProps {
 
 export function PricingSection({ onBookDemo }: PricingSectionProps) {
   return (
-    <section className='relative bg-gradient-to-b from-background via-muted/20 to-background'>
+    <section className='relative' style={{ backgroundColor: '#0A0A0A' }}>
       <TwoTierPricing onBookDemo={onBookDemo} />
       <FaqWrapper />
     </section>
   );
 }
-
