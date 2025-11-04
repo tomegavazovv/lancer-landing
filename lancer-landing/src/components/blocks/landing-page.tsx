@@ -38,12 +38,12 @@ export function LandingPage() {
         </div>
 
         <Hero onVideoClick={() => setIsVideoModalOpen(true)} />
-        <StatisticsSection />
         <TrustedUsers />
         <div className='hidden md:block'></div>
         <Features />
         <SalesPitch1 />
         <Testimonials />
+        <StatisticsSection />
         <PricingSection onBookDemo={() => setIsCalendlyModalOpen(true)} />
       </main>
 

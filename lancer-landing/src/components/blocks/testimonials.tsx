@@ -433,10 +433,10 @@ export function Testimonials() {
             ⭐ Testimonials
           </Badge>
           <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4 text-white'>
-            Trusted by Top Freelancers & Agencies
+            What our users have to say about us
           </h2>
           <p className='max-w-[700px] mx-auto md:text-xl/relaxed text-white/80'>
-            See what our users have to say about Lancer
+            Trusted by Top Freelancers & Agencies
           </p>
         </AnimatedGroup>
 
