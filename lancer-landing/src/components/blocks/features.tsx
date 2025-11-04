@@ -157,7 +157,7 @@ export function Features() {
         <div>
           <Badge
             variant='outline'
-            className='text-md py-2 px-4 flex items-center gap-2 rounded-full border-white/20 text-[#D94C58]'
+            className='text-md py-2 px-4 flex items-center gap-2 rounded-full border-[#D94C58] text-[#D94C58]'
           >
             <Sparkles className='w-[32px] h-[32px]' />
             <span>Enhanced Features</span>

@@ -11,6 +11,7 @@ import {
   Award,
   Bell,
   Bot,
+  Building2,
   CreditCard,
   FileText,
   Infinity,
@@ -23,6 +24,7 @@ import {
   Slack,
   Sparkles,
   TrendingUp,
+  Users,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -35,18 +37,31 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
     'monthly' | 'quarterly' | 'yearly'
   >('yearly');
 
+  // Calculate Light pricing based on billing cycle
+  const getLightPrice = () => {
+    switch (billingCycle) {
+      case 'monthly':
+        return { price: 299, label: 'per month' };
+      case 'quarterly':
+        return { price: 254, label: 'per month', savings: '15% off' };
+      case 'yearly':
+        return { price: 209, label: 'per month', savings: '30% off' };
+    }
+  };
+
   // Calculate Unlimited pricing based on billing cycle
   const getUnlimitedPrice = () => {
     switch (billingCycle) {
       case 'monthly':
         return { price: 499, label: 'per month' };
       case 'quarterly':
-        return { price: 399, label: 'per month', savings: '20% off' };
+        return { price: 424, label: 'per month', savings: '15% off' };
       case 'yearly':
-        return { price: 299, label: 'per month', savings: '40% off' };
+        return { price: 349, label: 'per month', savings: '30% off' };
     }
   };
 
+  const lightPrice = getLightPrice();
   const unlimitedPrice = getUnlimitedPrice();
 
   // Features for each tier with icons and tooltips
@@ -108,12 +123,43 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
     },
   ];
 
+  const lightFeatures = [
+    {
+      text: '250 Proposals each month',
+      icon: MessageSquare,
+      tooltip:
+        'Send up to 250 AI-generated proposals per month, then pay per additional proposal.',
+    },
+    {
+      text: '2 Connected Accounts',
+      icon: Users,
+      tooltip: 'Connect and manage up to 2 Upwork accounts simultaneously.',
+    },
+    {
+      text: 'Priority Support Over Slack',
+      icon: Slack,
+      tooltip: 'Get priority support and direct access to our team via Slack.',
+    },
+  ];
+
   const unlimitedBaseFeatures = [
     {
       text: 'Unlimited Proposals',
       icon: Infinity,
       tooltip:
         'Send as many proposals as you want without any limits or extra charges.',
+    },
+    {
+      text: 'Unlimited Connected Accounts',
+      icon: Users,
+      tooltip:
+        'Connect and manage unlimited Upwork accounts from a single dashboard.',
+    },
+    {
+      text: 'Unlimited Agency Profiles',
+      icon: Building2,
+      tooltip:
+        'Create and manage unlimited agency profiles to scale your operations.',
     },
     {
       text: 'Priority Support Over Slack',
@@ -125,7 +171,6 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
       icon: Award,
       tooltip:
         'Personal 1-on-1 setup session to optimize your campaigns for success.',
-      disabled: billingCycle === 'monthly',
     },
   ];
 
@@ -187,7 +232,7 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                   )}
                   style={{ color: '#d94c58' }}
                 >
-                  20% off
+                  15% off
                 </span>
               </button>
               <button
@@ -207,19 +252,19 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                   )}
                   style={{ color: '#d94c58' }}
                 >
-                  40% off
+                  30% off
                 </span>
               </button>
             </div>
           </div>
 
           <p className='text-xs text-center mt-3 text-white/60'>
-            Only applicable to the Unlimited tier
+            Applicable to Light and Unlimited tiers
           </p>
         </div>
 
-        {/* Two-Tier Pricing Cards */}
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto'>
+        {/* Three-Tier Pricing Cards */}
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto'>
           {/* Pay-As-You-Go Card */}
           <div className='rounded-2xl border-2 border-white/10 p-8 bg-white/5 backdrop-blur-sm flex flex-col transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-white/30 relative'>
             <div className='flex-1'>
@@ -236,9 +281,15 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               </div>
 
               <p className='text-sm mb-6 text-white/80'>
-                Built for the top 10% freelancers looking to automate their
-                Upwork outreach and win more deals on auto-pilot.
+                Perfect for those with lower proposal volume or wanting to test
+                out Lancer before scaling up their outreach.
               </p>
+
+              <div className='mb-6 p-2 rounded-lg bg-green-500/10 border border-green-500/20'>
+                <p className='text-xs font-medium text-green-400 text-center'>
+                  Extra proposals: $1.99 each
+                </p>
+              </div>
 
               <hr className='my-6 border-white/10' />
 
@@ -283,6 +334,104 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
             </p>
           </div>
 
+          {/* Light Card */}
+          <div className='rounded-2xl border-2 border-white/10 p-8 bg-white/5 backdrop-blur-sm flex flex-col transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-white/30 relative'>
+            <div className='flex-1'>
+              {/* Title and Price on same row */}
+              <div className='flex items-start justify-between mb-4'>
+                <h3 className='text-2xl font-bold text-white'>💡 Light</h3>
+                <div className='text-right'>
+                  {lightPrice.savings ? (
+                    <div className='flex items-center gap-2'>
+                      <span className='text-lg text-white/60 line-through'>
+                        $299/mo
+                      </span>
+                      <span
+                        className='text-xl font-bold whitespace-nowrap'
+                        style={{ color: '#16a34a' }}
+                      >
+                        ${lightPrice.price}/mo
+                      </span>
+                    </div>
+                  ) : (
+                    <span className='text-xl font-bold text-white whitespace-nowrap'>
+                      ${lightPrice.price}/mo
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Savings Message */}
+              {lightPrice.savings && (
+                <div className='mb-4'>
+                  <p className='text-sm font-semibold text-white'>
+                    💰 Save{' '}
+                    <span style={{ color: '#16a34a' }}>
+                      {billingCycle === 'quarterly' ? '$135' : '$1,080'}
+                    </span>{' '}
+                    with {billingCycle} billing
+                  </p>
+                </div>
+              )}
+
+              <p className='text-sm text-white/80 mb-6'>
+                Perfect for freelancers or smaller agencies who are gaining
+                momentum and looking to scale their outreach.
+              </p>
+
+              <div className='mb-6 p-2 rounded-lg bg-green-500/10 border border-green-500/20'>
+                <p className='text-xs font-medium text-green-400 text-center'>
+                  Extra proposals: $1.49 each
+                </p>
+              </div>
+
+              <hr className='my-6 border-white/10' />
+
+              <p className='text-sm font-medium mb-3 text-white'>
+                Everything in Pay-As-You-Go plus:
+              </p>
+
+              <ul className='space-y-3 mb-8'>
+                {lightFeatures.map((feature, idx) => {
+                  const Icon = feature.icon;
+                  return (
+                    <li key={idx} className='flex items-start gap-3'>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className='h-4 w-4 text-white/60 flex-shrink-0 cursor-help mt-0.5' />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className='max-w-xs'>{feature.tooltip}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                      <span className='text-sm flex-1 text-white/90'>
+                        {feature.text}
+                      </span>
+                      <div className='ml-auto'>
+                        <Icon className='h-5 w-5 text-white/60 flex-shrink-0' />
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            <CTAButton
+              size='lg'
+              variant='primary'
+              className='w-full'
+              onClick={() => window.open('https://1.lancer.app', '_blank')}
+            >
+              <Rocket className='h-5 w-5' />
+              Start Now
+            </CTAButton>
+            <p className='text-xs text-center mt-3 text-white/60'>
+              {lightPrice.savings
+                ? `$${lightPrice.price}/mo • $1.49 per after 250 proposals`
+                : `$299/mo • $1.49 per after 250 proposals`}
+            </p>
+          </div>
+
           {/* Unlimited Card */}
           <div className='rounded-2xl border-2 border-white/10 p-8 bg-white/5 backdrop-blur-sm flex flex-col transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-white/30'>
             {/* Billing Cycle Toggle - Inside card (Mobile only) */}
@@ -316,7 +465,7 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                     )}
                     style={{ color: '#d94c58' }}
                   >
-                    20%
+                    15%
                   </span>
                 </button>
                 <button
@@ -336,7 +485,7 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                     )}
                     style={{ color: '#d94c58' }}
                   >
-                    40%
+                    30%
                   </span>
                 </button>
               </div>
@@ -376,7 +525,7 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                   <p className='text-sm font-semibold text-white'>
                     💰 Save{' '}
                     <span style={{ color: '#16a34a' }}>
-                      {billingCycle === 'quarterly' ? '$300' : '$2,400'}
+                      {billingCycle === 'quarterly' ? '$225' : '$1,800'}
                     </span>{' '}
                     with {billingCycle} billing
                   </p>
@@ -384,8 +533,8 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               )}
 
               <p className='text-sm text-white/80 mb-6'>
-                Created for the top 1% freelancer and agencies earning over
-                $100,000/yr. looking to run campaigns with no limits.
+                Created for the top 10% freelancers and agencies earning over
+                $100,000/yr looking to run campaigns with no limits.
               </p>
 
               <hr className='my-6 border-white/10' />
@@ -397,15 +546,8 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               <ul className='space-y-3 mb-8'>
                 {unlimitedFeatures.map((feature, idx) => {
                   const Icon = feature.icon;
-                  const isDisabled = feature.disabled;
                   return (
-                    <li
-                      key={idx}
-                      className={cn(
-                        'flex items-start gap-3',
-                        isDisabled && 'opacity-40'
-                      )}
-                    >
+                    <li key={idx} className='flex items-start gap-3'>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Info className='h-4 w-4 text-white/60 flex-shrink-0 cursor-help mt-0.5' />
