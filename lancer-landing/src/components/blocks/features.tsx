@@ -30,7 +30,7 @@ const featuresData = [
       </>
     ),
     description:
-      "Static filters aren't enough. Even if you filter for keywords, most jobs still won't be right for you. Lancer's AI suitability layer analyzes each job posting to determine true compatibility with your skills and preferences.",
+      "Create unlimited hyper-targeted campaigns with advanced Upwork filters that don't exist elsewhere—client hire ratios, spending history, screening questions, and more.",
     buttonText: 'Play Video',
     buttonHref: '#pricing',
     imageSrc:
@@ -62,7 +62,7 @@ const featuresData = [
       </>
     ),
     description:
-      'Lancer connects to your agency manager account and handles the entire bidding process. From job analysis to proposal submission—your Upwork outreach runs completely hands-free while you focus on delivering work.',
+      'Stay in control wherever you are. Get instant push notifications via Discord/Slack for qualified jobs. Approve or reject proposals on your phone with manual approval mode, or set auto-apply delays. Get alerts when you run out of connects or bidding fails—never miss a high-quality opportunity.',
     buttonText: 'Play Video',
     buttonHref: '#pricing',
     imageSrc:
@@ -78,7 +78,7 @@ const featuresData = [
       </>
     ),
     description:
-      'Track performance across multiple campaigns and accounts. Get detailed analytics on proposal success rates, instant notifications for new opportunities, and manage everything from one dashboard.',
+      'Take full control of your outreach. Review all leads across campaigns in one overview, manually edit proposals, boost high-quality jobs, schedule bids for optimal timing, and reject unsuitable leads and more.',
     buttonText: 'Play Video',
     buttonHref: '#pricing',
     imageSrc:
@@ -110,7 +110,7 @@ const featuresData = [
       </>
     ),
     description:
-      'Track performance across multiple campaigns and accounts. Get detailed analytics on proposal success rates, instant notifications for new opportunities, and manage everything from one dashboard.',
+      'Master Upwork success with expert onboarding videos. Learn how to transform campaigns from 6% to 25% reply rates through optimal profile setup, compelling offers, and proper Lancer configuration.',
     buttonText: 'Play Video',
     buttonHref: '#pricing',
     imageSrc:
