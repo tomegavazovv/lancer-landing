@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { motion, Variants } from 'framer-motion';
+import { motion, TargetAndTransition, Variants } from 'framer-motion';
 import React, { ReactNode } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -60,14 +60,14 @@ export function LazySection({
   return (
     <motion.div
       ref={ref}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
+      initial='hidden'
+      animate={inView ? 'visible' : 'hidden'}
       variants={{
         ...fadeInVariants,
         visible: {
           ...fadeInVariants.visible,
           transition: {
-            ...fadeInVariants.visible!.transition,
+            ...(fadeInVariants.visible as TargetAndTransition).transition,
             delayChildren: delay,
           },
         },
@@ -82,4 +82,3 @@ export function LazySection({
     </motion.div>
   );
 }
-

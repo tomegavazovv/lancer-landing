@@ -5,35 +5,24 @@ import { FaqSection } from './faq';
 
 const faqData = [
   {
-    question: "What's the best way to win more jobs on Upwork in 2025?",
-    answer:
-      'Winning on Upwork today means applying fast, targeting the right jobs, and sending proposals that sound personal — not generic. Lancer helps you do all three by automating the grind while keeping your outreach sharp and relevant.',
-  },
-  {
-    question: 'What is an Upwork AI Agent?',
-    answer:
-      'An Upwork AI Agent is a smart assistant that helps freelancers and agencies find, filter, and apply to jobs on Upwork automatically. Lancer is an AI agent designed to handle the most time-consuming parts of the process — from job discovery to proposal writing — using personalized, human-like responses.',
-  },
-  {
     question: 'Is Upwork automation allowed?',
     answer:
-      "Upwork prohibits spammy bots that mass-apply to jobs. Lancer is built to stay within Upwork's terms by sending tailored, high-quality proposals based on your profile, skills, and preferences — just like a human assistant would.",
+      "Upwork prohibits spammy bots that mass-apply to jobs. Lancer is built to stay within Upwork's terms by sending tailored, high-quality proposals based on your profile, skills, and preferences - just like a human would.",
   },
   {
-    question: 'How can I automate my Upwork proposals?',
+    question: 'How can I be sure that Lancer is safe to use?',
     answer:
-      "You can automate your proposals with tools like Lancer, which analyzes job descriptions, selects only relevant matches based on your filters, and writes personalized proposals that reflect your expertise and tone. You can review proposals before they're sent or let Lancer auto-apply.",
+      "Lancer's automation is completely indistinguishable from a real user - from browsing patterns to proposal timing and personalization. We've served 100+ freelancers with zero account issues or flags. Our system is built from the ground up to respect Upwork's terms, using natural human-like behavior and strict quality controls. You're in good hands.",
   },
   {
-    question:
-      'Will using an AI agent improve my chances of getting jobs on Upwork?',
+    question: 'Does using Lancer improve my chances of getting jobs on Upwork?',
     answer:
-      'Yes — response speed and relevance are key factors on Upwork. Lancer applies faster than a human, with personalized proposals that align with job requirements. That gives you a competitive edge without sacrificing quality.',
+      'Yes - response speed and relevance are key factors on Upwork. Lancer applies faster than a human, with personalized proposals that align with job requirements. That gives you a competitive edge without sacrificing quality.',
   },
   {
     question: 'How does Lancer choose which jobs to apply to?',
     answer:
-      'Lancer uses a combination of keyword matching, client quality filters and your own preferences to shortlist and apply only to jobs that are a strong fit — avoiding mismatches and time-wasters.',
+      "Lancer uses advanced filters that can evaluate jobs based on 99+ variables - everything from budget and client history to job description quality and requirements match. But we don't stop there. Our AI then reviews each job that passes the filters, just like a human would, to catch those edge cases that technically meet the criteria but are clearly not a good fit. This two-layer approach ensures you only apply to jobs worth your time.",
   },
   {
     question: "Can I still review proposals before they're sent?",
@@ -41,7 +30,7 @@ const faqData = [
       "Yes. You're always in control. You can play around with Lancer's outputs until you are satisfied. However, once you are confident in it's performance we recommend letting Lancer do it's thing on auto-pilot.",
   },
   {
-    question: 'What types of freelancers benefit most from Upwork automation?',
+    question: 'What types of freelancers benefit most from Lancer?',
     answer:
       'Lancer is best suited for: Solo freelancers who want to save time and focus on client work, Agencies who need to scale outreach across multiple accounts, Anyone tired of writing repetitive proposals but still wants to win top jobs.',
   },
