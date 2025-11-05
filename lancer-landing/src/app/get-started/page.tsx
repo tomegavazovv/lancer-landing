@@ -10,7 +10,6 @@ import FlavorDesignLogo from '@/components/ui/flavor-design-logo';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LogoIcon } from '@/components/ui/logo-icon';
-import { MultiSelect } from '@/components/ui/multi-select';
 import MvpMastersLogo from '@/components/ui/mvp-masters-logo';
 import {
   Select,
@@ -20,13 +19,17 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import WolfwareLogo from '@/components/ui/wolfware-logo';
 import { Building2, CircleCheck, UserRound, Users } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
-import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 const transitionVariants = {
   item: {
@@ -229,7 +232,10 @@ export default function GetStartedPage() {
   };
 
   const validateStep3 = (): boolean => {
-    return formData.upworkUsage.trim() !== '' && formData.upworkExperience.trim() !== '';
+    return (
+      formData.upworkUsage.trim() !== '' &&
+      formData.upworkExperience.trim() !== ''
+    );
   };
 
   const validateStep4 = (): boolean => {
@@ -425,7 +431,8 @@ export default function GetStartedPage() {
 
               <div className='space-y-2'>
                 <Label htmlFor='role' className='text-sm font-normal'>
-                  Which one of these best describes you? <span className='text-red-500'>*</span>
+                  Which one of these best describes you?{' '}
+                  <span className='text-red-500'>*</span>
                 </Label>
                 <Select
                   value={formData.role}
@@ -437,7 +444,9 @@ export default function GetStartedPage() {
                   <SelectContent>
                     <SelectItem value='freelancer'>Freelancer</SelectItem>
                     <SelectItem value='agency-owner'>Agency Owner</SelectItem>
-                    <SelectItem value='upwork-specialist'>Upwork Outreach Specialist</SelectItem>
+                    <SelectItem value='upwork-specialist'>
+                      Upwork Outreach Specialist
+                    </SelectItem>
                     <SelectItem value='sales'>Sales</SelectItem>
                     <SelectItem value='other'>Other</SelectItem>
                   </SelectContent>
@@ -501,7 +510,9 @@ export default function GetStartedPage() {
                     placeholder='Your agency name'
                     className='text-base sm:text-sm'
                     value={formData.agencyName}
-                    onChange={(e) => updateFormData('agencyName', e.target.value)}
+                    onChange={(e) =>
+                      updateFormData('agencyName', e.target.value)
+                    }
                   />
                 </div>
               )}
@@ -556,36 +567,63 @@ export default function GetStartedPage() {
                 </Label>
                 <Select
                   value={formData.upworkUsage}
-                  onValueChange={(value) => updateFormData('upworkUsage', value)}
+                  onValueChange={(value) =>
+                    updateFormData('upworkUsage', value)
+                  }
                 >
                   <SelectTrigger className='text-base sm:text-sm'>
                     <SelectValue placeholder='Choose an option...' />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='consistent'>I use Upwork consistently to close deals</SelectItem>
-                    <SelectItem value='seasonal'>I use Upwork seasonally when my usual pipeline of clients dries up, or am in between projects</SelectItem>
-                    <SelectItem value='new'>I am new to Upwork and want to validate it as a sales channel</SelectItem>
+                    <SelectItem value='consistent'>
+                      I use Upwork consistently to close deals
+                    </SelectItem>
+                    <SelectItem value='seasonal'>
+                      I use Upwork seasonally when my usual pipeline of clients
+                      dries up, or am in between projects
+                    </SelectItem>
+                    <SelectItem value='new'>
+                      I am new to Upwork and want to validate it as a sales
+                      channel
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className='space-y-2'>
-                <Label htmlFor='upwork-experience' className='text-sm font-normal'>
-                  Your experience with Upwork so far? <span className='text-red-500'>*</span>
+                <Label
+                  htmlFor='upwork-experience'
+                  className='text-sm font-normal'
+                >
+                  Your experience with Upwork so far?{' '}
+                  <span className='text-red-500'>*</span>
                 </Label>
                 <Select
                   value={formData.upworkExperience}
-                  onValueChange={(value) => updateFormData('upworkExperience', value)}
+                  onValueChange={(value) =>
+                    updateFormData('upworkExperience', value)
+                  }
                 >
                   <SelectTrigger className='text-base sm:text-sm'>
                     <SelectValue placeholder='Choose an option...' />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='new'>New to Upwork (Yet to close a deal)</SelectItem>
-                    <SelectItem value='rookie'>Upwork Rookie (at least one deal closed, but less than $1,000 in lifetime earnings)</SelectItem>
-                    <SelectItem value='expert'>Upwork Expert (over $5,000 in lifetime earnings)</SelectItem>
-                    <SelectItem value='pro'>Upwork Pro (over $10,000 in lifetime earnings)</SelectItem>
-                    <SelectItem value='all-star'>Upwork All-Star (over $100,000 in lifetime earnings)</SelectItem>
+                    <SelectItem value='new'>
+                      New to Upwork (Yet to close a deal)
+                    </SelectItem>
+                    <SelectItem value='rookie'>
+                      Upwork Rookie (at least one deal closed, but less than
+                      $1,000 in lifetime earnings)
+                    </SelectItem>
+                    <SelectItem value='expert'>
+                      Upwork Expert (over $5,000 in lifetime earnings)
+                    </SelectItem>
+                    <SelectItem value='pro'>
+                      Upwork Pro (over $10,000 in lifetime earnings)
+                    </SelectItem>
+                    <SelectItem value='all-star'>
+                      Upwork All-Star (over $100,000 in lifetime earnings)
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -621,12 +659,18 @@ export default function GetStartedPage() {
             </CardHeader>
             <CardContent className='space-y-6'>
               <div className='space-y-2'>
-                <Label htmlFor='avg-contract-value' className='text-sm font-normal'>
-                  Your Average Contract Value (ACV) <span className='text-red-500'>*</span>
+                <Label
+                  htmlFor='avg-contract-value'
+                  className='text-sm font-normal'
+                >
+                  Your Average Contract Value (ACV){' '}
+                  <span className='text-red-500'>*</span>
                 </Label>
                 <Select
                   value={formData.avgContractValue}
-                  onValueChange={(value) => updateFormData('avgContractValue', value)}
+                  onValueChange={(value) =>
+                    updateFormData('avgContractValue', value)
+                  }
                 >
                   <SelectTrigger className='text-base sm:text-sm'>
                     <SelectValue placeholder='Choose an option...' />
@@ -636,8 +680,12 @@ export default function GetStartedPage() {
                     <SelectItem value='500-2000'>$500 - $2,000</SelectItem>
                     <SelectItem value='2000-5000'>$2,000 - $5,000</SelectItem>
                     <SelectItem value='5000-10000'>$5,000 - $10,000</SelectItem>
-                    <SelectItem value='10000-20000'>$10,000 - $20,000</SelectItem>
-                    <SelectItem value='20000-50000'>$20,000 - $50,000</SelectItem>
+                    <SelectItem value='10000-20000'>
+                      $10,000 - $20,000
+                    </SelectItem>
+                    <SelectItem value='20000-50000'>
+                      $20,000 - $50,000
+                    </SelectItem>
                     <SelectItem value='50000+'>$50,000+</SelectItem>
                   </SelectContent>
                 </Select>
@@ -645,7 +693,8 @@ export default function GetStartedPage() {
 
               <div className='space-y-4'>
                 <Label className='text-sm font-normal'>
-                  What is your currently monthly budget for Upwork Connects? <span className='text-red-500'>*</span>
+                  What is your currently monthly budget for Upwork Connects?{' '}
+                  <span className='text-red-500'>*</span>
                 </Label>
                 <div className='space-y-4 mt-2'>
                   <div className='text-center'>
@@ -698,7 +747,8 @@ export default function GetStartedPage() {
 
               <div className='space-y-4'>
                 <Label className='text-sm font-normal'>
-                  Who handles your Upwork outreach? <span className='text-red-500'>*</span>
+                  Who handles your Upwork outreach?{' '}
+                  <span className='text-red-500'>*</span>
                 </Label>
                 <div className='flex space-x-1 bg-muted p-1 rounded-lg'>
                   <button
@@ -714,7 +764,9 @@ export default function GetStartedPage() {
                   </button>
                   <button
                     type='button'
-                    onClick={() => updateFormData('outreachType', 'someone-else')}
+                    onClick={() =>
+                      updateFormData('outreachType', 'someone-else')
+                    }
                     className={`flex-1 px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors cursor-pointer border ${
                       formData.outreachType === 'someone-else'
                         ? 'bg-background text-foreground shadow-sm border-foreground/20'
@@ -728,12 +780,18 @@ export default function GetStartedPage() {
 
               {formData.outreachType === 'myself' ? (
                 <div className='space-y-2'>
-                  <Label htmlFor='hours-per-week' className='text-sm font-normal'>
-                    How many hours per week do you spend on Upwork outreach? <span className='text-red-500'>*</span>
+                  <Label
+                    htmlFor='hours-per-week'
+                    className='text-sm font-normal'
+                  >
+                    How many hours per week do you spend on Upwork outreach?{' '}
+                    <span className='text-red-500'>*</span>
                   </Label>
                   <Select
                     value={formData.hoursPerWeek}
-                    onValueChange={(value) => updateFormData('hoursPerWeek', value)}
+                    onValueChange={(value) =>
+                      updateFormData('hoursPerWeek', value)
+                    }
                   >
                     <SelectTrigger className='text-base sm:text-sm'>
                       <SelectValue placeholder='Choose an option...' />
@@ -747,26 +805,33 @@ export default function GetStartedPage() {
                     </SelectContent>
                   </Select>
                 </div>
-              ) : formData.outreachType === 'someone-else' && (
-                <div className='space-y-4'>
-                  <Label className='text-sm font-normal'>
-                    What's your approximate monthly investment in outreach personnel? <span className='text-red-500'>*</span>
-                  </Label>
-                  <Select
-                    value={formData.personnelInvestment}
-                    onValueChange={(value) => updateFormData('personnelInvestment', value)}
-                  >
-                    <SelectTrigger className='text-base sm:text-sm'>
-                      <SelectValue placeholder='Choose an option...' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value='500'>$500</SelectItem>
-                      <SelectItem value='500-1000'>$500 - $1,000</SelectItem>
-                      <SelectItem value='1000-2000'>$1,000 - $2,000</SelectItem>
-                      <SelectItem value='2000+' >$2,000+</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              ) : (
+                formData.outreachType === 'someone-else' && (
+                  <div className='space-y-4'>
+                    <Label className='text-sm font-normal'>
+                      What's your approximate monthly investment in outreach
+                      personnel? <span className='text-red-500'>*</span>
+                    </Label>
+                    <Select
+                      value={formData.personnelInvestment}
+                      onValueChange={(value) =>
+                        updateFormData('personnelInvestment', value)
+                      }
+                    >
+                      <SelectTrigger className='text-base sm:text-sm'>
+                        <SelectValue placeholder='Choose an option...' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value='500'>$500</SelectItem>
+                        <SelectItem value='500-1000'>$500 - $1,000</SelectItem>
+                        <SelectItem value='1000-2000'>
+                          $1,000 - $2,000
+                        </SelectItem>
+                        <SelectItem value='2000+'>$2,000+</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )
               )}
 
               <div className='pt-6 flex items-center justify-between'>
@@ -921,7 +986,7 @@ export default function GetStartedPage() {
 
               <div className='w-full'>
                 <CalendlyEmbed
-                  url='https://calendly.com/ivan-mvp/lancer-1-1-demo-call'
+                  url='https://calendly.com/tome-lancer/lancer-demo'
                   minimal={true}
                   height={600}
                   backgroundColor='ffffff'

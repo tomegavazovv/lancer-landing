@@ -81,7 +81,7 @@ const testimonials = [
   {
     id: 4,
     company: 'GrafixGrove',
-    logo: '/testimonials/grafixgrove/grafixGrove-logo.png', // TODO: Replace with actual logo
+    logo: 'https://firebasestorage.googleapis.com/v0/b/lancer-prod.firebasestorage.app/o/case-studies%2FgrafixGrove-logo.png?alt=media&token=dcd1c48b-02c8-411f-8815-f8c31dd68c34', // TODO: Replace with actual logo
     stars: 5,
     testimonial: (
       <>
@@ -98,7 +98,8 @@ const testimonials = [
     author: {
       name: 'Angela Stojanoska',
       title: 'CEO - GrafixGrove',
-      image: '/testimonials/grafixgrove/angela-pp.jpeg',
+      image:
+        'https://firebasestorage.googleapis.com/v0/b/lancer-prod.firebasestorage.app/o/case-studies%2Fangela-pp.jpeg?alt=media&token=d7ec8205-0af0-442f-9d1e-8e029d49d50b',
     },
   },
   {
