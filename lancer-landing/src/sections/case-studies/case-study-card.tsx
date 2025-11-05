@@ -15,14 +15,19 @@ export function CaseStudyCard({
   image,
   readMoreUrl = '#',
 }: CaseStudyCardProps) {
+  const isExternalImage =
+    image.startsWith('http://') || image.startsWith('https://');
+  const imageSrc = isExternalImage ? image : `/${image}`;
+
   return (
     <div className='group relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-white/10 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#D94C58]/10'>
       {/* Main Image */}
       <div className='relative aspect-[16/9] overflow-hidden'>
         <Image
-          src={image}
+          src={imageSrc}
           alt={title}
           fill
+          unoptimized={isExternalImage}
           className='object-cover transition-transform duration-500 group-hover:scale-105'
         />
         <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
