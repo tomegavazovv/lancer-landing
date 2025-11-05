@@ -258,9 +258,10 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
+  html, body {
     @apply bg-background text-foreground;
     background-color: #0A0A0A;
+    overscroll-behavior: none;
   }
 }
 

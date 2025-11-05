@@ -58,6 +58,19 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.upwork.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname:
+          'upwork-usw2-prod-agora-file-storage.s3.us-west-2.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

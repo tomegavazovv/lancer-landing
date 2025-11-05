@@ -9,9 +9,10 @@ import { CTAButton } from '../ui/cta-button';
 import { LogoIcon } from '../ui/logo-icon';
 
 const menuItems = [
-  { name: 'Testimonials', href: '#testimonials' },
-  { name: 'Features', href: '#features' },
-  { name: 'Pricing', href: '#pricing' },
+  { name: 'Testimonials', href: '/#testimonials' },
+  { name: 'Features', href: '/#features' },
+  { name: 'Pricing', href: '/#pricing' },
+  { name: 'Case Studies', href: '/case-studies' },
 ];
 
 interface NavbarProps {
@@ -42,8 +43,9 @@ export function Navbar({
         <div
           className={cn(
             'mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12',
+            'bg-black/95 rounded-2xl border border-white/10 backdrop-blur-lg', // Always apply background on mobile
             isScrolled &&
-              'bg-black/50 max-w-4xl rounded-2xl border border-white/10 backdrop-blur-lg lg:px-5'
+              'lg:bg-black/50 lg:max-w-4xl lg:rounded-2xl lg:border lg:border-white/10 lg:backdrop-blur-lg lg:px-5'
           )}
         >
           <div className='relative flex items-center justify-between gap-6 py-3 lg:py-4'>
