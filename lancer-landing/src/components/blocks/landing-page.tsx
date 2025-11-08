@@ -1,12 +1,13 @@
 'use client';
 
 import React from 'react';
-import { CalendlyModal } from '../ui/calendly-modal';
-import { EmailModal } from '../ui/email-modal';
-import { VideoModal } from '../ui/video-modal';
 import { Features } from './features';
 import { Footer } from './footer';
 import { Hero } from './hero';
+import {
+  LandingPageProvider,
+  useLandingPageActions,
+} from './landing-page-client';
 import { Navbar } from './navbar';
 import { PricingSection } from './pricing-section';
 import SalesPitch1 from './sales-pitch-1';
@@ -14,17 +15,15 @@ import { StatisticsSection } from './statistics-section';
 import { Testimonials } from './testimonials';
 import TrustedUsers from './trusted-users';
 
-export function LandingPage() {
-  const [isOverDarkSection, setIsOverDarkSection] = React.useState(true);
-  const [isEmailModalOpen, setIsEmailModalOpen] = React.useState(false);
-  const [isCalendlyModalOpen, setIsCalendlyModalOpen] = React.useState(false);
-  const [isVideoModalOpen, setIsVideoModalOpen] = React.useState(false);
+function LandingPageContent() {
+  const [isOverDarkSection] = React.useState(true);
+  const { onVideoClick, onBookDemo } = useLandingPageActions();
 
   return (
     <>
       <Navbar
         isOverDarkSection={isOverDarkSection}
-        onBookDemo={() => setIsCalendlyModalOpen(true)}
+        onBookDemo={onBookDemo}
         onGetStarted={() => window.open('https://1.lancer.app', '_blank')}
       />
       <main className='overflow-hidden'>
@@ -37,30 +36,25 @@ export function LandingPage() {
           <div className='h-[80rem] -translate-y-[350px] absolute left-0 top-0 w-56 -rotate-45 bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,0%,85%,.04)_0,hsla(0,0%,45%,.02)_80%,transparent_100%)]' />
         </div>
 
-        <Hero onVideoClick={() => setIsVideoModalOpen(true)} />
+        <Hero onVideoClick={onVideoClick} />
         <TrustedUsers />
         <div className='hidden md:block'></div>
         <Features />
         <SalesPitch1 />
         <Testimonials />
         <StatisticsSection />
-        <PricingSection onBookDemo={() => setIsCalendlyModalOpen(true)} />
+        <PricingSection onBookDemo={onBookDemo} />
       </main>
 
       <Footer />
-
-      <CalendlyModal
-        isOpen={isCalendlyModalOpen}
-        onClose={() => setIsCalendlyModalOpen(false)}
-      />
-      <EmailModal
-        isOpen={isEmailModalOpen}
-        onClose={() => setIsEmailModalOpen(false)}
-      />
-      <VideoModal
-        isOpen={isVideoModalOpen}
-        onClose={() => setIsVideoModalOpen(false)}
-      />
     </>
+  );
+}
+
+export function LandingPage() {
+  return (
+    <LandingPageProvider>
+      <LandingPageContent />
+    </LandingPageProvider>
   );
 }

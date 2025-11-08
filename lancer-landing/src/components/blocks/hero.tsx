@@ -62,12 +62,13 @@ export function Hero({ onVideoClick }: HeroProps) {
           }}
           className='absolute inset-0 -z-20'
         >
-          <img
+          <Image
             src='https://ik.imagekit.io/lrigu76hy/tailark/night-background.jpg?updatedAt=1745733451120'
-            alt='background'
+            alt='Dark background with gradient overlay'
             className='absolute inset-x-0 top-56 -z-20 hidden lg:top-32 dark:block'
-            width='3276'
-            height='4095'
+            width={3276}
+            height={4095}
+            priority
           />
         </AnimatedGroup>
         <div
@@ -78,6 +79,7 @@ export function Hero({ onVideoClick }: HeroProps) {
           <div className='text-center sm:mx-auto lg:mr-auto mt-20'>
             <AnimatedGroup variants={transitionVariants}>
               <SparklesText
+                as='h1'
                 text='Land Upwork jobs 24/7 Without The Grind.'
                 colors={{ first: '#9E7AFF', second: '#FE8BBB' }}
                 sparklesCount={8}

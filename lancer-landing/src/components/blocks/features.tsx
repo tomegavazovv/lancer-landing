@@ -164,10 +164,10 @@ export function Features() {
           </Badge>
         </div>
         <div className='flex flex-col items-center justify-center gap-15'>
-          <h3 className='text-4xl leading-tight font-bold text-center max-w-4xl mx-auto text-white'>
+          <h2 className='text-4xl leading-tight font-bold text-center max-w-4xl mx-auto text-white'>
             Upwork AI Agent that finds the perfect jobs for you and applies to
             them automatically
-          </h3>
+          </h2>
         </div>
       </AnimatedGroup>
 

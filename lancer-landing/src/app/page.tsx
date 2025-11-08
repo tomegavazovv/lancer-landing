@@ -1,4 +1,3 @@
-'use client';
 import { LandingPage } from '@/components/blocks/landing-page';
 
 export default function Home() {

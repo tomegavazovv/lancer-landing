@@ -25,9 +25,9 @@ export function StatisticsSection() {
           refresh={false}
         />
         <div className='relative z-10 mx-auto max-w-7xl px-6 text-center'>
-          <div className='text-8xl md:text-9xl lg:text-[12rem] font-bold tracking-tight bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent'>
+          <h2 className='text-8xl md:text-9xl lg:text-[12rem] font-bold tracking-tight bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent'>
             2,884
-          </div>
+          </h2>
           <p className='mt-6 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-white/80'>
             Upwork client conversations started by Lancer users in the last 30
             days
