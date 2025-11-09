@@ -17,7 +17,7 @@ export function ReportsToolView() {
         onBookDemo={() => {}}
         onGetStarted={() => {}}
       />
-      <main className='relative min-h-[calc(100vh-120px)] text-white bg-[#0A0A0A] pt-24 lg:pt-32 overflow-hidden'>
+      <main className='relative min-h-[calc(100vh-120px)] text-white bg-[#0A0A0A] pt-24 lg:pt-36 overflow-hidden'>
         <Particles
           className='absolute inset-0'
           quantity={50}
