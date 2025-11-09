@@ -66,11 +66,22 @@ const getKeywordData = (keyword: string) => {
     { country: 'Netherlands', jobsPosted: 98 },
   ];
 
+  // Client breakdown by total spent buckets
+  const clientSpentBreakdown = [
+    { bucket: '0-1K', clients: 1250 },
+    { bucket: '1-10K', clients: 890 },
+    { bucket: '10-50K', clients: 450 },
+    { bucket: '50-100K', clients: 180 },
+    { bucket: '100K-500K', clients: 95 },
+    { bucket: '500K+', clients: 35 },
+  ];
+
   return {
     jobsPosted: currentJobs,
     jobsPostedTrend: jobsTrend,
     jobsPostedTrendData: trendData,
     topCountriesData,
+    clientSpentBreakdown,
     avgClientHireRate: 62.5,
     avgClientHireRateTrend: 5.2,
     avgClientTotalSpent: 12450,
@@ -451,6 +462,81 @@ export function KeywordBreakdown() {
                 </CardContent>
               </Card>
             </div>
+          </div>
+
+          {/* Client Breakdown by Total Spent */}
+          <div className='mt-12'>
+            <div className='flex items-center justify-center gap-2 mb-2'>
+              <Users className='w-5 h-5 text-[#D94C58]' />
+              <h2 className='text-2xl font-bold text-white text-center'>
+                Client Breakdown by Total Spent
+              </h2>
+            </div>
+            <p className='text-center text-white/70 mb-6 text-sm'>
+              Distribution of clients across different total spent ranges
+            </p>
+            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300 max-w-4xl mx-auto'>
+              <CardContent className='p-4'>
+                <ChartContainer
+                  config={{
+                    clients: {
+                      label: 'Number of Clients',
+                      color: '#D94C58',
+                    },
+                  }}
+                  className='h-[350px] w-full'
+                >
+                  <BarChart
+                    data={data.clientSpentBreakdown}
+                    layout='vertical'
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: 10,
+                      bottom: 10,
+                    }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray='3 3'
+                      stroke='#e5e7eb'
+                      opacity={0.5}
+                    />
+                    <XAxis
+                      type='number'
+                      tick={{
+                        fill: '#6b7280',
+                        fontSize: 12,
+                      }}
+                      axisLine={{ stroke: '#e5e7eb' }}
+                      tickLine={{ stroke: '#e5e7eb' }}
+                    />
+                    <YAxis
+                      type='category'
+                      dataKey='bucket'
+                      width={80}
+                      tick={{
+                        fill: '#6b7280',
+                        fontSize: 12,
+                      }}
+                      axisLine={{ stroke: '#e5e7eb' }}
+                      tickLine={{ stroke: '#e5e7eb' }}
+                    />
+                    <Tooltip
+                      content={<ChartTooltipContent />}
+                      cursor={{
+                        fill: '#f3f4f6',
+                        opacity: 0.3,
+                      }}
+                    />
+                    <Bar
+                      dataKey='clients'
+                      fill='#D94C58'
+                      radius={[0, 8, 8, 0]}
+                    />
+                  </BarChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
           </div>
         </>
       )}
