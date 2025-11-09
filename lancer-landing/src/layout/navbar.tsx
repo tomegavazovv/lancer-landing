@@ -1,12 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { CTAButton } from '@/components/ui/cta-button';
+import { LogoIcon } from '@/components/ui/logo-icon';
 import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-import { CTAButton } from '../ui/cta-button';
-import { LogoIcon } from '../ui/logo-icon';
 
 const menuItems = [
   { name: 'Testimonials', href: '/#testimonials' },

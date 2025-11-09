@@ -1,5 +1,5 @@
+import { LogoIcon } from '@/components/ui/logo-icon';
 import Link from 'next/link';
-import { LogoIcon } from '../ui/logo-icon';
 
 export function Footer() {
   return (

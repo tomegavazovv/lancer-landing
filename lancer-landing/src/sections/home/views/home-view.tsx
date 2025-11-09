@@ -1,19 +1,19 @@
 'use client';
 
+import { Footer } from '@/layout/footer';
+import { Navbar } from '@/layout/navbar';
 import React from 'react';
-import { Features } from './features';
-import { Footer } from './footer';
-import { Hero } from './hero';
+import { Features } from '../features';
+import { Hero } from '../hero';
 import {
   LandingPageProvider,
   useLandingPageActions,
-} from './landing-page-client';
-import { Navbar } from './navbar';
-import { PricingSection } from './pricing-section';
-import SalesPitch1 from './sales-pitch-1';
-import { StatisticsSection } from './statistics-section';
-import { Testimonials } from './testimonials';
-import TrustedUsers from './trusted-users';
+} from '../landing-page-client';
+import { PricingSection } from '../pricing-section';
+import SalesPitch1 from '../sales-pitch-1';
+import { StatisticsSection } from '../statistics-section';
+import { Testimonials } from '../testimonials';
+import TrustedUsers from '../trusted-users';
 
 function LandingPageContent() {
   const [isOverDarkSection] = React.useState(true);

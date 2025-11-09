@@ -1,9 +1,9 @@
 'use client';
 
+import { CalendlyModal } from '@/components/ui/calendly-modal';
+import { EmailModal } from '@/components/ui/email-modal';
+import { VideoModal } from '@/components/ui/video-modal';
 import React from 'react';
-import { CalendlyModal } from '../ui/calendly-modal';
-import { EmailModal } from '../ui/email-modal';
-import { VideoModal } from '../ui/video-modal';
 
 interface LandingPageContextType {
   onVideoClick: () => void;
