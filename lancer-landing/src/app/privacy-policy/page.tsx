@@ -1,6 +1,6 @@
-import { Footer } from '@/components/blocks/footer';
-import { HeroHeader } from '@/components/blocks/hero-header';
 import { AnimatedGroup } from '@/components/ui/animated-group';
+import { Footer } from '@/layout/footer';
+import { HeroHeader } from '@/sections/home/hero-header';
 import { Mail } from 'lucide-react';
 import { Metadata } from 'next';
 import { Suspense } from 'react';

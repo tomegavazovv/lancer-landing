@@ -1,7 +1,7 @@
 'use client';
 
-import { Footer } from '@/components/blocks/footer';
-import { Navbar } from '@/components/blocks/navbar';
+import { Footer } from '@/layout/footer';
+import { Navbar } from '@/layout/navbar';
 
 export default function CaseStudiesLayout({
   children,
