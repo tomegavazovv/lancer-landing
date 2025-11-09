@@ -1,12 +1,10 @@
 'use client';
 
 import { AnimatedGroup } from '@/components/ui/animated-group';
-import { Badge } from '@/components/ui/badge';
 import { Particles } from '@/components/ui/particles';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Footer } from '@/layout/footer';
 import { Navbar } from '@/layout/navbar';
-import { Globe } from 'lucide-react';
 import { CategoryCharts } from '../category-charts';
 import { CountryCharts } from '../country-charts';
 import { KeywordBreakdown } from '../keyword-breakdown';
@@ -56,19 +54,12 @@ export function ReportsToolView() {
             }}
             className='mb-12 text-center'
           >
-            <Badge
-              variant='outline'
-              className='mb-4 px-4 py-2 text-sm font-medium rounded-full border-white/20 text-white bg-white/5'
-            >
-              <Globe className='w-3 h-3 mr-1.5' />
-              Analytics Dashboard
-            </Badge>
             <h1 className='text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent'>
-              Reports Tool
+              Analytics Dashboard
             </h1>
             <p className='text-lg text-white/70 max-w-2xl mx-auto'>
-              Analyze your job posting statistics by client country and make
-              data-driven decisions
+              Get the bigger picture of Upwork job markets and make data-driven
+              decisions
             </p>
           </AnimatedGroup>
 
