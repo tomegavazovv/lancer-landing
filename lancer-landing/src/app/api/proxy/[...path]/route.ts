@@ -4,30 +4,34 @@ const APIURL = 'https://api.lancer.app';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
-  return handleRequest(request, params, 'GET');
+  const resolvedParams = await params;
+  return handleRequest(request, resolvedParams, 'GET');
 }
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
-  return handleRequest(request, params, 'POST');
+  const resolvedParams = await params;
+  return handleRequest(request, resolvedParams, 'POST');
 }
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
-  return handleRequest(request, params, 'PATCH');
+  const resolvedParams = await params;
+  return handleRequest(request, resolvedParams, 'PATCH');
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
-  return handleRequest(request, params, 'DELETE');
+  const resolvedParams = await params;
+  return handleRequest(request, resolvedParams, 'DELETE');
 }
 
 async function handleRequest(
@@ -38,7 +42,7 @@ async function handleRequest(
   try {
     const path = params.path.join('/');
     const url = `${APIURL}/${path}`;
-    
+
     // Get query string if present
     const searchParams = request.nextUrl.searchParams.toString();
     const fullUrl = searchParams ? `${url}?${searchParams}` : url;
@@ -81,7 +85,7 @@ async function handleRequest(
     // Get response data
     const contentType = response.headers.get('content-type');
     let data: any;
-    
+
     if (contentType?.includes('application/json')) {
       data = await response.json();
     } else if (contentType?.includes('text/event-stream')) {
@@ -90,32 +94,43 @@ async function handleRequest(
       if (!reader) {
         throw new Error('No response body');
       }
-      
+
       return new Response(response.body, {
         status: response.status,
         headers: {
           'Content-Type': 'text/event-stream',
           'Cache-Control': 'no-cache',
-          'Connection': 'keep-alive',
+          Connection: 'keep-alive',
         },
       });
     } else {
       data = await response.text();
     }
 
-    // Return response with CORS headers
+    // Forward response headers (excluding ones we'll set)
+    const responseHeaders: HeadersInit = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    };
+
+    // Forward content-type from original response
+    if (contentType) {
+      responseHeaders['Content-Type'] = contentType;
+    }
+
+    // Return response preserving original structure
     return NextResponse.json(data, {
       status: response.status,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      },
+      headers: responseHeaders,
     });
   } catch (error) {
     console.error('Proxy error:', error);
     return NextResponse.json(
-      { error: 'Failed to proxy request', message: error instanceof Error ? error.message : 'Unknown error' },
+      {
+        error: 'Failed to proxy request',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }
@@ -132,4 +147,3 @@ export async function OPTIONS() {
     },
   });
 }
-

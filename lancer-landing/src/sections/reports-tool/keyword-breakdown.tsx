@@ -315,12 +315,38 @@ export function KeywordBreakdown() {
 
   // Helper to extract average from response (could be number or object)
   const getAverage = (response: any): number => {
+    if (response === null || response === undefined) {
+      return 0;
+    }
+    
     let value = 0;
+    
+    // Handle number directly
     if (typeof response === 'number') {
       value = response;
-    } else {
-      value = (response as any)?.average || 0;
+    } 
+    // Handle string numbers
+    else if (typeof response === 'string' && !isNaN(Number(response))) {
+      value = Number(response);
     }
+    // Handle object with average property
+    else if (typeof response === 'object' && 'average' in response) {
+      value = response.average;
+    }
+    // Handle object with other common property names
+    else if (typeof response === 'object' && 'value' in response) {
+      value = response.value;
+    }
+    // Handle object with data property (nested response)
+    else if (typeof response === 'object' && 'data' in response) {
+      return getAverage(response.data);
+    }
+    // Try to convert to number if it's a valid number
+    else {
+      const numValue = Number(response);
+      value = isNaN(numValue) ? 0 : numValue;
+    }
+    
     return Number(value.toFixed(2));
   };
 
