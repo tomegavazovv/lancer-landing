@@ -12,7 +12,6 @@ import {
   GetJobsByHourPostedResponse,
   GetJobsCountLast3MonthsResponse,
   GetJobsPostedResponse,
-  GetTop10CategoriesByAvgHourlyBudgetResponse,
   GetTop10CategoriesByAvgPaidPerProjectResponse,
   GetTop10CategoriesByClientHireRateResponse,
   GetTop10CategoriesByClientTotalSpentResponse,
@@ -330,18 +329,18 @@ export function useCategoryAnalytics() {
     },
   });
 
-  const getTop10CategoriesByAvgHourlyBudget = useQuery({
-    queryKey: ['category-analytics', 'top-10-categories-by-avg-hourly-budget'],
-    queryFn: async () => {
-      const response = await poster<
-        { query: string },
-        GetTop10CategoriesByAvgHourlyBudgetResponse
-      >(ROUTES.UPWORK_ANALYTICS.TOP_10_CATEGORIES_BY_AVG_HOURLY_BUDGET, {
-        query: '',
-      });
-      return response.data;
-    },
-  });
+  // const getTop10CategoriesByAvgHourlyBudget = useQuery({
+  //   queryKey: ['category-analytics', 'top-10-categories-by-avg-hourly-budget'],
+  //   queryFn: async () => {
+  //     const response = await poster<
+  //       { query: string },
+  //       GetTop10CategoriesByAvgHourlyBudgetResponse
+  //     >(ROUTES.UPWORK_ANALYTICS.TOP_10_CATEGORIES_BY_AVG_HOURLY_BUDGET, {
+  //       query: '',
+  //     });
+  //     return response.data;
+  //   },
+  // });
 
   const getTop10CategoriesByAvgPaidPerProject = useQuery({
     queryKey: [
@@ -379,7 +378,6 @@ export function useCategoryAnalytics() {
     getTop10CategoriesByJobsPosted,
     getTop10CategoriesByClientTotalSpent,
     getTop10CategoriesByClientHireRate,
-    getTop10CategoriesByAvgHourlyBudget,
     getTop10CategoriesByAvgPaidPerProject,
     getTop20CategoriesByAvgHourlyRatePaid,
   };

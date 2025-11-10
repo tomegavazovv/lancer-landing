@@ -45,7 +45,6 @@ export function CategoryCharts() {
     analytics.getTop10CategoriesByJobsPosted.isLoading ||
     analytics.getTop10CategoriesByClientTotalSpent.isLoading ||
     analytics.getTop10CategoriesByClientHireRate.isLoading ||
-    analytics.getTop10CategoriesByAvgHourlyBudget.isLoading ||
     analytics.getTop10CategoriesByAvgPaidPerProject.isLoading ||
     analytics.getTop20CategoriesByAvgHourlyRatePaid.isLoading;
 
@@ -83,10 +82,6 @@ export function CategoryCharts() {
   const hireRateByCategoryData = transformCategoryData(
     analytics.getTop10CategoriesByClientHireRate.data,
     'hireRate'
-  );
-  const avgHourlyBudgetByCategoryData = transformCategoryData(
-    analytics.getTop10CategoriesByAvgHourlyBudget.data,
-    'avgHourlyBudget'
   );
   const avgPaidPerProjectByCategoryData = transformCategoryData(
     analytics.getTop10CategoriesByAvgPaidPerProject.data,
