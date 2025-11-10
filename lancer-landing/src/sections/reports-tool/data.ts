@@ -263,7 +263,7 @@ export const hireRateConfig = {
 
 export const avgHourlyBudgetConfig = {
   avgHourlyBudget: {
-    label: 'Avg. Hourly Budget',
+    label: 'Avg. Hourly Rate Paid',
     color: '#D94C58',
   },
 };

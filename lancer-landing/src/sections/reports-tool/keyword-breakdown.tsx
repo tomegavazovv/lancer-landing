@@ -4,6 +4,8 @@ import { AnimatedGroup } from '@/components/ui/animated-group';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
+import { LoadingGif } from '@/components/ui/loading-gif';
+import { useKeywordAnalytics } from '@/hooks/use-upwork-analytics';
 import {
   ArrowDown,
   ArrowUp,
@@ -16,7 +18,7 @@ import {
   TrendingUp,
   Users,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -27,134 +29,68 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { MonthFilter } from './month-filter';
-import { getPastThreeMonths } from './utils';
 
-// Mock trend data - will be replaced with real data later
-const getJobsPostedTrend = (keyword: string) => {
-  // Generate mock data for past 3 months
-  const now = new Date();
-  const months = [];
-  for (let i = 2; i >= 0; i--) {
-    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    months.push({
-      month: date.toLocaleDateString('en-US', { month: 'short' }),
-      jobsPosted: Math.floor(Math.random() * 200) + 350 + i * 50, // Increasing trend
-    });
-  }
-  return months;
+// Helper function to transform API response data
+const transformJobsCountLast3Months = (data: any) => {
+  if (!data || !Array.isArray(data)) return [];
+  return data.map((item: any) => ({
+    month: item.month || '',
+    jobsPosted: item.count || item.jobsPosted || 0,
+  }));
 };
 
-// Mock data - will be replaced with real data later
-const getKeywordData = (keyword: string) => {
-  // For now, return the same mock data regardless of keyword
-  const trendData = getJobsPostedTrend(keyword);
-  const currentJobs = trendData[trendData.length - 1].jobsPosted;
-  const previousJobs = trendData[trendData.length - 2].jobsPosted;
-  const jobsTrend = ((currentJobs - previousJobs) / previousJobs) * 100;
+const transformTopCountries = (data: any) => {
+  if (!data || !Array.isArray(data)) return [];
+  return data.map((item: any) => ({
+    country: item.country || '',
+    jobsPosted: item.count || item.jobsPosted || 0,
+  }));
+};
 
-  // Top 10 countries with jobs posted
-  const topCountriesData = [
-    { country: 'USA', jobsPosted: 245 },
-    { country: 'Germany', jobsPosted: 198 },
-    { country: 'Brazil', jobsPosted: 189 },
-    { country: 'Canada', jobsPosted: 182 },
-    { country: 'UK', jobsPosted: 167 },
-    { country: 'Spain', jobsPosted: 156 },
-    { country: 'Australia', jobsPosted: 142 },
-    { country: 'France', jobsPosted: 134 },
-    { country: 'Italy', jobsPosted: 123 },
-    { country: 'Netherlands', jobsPosted: 98 },
-  ];
+const transformJobsByClientTotalSpent = (data: any) => {
+  if (!data || !Array.isArray(data)) return [];
+  return data.map((item: any) => ({
+    bucket: item.range || item.bucket || '',
+    clients: item.count || item.clients || item.jobsPosted || 0,
+  }));
+};
 
-  // Client breakdown by total spent buckets
-  const clientSpentBreakdown = [
-    { bucket: '0-1K', clients: 1250 },
-    { bucket: '1-10K', clients: 890 },
-    { bucket: '10-50K', clients: 450 },
-    { bucket: '50-100K', clients: 180 },
-    { bucket: '100K-500K', clients: 95 },
-    { bucket: '500K+', clients: 35 },
-  ];
+const transformJobsByHour = (data: any) => {
+  if (!data || !Array.isArray(data)) return [];
+  return data.map((item: any) => ({
+    hour: item.hour ? `${String(item.hour).padStart(2, '0')}:00` : '00:00',
+    jobsPosted: item.count || item.jobsPosted || 0,
+  }));
+};
 
-  // Jobs posted by hour of day (0-23)
-  const jobsByHour = [
-    { hour: '00:00', jobsPosted: 12 },
-    { hour: '01:00', jobsPosted: 8 },
-    { hour: '02:00', jobsPosted: 5 },
-    { hour: '03:00', jobsPosted: 4 },
-    { hour: '04:00', jobsPosted: 6 },
-    { hour: '05:00', jobsPosted: 9 },
-    { hour: '06:00', jobsPosted: 15 },
-    { hour: '07:00', jobsPosted: 28 },
-    { hour: '08:00', jobsPosted: 45 },
-    { hour: '09:00', jobsPosted: 68 },
-    { hour: '10:00', jobsPosted: 82 },
-    { hour: '11:00', jobsPosted: 95 },
-    { hour: '12:00', jobsPosted: 88 },
-    { hour: '13:00', jobsPosted: 92 },
-    { hour: '14:00', jobsPosted: 105 },
-    { hour: '15:00', jobsPosted: 112 },
-    { hour: '16:00', jobsPosted: 98 },
-    { hour: '17:00', jobsPosted: 85 },
-    { hour: '18:00', jobsPosted: 72 },
-    { hour: '19:00', jobsPosted: 58 },
-    { hour: '20:00', jobsPosted: 42 },
-    { hour: '21:00', jobsPosted: 35 },
-    { hour: '22:00', jobsPosted: 28 },
-    { hour: '23:00', jobsPosted: 18 },
-  ];
+const transformJobsByDayOfWeek = (data: any) => {
+  if (!data || !Array.isArray(data)) return [];
+  return data.map((item: any) => ({
+    day: item.day || '',
+    jobsPosted: item.count || item.jobsPosted || 0,
+  }));
+};
 
-  // Jobs posted by day of week
-  const jobsByDayOfWeek = [
-    { day: 'Monday', jobsPosted: 285 },
-    { day: 'Tuesday', jobsPosted: 298 },
-    { day: 'Wednesday', jobsPosted: 312 },
-    { day: 'Thursday', jobsPosted: 305 },
-    { day: 'Friday', jobsPosted: 278 },
-    { day: 'Saturday', jobsPosted: 145 },
-    { day: 'Sunday', jobsPosted: 128 },
-  ];
+const transformTop10Skills = (data: any) => {
+  if (!data || !Array.isArray(data)) return [];
+  return data.map((item: any) => {
+    const skillName = item.skill || '';
+    const truncatedSkill =
+      skillName.length > 15 ? skillName.substring(0, 15) + '...' : skillName;
+    return {
+      skill: truncatedSkill,
+      skillFull: skillName, // Store full name for tooltip
+      jobsPosted: item.count || item.jobsPosted || 0,
+    };
+  });
+};
 
-  // Most searched skills in jobs
-  const mostSearchedSkills = [
-    { skill: 'React', jobsPosted: 1245 },
-    { skill: 'JavaScript', jobsPosted: 1189 },
-    { skill: 'Node.js', jobsPosted: 1056 },
-    { skill: 'Python', jobsPosted: 987 },
-    { skill: 'TypeScript', jobsPosted: 856 },
-    { skill: 'Next.js', jobsPosted: 742 },
-    { skill: 'Vue.js', jobsPosted: 689 },
-    { skill: 'Angular', jobsPosted: 634 },
-    { skill: 'PHP', jobsPosted: 598 },
-    { skill: 'Laravel', jobsPosted: 567 },
-    { skill: 'Django', jobsPosted: 523 },
-    { skill: 'Express.js', jobsPosted: 489 },
-    { skill: 'MongoDB', jobsPosted: 456 },
-    { skill: 'PostgreSQL', jobsPosted: 423 },
-    { skill: 'AWS', jobsPosted: 398 },
-  ];
-
-  return {
-    jobsPosted: currentJobs,
-    jobsPostedTrend: jobsTrend,
-    jobsPostedTrendData: trendData,
-    topCountriesData,
-    clientSpentBreakdown,
-    jobsByHour,
-    jobsByDayOfWeek,
-    mostSearchedSkills,
-    avgClientHireRate: 62.5,
-    avgClientHireRateTrend: 5.2,
-    avgClientTotalSpent: 12450,
-    avgClientTotalSpentTrend: -2.1,
-    avgHourlyBudget: 78,
-    avgHourlyBudgetTrend: 3.8,
-    avgFixedPrice: 5200,
-    avgFixedPriceTrend: 1.5,
-    avgPaidPerProject: 4850,
-    avgPaidPerProjectTrend: 4.2,
-  };
+const transformAverageHourlyRatePaidByCountry = (data: any) => {
+  if (!data || !Array.isArray(data)) return [];
+  return data.map((item: any) => ({
+    country: item.country || '',
+    avgHourlyRatePaid: item.average || item.avgHourlyRatePaid || 0,
+  }));
 };
 
 interface MetricCardProps {
@@ -177,21 +113,28 @@ function MetricCard({
   const formatValue = () => {
     if (format === 'currency') {
       if (typeof value === 'number') {
-        if (value >= 1000) {
-          return `$${(value / 1000).toFixed(1)}k`;
+        const rounded = Number(value.toFixed(2));
+        if (rounded >= 1000) {
+          return `$${(rounded / 1000).toFixed(2)}k`;
         }
-        return `$${value.toFixed(0)}`;
+        return `$${rounded.toFixed(2)}`;
       }
       return value;
     }
     if (format === 'hourly') {
       if (typeof value === 'number') {
-        return `$${value.toFixed(0)}/hr`;
+        return `$${Number(value.toFixed(2))}/hr`;
       }
       return value;
     }
     if (format === 'percentage') {
+      if (typeof value === 'number') {
+        return `${Number(value.toFixed(2))}%`;
+      }
       return `${value}%`;
+    }
+    if (typeof value === 'number') {
+      return Number(value.toFixed(2)).toLocaleString();
     }
     return value.toLocaleString();
   };
@@ -219,7 +162,7 @@ function MetricCard({
               ) : isNegativeTrend ? (
                 <ArrowDown className='w-3 h-3' />
               ) : null}
-              {Math.abs(trend).toFixed(1)}%
+              {Math.abs(trend).toFixed(2)}%
             </div>
           )}
         </div>
@@ -237,20 +180,22 @@ function MetricCard({
   );
 }
 
-export function KeywordBreakdown() {
+interface SearchInputProps {
+  onSearch: (keyword: string) => void;
+  isSearching: boolean;
+  currentSearchKeyword: string;
+}
+
+function SearchInput({
+  onSearch,
+  isSearching,
+  currentSearchKeyword,
+}: SearchInputProps) {
   const [keyword, setKeyword] = useState('');
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
-  const monthOptions = getPastThreeMonths();
-  const [selectedMonth, setSelectedMonth] = useState(monthOptions[0].value); // Default to "Past 3 Months"
 
   const handleSearch = () => {
-    setIsSearching(true);
-    // Simulate API call delay
-    setTimeout(() => {
-      setSearchKeyword(keyword.trim());
-      setIsSearching(false);
-    }, 500);
+    const trimmedKeyword = keyword.trim();
+    onSearch(trimmedKeyword);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -259,52 +204,170 @@ export function KeywordBreakdown() {
     }
   };
 
-  // Show data for empty query (default) or for the searched query
-  const data = getKeywordData(searchKeyword);
+  return (
+    <div className='max-w-2xl mx-auto'>
+      <div className='relative'>
+        <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400' />
+        <Input
+          type='text'
+          placeholder='Enter query to analyze (e.g., "React developer", "Logo design")'
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className='pl-12 pr-32 h-14 text-lg bg-white/95 border-white/20 text-gray-900 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#D94C58]'
+        />
+        <button
+          onClick={handleSearch}
+          disabled={isSearching}
+          className='absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 bg-[#D94C58] text-white rounded-md font-medium hover:bg-[#c43d48] transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+        >
+          {isSearching ? 'Searching...' : 'Search'}
+        </button>
+      </div>
+      <p className='mt-4 text-center text-white/80'>
+        Showing results for:{' '}
+        <span className='font-semibold text-white'>
+          {currentSearchKeyword || 'all queries'}
+        </span>
+      </p>
+    </div>
+  );
+}
+
+export function KeywordBreakdown() {
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [hasSearched, setHasSearched] = useState(false);
+
+  // Automatically trigger search with empty query when component mounts
+  useEffect(() => {
+    if (!hasSearched) {
+      setSearchKeyword('');
+      setHasSearched(true);
+    }
+  }, [hasSearched]);
+
+  // Only fetch when search has been initiated
+  const analytics = useKeywordAnalytics(searchKeyword.trim(), hasSearched);
+
+  const handleSearch = (keyword: string) => {
+    // Allow empty string to fetch all data
+    setSearchKeyword(keyword);
+    setHasSearched(true);
+  };
+
+  // Check if any request is loading
+  const isSearching =
+    analytics.getJobsPosted.isLoading ||
+    analytics.getAverageClientHireRate.isLoading ||
+    analytics.getAverageClientTotalSpent.isLoading ||
+    analytics.getAverageHourlyRateBudget.isLoading ||
+    analytics.getAverageFixedPriceBudget.isLoading ||
+    analytics.getAveragePaidPerProject.isLoading ||
+    analytics.getJobsCountLast3Months.isLoading ||
+    analytics.getTop10CountriesByJobsPosted.isLoading ||
+    analytics.getJobsByClientTotalSpent.isLoading ||
+    analytics.getJobsByHourPosted.isLoading ||
+    analytics.getJobsByDayOfWeek.isLoading ||
+    analytics.getTop10Skills.isLoading ||
+    analytics.getAverageHourlyRatePaidByCountry.isLoading;
+
+  // Transform API responses to match expected format
+  const jobsPostedTrendData = transformJobsCountLast3Months(
+    analytics.getJobsCountLast3Months.data
+  );
+  const jobsPostedResponse = analytics.getJobsPosted.data;
+  const jobsPostedCount =
+    typeof jobsPostedResponse === 'number'
+      ? jobsPostedResponse
+      : (jobsPostedResponse as any)?.count ||
+        (jobsPostedResponse as any)?.jobsPosted ||
+        0;
+  const currentJobs =
+    jobsPostedTrendData.length > 0
+      ? jobsPostedTrendData[jobsPostedTrendData.length - 1].jobsPosted
+      : jobsPostedCount;
+  const previousJobs =
+    jobsPostedTrendData.length > 1
+      ? jobsPostedTrendData[jobsPostedTrendData.length - 2].jobsPosted
+      : currentJobs;
+  const jobsTrend =
+    previousJobs > 0
+      ? Number((((currentJobs - previousJobs) / previousJobs) * 100).toFixed(2))
+      : 0;
+
+  const topCountriesData = transformTopCountries(
+    analytics.getTop10CountriesByJobsPosted.data
+  );
+  const clientSpentBreakdown = transformJobsByClientTotalSpent(
+    analytics.getJobsByClientTotalSpent.data
+  );
+  const jobsByHour = transformJobsByHour(analytics.getJobsByHourPosted.data);
+  const jobsByDayOfWeek = transformJobsByDayOfWeek(
+    analytics.getJobsByDayOfWeek.data
+  );
+  const mostSearchedSkills = transformTop10Skills(
+    analytics.getTop10Skills.data
+  );
+  const averageHourlyRatePaidByCountry =
+    transformAverageHourlyRatePaidByCountry(
+      analytics.getAverageHourlyRatePaidByCountry.data
+    );
+
+  // Helper to extract average from response (could be number or object)
+  const getAverage = (response: any): number => {
+    let value = 0;
+    if (typeof response === 'number') {
+      value = response;
+    } else {
+      value = (response as any)?.average || 0;
+    }
+    return Number(value.toFixed(2));
+  };
+
+  const data = {
+    jobsPosted: jobsPostedCount || currentJobs,
+    jobsPostedTrend: jobsTrend,
+    jobsPostedTrendData:
+      jobsPostedTrendData.length > 0 ? jobsPostedTrendData : [],
+    topCountriesData,
+    clientSpentBreakdown,
+    jobsByHour,
+    jobsByDayOfWeek,
+    mostSearchedSkills,
+    avgClientHireRate: getAverage(analytics.getAverageClientHireRate.data),
+    avgClientHireRateTrend: 0, // TODO: Calculate trend if needed
+    avgClientTotalSpent: getAverage(analytics.getAverageClientTotalSpent.data),
+    avgClientTotalSpentTrend: 0, // TODO: Calculate trend if needed
+    avgHourlyBudget: getAverage(analytics.getAverageHourlyRateBudget.data),
+    avgHourlyBudgetTrend: 0, // TODO: Calculate trend if needed
+    avgFixedPrice: getAverage(analytics.getAverageFixedPriceBudget.data),
+    avgFixedPriceTrend: 0, // TODO: Calculate trend if needed
+    avgPaidPerProject: getAverage(analytics.getAveragePaidPerProject.data),
+    avgPaidPerProjectTrend: 0, // TODO: Calculate trend if needed
+  };
 
   return (
     <div className='space-y-8'>
-      {/* Month Filter */}
+      {/* Data Period Note */}
       <div className='flex justify-center'>
-        <MonthFilter value={selectedMonth} onValueChange={setSelectedMonth} />
+        <div className='flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20'>
+          <Calendar className='w-4 h-4 text-white/90' />
+          <p className='text-base font-semibold text-white/90'>
+            Data shown is from the past 30 days
+          </p>
+        </div>
       </div>
 
       {/* Search Input */}
-      <div className='max-w-2xl mx-auto'>
-        <div className='relative'>
-          <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400' />
-          <Input
-            type='text'
-            placeholder='Enter query to analyze (e.g., "React developer", "Logo design")'
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className='pl-12 pr-32 h-14 text-lg bg-white/95 border-white/20 text-gray-900 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#D94C58]'
-          />
-          <button
-            onClick={handleSearch}
-            disabled={isSearching}
-            className='absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 bg-[#D94C58] text-white rounded-md font-medium hover:bg-[#c43d48] transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
-          >
-            {isSearching ? 'Searching...' : 'Search'}
-          </button>
-        </div>
-        {searchKeyword && (
-          <p className='mt-4 text-center text-white/80'>
-            Showing results for:{' '}
-            <span className='font-semibold text-white'>{searchKeyword}</span>
-          </p>
-        )}
-        {!searchKeyword && (
-          <p className='mt-4 text-center text-white/80'>
-            Showing results for:{' '}
-            <span className='font-semibold text-white'>all queries</span>
-          </p>
-        )}
-      </div>
+      <SearchInput
+        onSearch={handleSearch}
+        isSearching={isSearching}
+        currentSearchKeyword={searchKeyword}
+      />
 
       {/* Results */}
-      {data && (
+      {isSearching && <LoadingGif message='Loading analytics data...' />}
+      {!isSearching && (
         <>
           {/* Metric Cards */}
           <AnimatedGroup
@@ -358,14 +421,14 @@ export function KeywordBreakdown() {
             />
             <MetricCard
               icon={<Clock className='w-6 h-6 text-[#D94C58]' />}
-              label='Avg. Hourly Budget'
+              label='Avg. Hourly Rate Paid'
               value={data.avgHourlyBudget}
               format='hourly'
               description='Average hourly rate for this query'
             />
             <MetricCard
               icon={<Briefcase className='w-6 h-6 text-[#D94C58]' />}
-              label='Avg. Fixed Price'
+              label='Avg. Fixed Price Budget'
               value={data.avgFixedPrice}
               format='currency'
               description='Average fixed price project budget'
@@ -434,9 +497,26 @@ export function KeywordBreakdown() {
                         tick={{ fill: '#6b7280' }}
                         axisLine={{ stroke: '#e5e7eb' }}
                         tickLine={{ stroke: '#e5e7eb' }}
+                        tickFormatter={(value) => {
+                          if (value >= 1000) {
+                            return `${(value / 1000).toFixed(0)}K`;
+                          }
+                          return value.toString();
+                        }}
                       />
                       <Tooltip
-                        content={<ChartTooltipContent />}
+                        content={
+                          <ChartTooltipContent
+                            formatter={(value: any) => {
+                              if (typeof value === 'number') {
+                                return Number(
+                                  value.toFixed(2)
+                                ).toLocaleString();
+                              }
+                              return value;
+                            }}
+                          />
+                        }
                         cursor={{ stroke: '#D94C58', strokeWidth: 1 }}
                       />
                       <Line
@@ -458,7 +538,7 @@ export function KeywordBreakdown() {
               <div className='flex items-center justify-center gap-2 mb-2'>
                 <Globe className='w-5 h-5 text-[#D94C58]' />
                 <h2 className='text-2xl font-bold text-white text-center'>
-                  Top 10 Countries
+                  Top 10 Countries by Jobs Posted
                 </h2>
               </div>
               <p className='text-center text-white/70 mb-6 text-sm'>
@@ -506,9 +586,26 @@ export function KeywordBreakdown() {
                         tick={{ fill: '#6b7280' }}
                         axisLine={{ stroke: '#e5e7eb' }}
                         tickLine={{ stroke: '#e5e7eb' }}
+                        tickFormatter={(value) => {
+                          if (value >= 1000) {
+                            return `${(value / 1000).toFixed(0)}K`;
+                          }
+                          return value.toString();
+                        }}
                       />
                       <Tooltip
-                        content={<ChartTooltipContent />}
+                        content={
+                          <ChartTooltipContent
+                            formatter={(value: any) => {
+                              if (typeof value === 'number') {
+                                return Number(
+                                  value.toFixed(2)
+                                ).toLocaleString();
+                              }
+                              return value;
+                            }}
+                          />
+                        }
                         cursor={{
                           fill: '#f3f4f6',
                           opacity: 0.3,
@@ -526,38 +623,37 @@ export function KeywordBreakdown() {
             </div>
           </div>
 
-          {/* Most Searched Skills and Client Breakdown */}
+          {/* Average Hourly Rate Paid by Country and Client Breakdown */}
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mt-12'>
-            {/* Most Searched Skills */}
+            {/* Average Hourly Rate Paid by Country */}
             <div>
               <div className='flex items-center justify-center gap-2 mb-2'>
-                <TrendingUp className='w-5 h-5 text-[#D94C58]' />
+                <Globe className='w-5 h-5 text-[#D94C58]' />
                 <h2 className='text-2xl font-bold text-white text-center'>
-                  Most Searched Skills
+                  Top 20 Countries by Hourly Rate Paid
                 </h2>
               </div>
               <p className='text-center text-white/70 mb-6 text-sm'>
-                Top 15 most frequently searched skills in job postings
+                Average hourly rate actually paid by clients in each country
               </p>
               <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
                 <CardContent className='p-4'>
                   <ChartContainer
                     config={{
-                      jobsPosted: {
-                        label: 'Jobs Posted',
+                      avgHourlyRatePaid: {
+                        label: 'Avg. Hourly Rate Paid',
                         color: '#D94C58',
                       },
                     }}
                     className='min-h-[400px] w-full'
                   >
                     <BarChart
-                      data={data.mostSearchedSkills}
-                      layout='vertical'
+                      data={averageHourlyRatePaidByCountry}
                       margin={{
                         top: 10,
                         right: 10,
-                        left: 10,
-                        bottom: 10,
+                        left: 0,
+                        bottom: 40,
                       }}
                     >
                       <CartesianGrid
@@ -566,7 +662,10 @@ export function KeywordBreakdown() {
                         opacity={0.5}
                       />
                       <XAxis
-                        type='number'
+                        dataKey='country'
+                        angle={-45}
+                        textAnchor='end'
+                        height={40}
                         tick={{
                           fill: '#6b7280',
                           fontSize: 12,
@@ -575,27 +674,32 @@ export function KeywordBreakdown() {
                         tickLine={{ stroke: '#e5e7eb' }}
                       />
                       <YAxis
-                        type='category'
-                        dataKey='skill'
-                        width={100}
-                        tick={{
-                          fill: '#6b7280',
-                          fontSize: 12,
-                        }}
+                        width={50}
+                        tick={{ fill: '#6b7280' }}
                         axisLine={{ stroke: '#e5e7eb' }}
                         tickLine={{ stroke: '#e5e7eb' }}
+                        tickFormatter={(value) => `$${value}/hr`}
                       />
                       <Tooltip
-                        content={<ChartTooltipContent />}
+                        content={
+                          <ChartTooltipContent
+                            formatter={(value: any) => {
+                              if (typeof value === 'number') {
+                                return `$${Number(value.toFixed(2))}/hr`;
+                              }
+                              return value;
+                            }}
+                          />
+                        }
                         cursor={{
                           fill: '#f3f4f6',
                           opacity: 0.3,
                         }}
                       />
                       <Bar
-                        dataKey='jobsPosted'
+                        dataKey='avgHourlyRatePaid'
                         fill='#D94C58'
-                        radius={[0, 8, 8, 0]}
+                        radius={[8, 8, 0, 0]}
                       />
                     </BarChart>
                   </ChartContainer>
@@ -661,7 +765,18 @@ export function KeywordBreakdown() {
                         tickLine={{ stroke: '#e5e7eb' }}
                       />
                       <Tooltip
-                        content={<ChartTooltipContent />}
+                        content={
+                          <ChartTooltipContent
+                            formatter={(value: any) => {
+                              if (typeof value === 'number') {
+                                return Number(
+                                  value.toFixed(2)
+                                ).toLocaleString();
+                              }
+                              return value;
+                            }}
+                          />
+                        }
                         cursor={{
                           fill: '#f3f4f6',
                           opacity: 0.3,
@@ -734,9 +849,26 @@ export function KeywordBreakdown() {
                         tick={{ fill: '#6b7280' }}
                         axisLine={{ stroke: '#e5e7eb' }}
                         tickLine={{ stroke: '#e5e7eb' }}
+                        tickFormatter={(value) => {
+                          if (value >= 1000) {
+                            return `${(value / 1000).toFixed(0)}K`;
+                          }
+                          return value.toString();
+                        }}
                       />
                       <Tooltip
-                        content={<ChartTooltipContent />}
+                        content={
+                          <ChartTooltipContent
+                            formatter={(value: any) => {
+                              if (typeof value === 'number') {
+                                return Number(
+                                  value.toFixed(2)
+                                ).toLocaleString();
+                              }
+                              return value;
+                            }}
+                          />
+                        }
                         cursor={{
                           fill: '#f3f4f6',
                           opacity: 0.3,
@@ -806,9 +938,26 @@ export function KeywordBreakdown() {
                         tick={{ fill: '#6b7280' }}
                         axisLine={{ stroke: '#e5e7eb' }}
                         tickLine={{ stroke: '#e5e7eb' }}
+                        tickFormatter={(value) => {
+                          if (value >= 1000) {
+                            return `${(value / 1000).toFixed(0)}K`;
+                          }
+                          return value.toString();
+                        }}
                       />
                       <Tooltip
-                        content={<ChartTooltipContent />}
+                        content={
+                          <ChartTooltipContent
+                            formatter={(value: any) => {
+                              if (typeof value === 'number') {
+                                return Number(
+                                  value.toFixed(2)
+                                ).toLocaleString();
+                              }
+                              return value;
+                            }}
+                          />
+                        }
                         cursor={{
                           fill: '#f3f4f6',
                           opacity: 0.3,
@@ -818,6 +967,102 @@ export function KeywordBreakdown() {
                         dataKey='jobsPosted'
                         fill='#D94C58'
                         radius={[8, 8, 0, 0]}
+                      />
+                    </BarChart>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Most Searched Skills - Full Width */}
+          <div className='max-w-6xl mx-auto mt-12'>
+            <div>
+              <div className='flex items-center justify-center gap-2 mb-2'>
+                <TrendingUp className='w-5 h-5 text-[#D94C58]' />
+                <h2 className='text-2xl font-bold text-white text-center'>
+                  Most Searched Skills
+                </h2>
+              </div>
+              <p className='text-center text-white/70 mb-6 text-sm'>
+                Top 20 most frequently searched skills in job postings
+              </p>
+              <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
+                <CardContent className='p-4'>
+                  <ChartContainer
+                    config={{
+                      jobsPosted: {
+                        label: 'Jobs Posted',
+                        color: '#D94C58',
+                      },
+                    }}
+                    className='min-h-[400px] w-full'
+                  >
+                    <BarChart
+                      data={data.mostSearchedSkills}
+                      layout='vertical'
+                      margin={{
+                        top: 10,
+                        right: 10,
+                        left: 0,
+                        bottom: 10,
+                      }}
+                    >
+                      <CartesianGrid
+                        strokeDasharray='3 3'
+                        stroke='#e5e7eb'
+                        opacity={0.5}
+                      />
+                      <XAxis
+                        type='number'
+                        tick={{
+                          fill: '#6b7280',
+                          fontSize: 12,
+                        }}
+                        axisLine={{ stroke: '#e5e7eb' }}
+                        tickLine={{ stroke: '#e5e7eb' }}
+                      />
+                      <YAxis
+                        type='category'
+                        dataKey='skill'
+                        width={150}
+                        tick={{
+                          fill: '#6b7280',
+                          fontSize: 12,
+                        }}
+                        axisLine={{ stroke: '#e5e7eb' }}
+                        tickLine={{ stroke: '#e5e7eb' }}
+                        interval={0}
+                      />
+                      <Tooltip
+                        content={
+                          <ChartTooltipContent
+                            labelFormatter={(label, payload) => {
+                              // Use the full skill name from the payload data
+                              if (payload && payload[0] && payload[0].payload) {
+                                return payload[0].payload.skillFull || label;
+                              }
+                              return label;
+                            }}
+                            formatter={(value: any) => {
+                              if (typeof value === 'number') {
+                                return Number(
+                                  value.toFixed(2)
+                                ).toLocaleString();
+                              }
+                              return value;
+                            }}
+                          />
+                        }
+                        cursor={{
+                          fill: '#f3f4f6',
+                          opacity: 0.3,
+                        }}
+                      />
+                      <Bar
+                        dataKey='jobsPosted'
+                        fill='#D94C58'
+                        radius={[0, 8, 8, 0]}
                       />
                     </BarChart>
                   </ChartContainer>

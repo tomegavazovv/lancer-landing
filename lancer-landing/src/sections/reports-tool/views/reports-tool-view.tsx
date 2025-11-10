@@ -5,11 +5,14 @@ import { Particles } from '@/components/ui/particles';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Footer } from '@/layout/footer';
 import { Navbar } from '@/layout/navbar';
+import { useState } from 'react';
 import { CategoryCharts } from '../category-charts';
 import { CountryCharts } from '../country-charts';
 import { KeywordBreakdown } from '../keyword-breakdown';
 
 export function ReportsToolView() {
+  const [activeTab, setActiveTab] = useState('keyword');
+
   return (
     <>
       <Navbar
@@ -66,7 +69,12 @@ export function ReportsToolView() {
           {/* <SummaryStats />   */}
 
           <div className='max-w-5xl mx-auto'>
-            <Tabs defaultValue='keyword' className='w-full'>
+            <Tabs
+              defaultValue='keyword'
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className='w-full'
+            >
               <TabsList className='grid w-full max-w-2xl mx-auto mb-8 grid-cols-3 bg-white/5 border-white/10'>
                 <TabsTrigger
                   value='keyword'
@@ -88,17 +96,23 @@ export function ReportsToolView() {
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value='keyword'>
-                <KeywordBreakdown />
-              </TabsContent>
+              {activeTab === 'keyword' && (
+                <TabsContent value='keyword'>
+                  <KeywordBreakdown />
+                </TabsContent>
+              )}
 
-              <TabsContent value='country'>
-                <CountryCharts />
-              </TabsContent>
+              {activeTab === 'country' && (
+                <TabsContent value='country'>
+                  <CountryCharts />
+                </TabsContent>
+              )}
 
-              <TabsContent value='category'>
-                <CategoryCharts />
-              </TabsContent>
+              {activeTab === 'category' && (
+                <TabsContent value='category'>
+                  <CategoryCharts />
+                </TabsContent>
+              )}
             </Tabs>
           </div>
         </div>
