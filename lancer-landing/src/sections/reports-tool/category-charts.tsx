@@ -11,12 +11,14 @@ import {
   Clock,
   DollarSign,
   TrendingUp,
+  Users,
 } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 import {
   avgHourlyBudgetConfig,
   avgPaidPerProjectConfig,
   avgSpentConfig,
+  hireRateConfig,
   jobsPostedConfig,
   truncateCategory,
 } from './data';
@@ -343,24 +345,24 @@ export function CategoryCharts() {
 
         <div>
           <div className='flex items-center justify-center gap-2 mb-2'>
-            <Clock className='w-5 h-5 text-[#D94C58]' />
+            <Users className='w-5 h-5 text-[#D94C58]' />
             <h2 className='text-2xl font-bold text-white text-center'>
-              Top 10 by Hourly Rate Paid
+              Top 10 by Client Hire Rate
             </h2>
           </div>
           <p className='text-center text-white/70 mb-6 text-sm'>
-            Average hourly rate paid by clients
+            Percentage of job postings that result in a hire
           </p>
           <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
             <CardContent className='p-4'>
               <ChartContainer
-                config={avgHourlyBudgetConfig}
+                config={hireRateConfig}
                 className='min-h-[400px] w-full'
               >
                 <BarChart
                   data={
-                    avgHourlyBudgetByCategoryData.length > 0
-                      ? avgHourlyBudgetByCategoryData
+                    hireRateByCategoryData.length > 0
+                      ? hireRateByCategoryData
                       : []
                   }
                   margin={{
@@ -389,7 +391,7 @@ export function CategoryCharts() {
                     tick={{ fill: '#6b7280' }}
                     axisLine={{ stroke: '#e5e7eb' }}
                     tickLine={{ stroke: '#e5e7eb' }}
-                    tickFormatter={(value) => `$${value}/hr`}
+                    tickFormatter={(value) => `${value}%`}
                   />
                   <Tooltip
                     content={
@@ -411,7 +413,7 @@ export function CategoryCharts() {
                     cursor={{ fill: '#f3f4f6', opacity: 0.3 }}
                   />
                   <Bar
-                    dataKey='avgHourlyBudget'
+                    dataKey='hireRate'
                     fill='#D94C58'
                     radius={[8, 8, 0, 0]}
                   />
