@@ -13,7 +13,7 @@ export function LoadingGif({ className = '', message }: LoadingGifProps) {
       className={`flex flex-col items-center justify-center py-12 ${className}`}
     >
       <Image
-        src='/loading-wtf.gif'
+        src='/loading-gif.gif'
         alt='Loading...'
         width={200}
         height={200}
