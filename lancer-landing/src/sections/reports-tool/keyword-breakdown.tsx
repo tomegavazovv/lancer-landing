@@ -318,13 +318,13 @@ export function KeywordBreakdown() {
     if (response === null || response === undefined) {
       return 0;
     }
-    
+
     let value = 0;
-    
+
     // Handle number directly
     if (typeof response === 'number') {
       value = response;
-    } 
+    }
     // Handle string numbers
     else if (typeof response === 'string' && !isNaN(Number(response))) {
       value = Number(response);
@@ -346,7 +346,7 @@ export function KeywordBreakdown() {
       const numValue = Number(response);
       value = isNaN(numValue) ? 0 : numValue;
     }
-    
+
     return Number(value.toFixed(2));
   };
 
@@ -392,7 +392,7 @@ export function KeywordBreakdown() {
       />
 
       {/* Results */}
-      {isSearching && <LoadingGif message='Loading analytics data...' />}
+      {isSearching && <LoadingGif message='Fetching your insights...' />}
       {!isSearching && (
         <>
           {/* Metric Cards */}

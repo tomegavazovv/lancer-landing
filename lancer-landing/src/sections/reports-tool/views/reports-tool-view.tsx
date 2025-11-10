@@ -1,10 +1,12 @@
 'use client';
 
 import { AnimatedGroup } from '@/components/ui/animated-group';
+import { CTAButton } from '@/components/ui/cta-button';
 import { Particles } from '@/components/ui/particles';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Footer } from '@/layout/footer';
 import { Navbar } from '@/layout/navbar';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { CategoryCharts } from '../category-charts';
 import { CountryCharts } from '../country-charts';
@@ -12,13 +14,15 @@ import { KeywordBreakdown } from '../keyword-breakdown';
 
 export function ReportsToolView() {
   const [activeTab, setActiveTab] = useState('keyword');
-
+  const router = useRouter();
   return (
     <>
       <Navbar
         isOverDarkSection={true}
         onBookDemo={() => {}}
-        onGetStarted={() => {}}
+        onGetStarted={() => {
+          window.open('https://1.lancer.app', '_blank');
+        }}
       />
       <main className='relative min-h-[calc(100vh-120px)] text-white bg-[#0A0A0A] pt-24 lg:pt-36 overflow-hidden'>
         <Particles
@@ -116,6 +120,61 @@ export function ReportsToolView() {
             </Tabs>
           </div>
         </div>
+
+        {/* CTA Section */}
+        <section className='relative py-12'>
+          <Particles
+            className='absolute inset-0'
+            quantity={100}
+            staticity={30}
+            ease={50}
+            color='white'
+            refresh={false}
+          />
+          <div className='relative z-10 mx-auto max-w-4xl px-6'>
+            <div className='border border-white/10 rounded-3xl px-8 py-12 text-center'>
+              <AnimatedGroup
+                variants={{
+                  container: {
+                    visible: {
+                      transition: {
+                        staggerChildren: 0.1,
+                      },
+                    },
+                  },
+                  item: {
+                    hidden: {
+                      opacity: 0,
+                      y: 20,
+                    },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        type: 'spring',
+                        bounce: 0.3,
+                        duration: 0.8,
+                      },
+                    },
+                  },
+                }}
+              >
+                <h2 className='text-4xl md:text-5xl lg:text-6xl  font-bold mb-4 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent'>
+                  Ready to Start <br /> Landing More Jobs?
+                </h2>
+                <p className='text-lg md:text-xl max-w-2xl mx-auto leading-relaxed text-white/70 mb-8'>
+                  Join hundreds of freelancers and agencies using Lancer to
+                  automate their Upwork outreach and never miss an opportunity.
+                </p>
+                <div className='flex flex-col items-center justify-center gap-4 md:flex-row'>
+                  <CTAButton onClick={() => router.push('/#pricing')} size='lg'>
+                    <span className='text-nowrap'>Get Started</span>
+                  </CTAButton>
+                </div>
+              </AnimatedGroup>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </>
