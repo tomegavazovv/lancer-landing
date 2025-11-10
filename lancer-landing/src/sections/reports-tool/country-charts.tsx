@@ -119,7 +119,7 @@ export function CountryCharts() {
             </p>
           </div>
         </div>
-        <LoadingGif message='Loading country analytics data...' />
+        <LoadingGif message='Loading your insights per country...' />
       </div>
     );
   }

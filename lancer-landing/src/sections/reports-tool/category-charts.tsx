@@ -11,14 +11,12 @@ import {
   Clock,
   DollarSign,
   TrendingUp,
-  Users,
 } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 import {
   avgHourlyBudgetConfig,
   avgPaidPerProjectConfig,
   avgSpentConfig,
-  hireRateConfig,
   jobsPostedConfig,
   truncateCategory,
 } from './data';
@@ -46,7 +44,8 @@ export function CategoryCharts() {
     analytics.getTop10CategoriesByClientTotalSpent.isLoading ||
     analytics.getTop10CategoriesByClientHireRate.isLoading ||
     analytics.getTop10CategoriesByAvgHourlyBudget.isLoading ||
-    analytics.getTop10CategoriesByAvgPaidPerProject.isLoading;
+    analytics.getTop10CategoriesByAvgPaidPerProject.isLoading ||
+    analytics.getTop20CategoriesByAvgHourlyRatePaid.isLoading;
 
   // Transform API responses - handle actual API response format
   const transformCategoryData = (data: any, valueKey: string) => {
@@ -98,6 +97,29 @@ export function CategoryCharts() {
     avgJobsPosted: item.avgJobsPosted || 0,
   }));
 
+  // Transform data for Top 20 by Hourly Rate Paid (similar to country chart)
+  const transformTop20CategoriesByHourlyRate = (data: any) => {
+    if (!data || !Array.isArray(data)) return [];
+    return data.map((item: any) => {
+      const categoryName = item.category || '';
+      const truncatedCategory = truncateCategory(categoryName, 20);
+      const value =
+        item.average || item.avgHourlyRatePaid || item.avgHourlyBudget || 0;
+      // Round numeric values to 2 decimals
+      const roundedValue =
+        typeof value === 'number' ? Number(value.toFixed(2)) : value;
+      return {
+        category: truncatedCategory,
+        categoryFull: categoryName, // Store full name for tooltip
+        avgHourlyRatePaid: roundedValue,
+      };
+    });
+  };
+
+  const top20CategoriesByHourlyRateData = transformTop20CategoriesByHourlyRate(
+    analytics.getTop20CategoriesByAvgHourlyRatePaid.data
+  );
+
   if (isLoading) {
     return (
       <div className='space-y-16'>
@@ -109,7 +131,7 @@ export function CategoryCharts() {
             </p>
           </div>
         </div>
-        <LoadingGif message='Loading category analytics data...' />
+        <LoadingGif message='Fetching your category insights...' />
       </div>
     );
   }
@@ -321,86 +343,6 @@ export function CategoryCharts() {
 
         <div>
           <div className='flex items-center justify-center gap-2 mb-2'>
-            <Users className='w-5 h-5 text-[#D94C58]' />
-            <h2 className='text-2xl font-bold text-white text-center'>
-              Top 10 by Client Hire Rate
-            </h2>
-          </div>
-          <p className='text-center text-white/70 mb-6 text-sm'>
-            Percentage of job postings that result in a hire
-          </p>
-          <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
-            <CardContent className='p-4'>
-              <ChartContainer
-                config={hireRateConfig}
-                className='min-h-[400px] w-full'
-              >
-                <BarChart
-                  data={
-                    hireRateByCategoryData.length > 0
-                      ? hireRateByCategoryData
-                      : []
-                  }
-                  margin={{
-                    top: 10,
-                    right: 10,
-                    left: 0,
-                    bottom: 40,
-                  }}
-                >
-                  <CartesianGrid
-                    strokeDasharray='3 3'
-                    stroke='#e5e7eb'
-                    opacity={0.5}
-                  />
-                  <XAxis
-                    dataKey='categoryDisplay'
-                    angle={-45}
-                    textAnchor='end'
-                    height={40}
-                    tick={{ fill: '#6b7280', fontSize: 12 }}
-                    axisLine={{ stroke: '#e5e7eb' }}
-                    tickLine={{ stroke: '#e5e7eb' }}
-                  />
-                  <YAxis
-                    width={50}
-                    tick={{ fill: '#6b7280' }}
-                    axisLine={{ stroke: '#e5e7eb' }}
-                    tickLine={{ stroke: '#e5e7eb' }}
-                    tickFormatter={(value) => `${value}%`}
-                  />
-                  <Tooltip
-                    content={
-                      <ChartTooltipContent
-                        labelFormatter={(value, payload) => {
-                          if (payload && payload[0]?.payload?.category) {
-                            return payload[0].payload.category;
-                          }
-                          return value;
-                        }}
-                        formatter={(value: any) => {
-                          if (typeof value === 'number') {
-                            return Number(value.toFixed(2)).toLocaleString();
-                          }
-                          return value;
-                        }}
-                      />
-                    }
-                    cursor={{ fill: '#f3f4f6', opacity: 0.3 }}
-                  />
-                  <Bar
-                    dataKey='hireRate'
-                    fill='#D94C58'
-                    radius={[8, 8, 0, 0]}
-                  />
-                </BarChart>
-              </ChartContainer>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div>
-          <div className='flex items-center justify-center gap-2 mb-2'>
             <Clock className='w-5 h-5 text-[#D94C58]' />
             <h2 className='text-2xl font-bold text-white text-center'>
               Top 10 by Hourly Rate Paid
@@ -552,6 +494,118 @@ export function CategoryCharts() {
                     dataKey='avgPaidPerProject'
                     fill='#D94C58'
                     radius={[8, 8, 0, 0]}
+                  />
+                </BarChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+        </div>
+      </AnimatedGroup>
+
+      {/* Top 20 by Hourly Rate Paid - Full Width Horizontal Chart */}
+      <AnimatedGroup
+        variants={{
+          container: {
+            visible: {
+              transition: {
+                staggerChildren: 0.15,
+                delayChildren: 0.4,
+              },
+            },
+          },
+          item: {
+            hidden: {
+              opacity: 0,
+              y: 30,
+            },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: {
+                type: 'spring',
+                bounce: 0.3,
+                duration: 0.8,
+              },
+            },
+          },
+        }}
+        className='max-w-6xl mx-auto'
+      >
+        <div>
+          <div className='flex items-center justify-center gap-2 mb-2'>
+            <Clock className='w-5 h-5 text-[#D94C58]' />
+            <h2 className='text-2xl font-bold text-white text-center'>
+              Top 20 by Hourly Rate Paid
+            </h2>
+          </div>
+          <p className='text-center text-white/70 mb-6 text-sm'>
+            Average hourly rate paid by clients
+          </p>
+          <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
+            <CardContent className='p-4'>
+              <ChartContainer
+                config={avgHourlyBudgetConfig}
+                className='h-[450px] w-full'
+              >
+                <BarChart
+                  data={
+                    top20CategoriesByHourlyRateData.length > 0
+                      ? top20CategoriesByHourlyRateData
+                      : []
+                  }
+                  layout='vertical'
+                  margin={{
+                    top: 10,
+                    right: 10,
+                    left: 0,
+                    bottom: 10,
+                  }}
+                >
+                  <CartesianGrid
+                    strokeDasharray='3 3'
+                    stroke='#e5e7eb'
+                    opacity={0.5}
+                  />
+                  <XAxis
+                    type='number'
+                    tick={{ fill: '#6b7280', fontSize: 12 }}
+                    axisLine={{ stroke: '#e5e7eb' }}
+                    tickLine={{ stroke: '#e5e7eb' }}
+                    tickFormatter={(value) => `$${value}/hr`}
+                  />
+                  <YAxis
+                    type='category'
+                    dataKey='category'
+                    width={150}
+                    tick={{ fill: '#6b7280', fontSize: 12 }}
+                    axisLine={{ stroke: '#e5e7eb' }}
+                    tickLine={{ stroke: '#e5e7eb' }}
+                    interval={0}
+                  />
+                  <Tooltip
+                    content={
+                      <ChartTooltipContent
+                        labelFormatter={(label, payload) => {
+                          // Use the full category name from the payload data
+                          if (payload && payload[0] && payload[0].payload) {
+                            return payload[0].payload.categoryFull || label;
+                          }
+                          return label;
+                        }}
+                        formatter={(value: any) => {
+                          if (typeof value === 'number') {
+                            return `$${Number(value.toFixed(2))}/hr`;
+                          }
+                          return value;
+                        }}
+                      />
+                    }
+                    cursor={{ fill: '#f3f4f6', opacity: 0.3 }}
+                  />
+                  <Bar
+                    dataKey='avgHourlyRatePaid'
+                    fill='#D94C58'
+                    radius={[0, 8, 8, 0]}
                   />
                 </BarChart>
               </ChartContainer>

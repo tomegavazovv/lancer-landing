@@ -23,6 +23,7 @@ import {
   GetTop10CountriesByClientTotalSpentResponse,
   GetTop10CountriesByJobsPostedResponse,
   GetTop10SkillsResponse,
+  GetTop20CategoriesByAvgHourlyRatePaidResponse,
   ROUTES,
 } from 'lancer-shared';
 
@@ -358,11 +359,28 @@ export function useCategoryAnalytics() {
     },
   });
 
+  const getTop20CategoriesByAvgHourlyRatePaid = useQuery({
+    queryKey: [
+      'category-analytics',
+      'top-20-categories-by-avg-hourly-rate-paid',
+    ],
+    queryFn: async () => {
+      const response = await poster<
+        { query: string },
+        GetTop20CategoriesByAvgHourlyRatePaidResponse
+      >('upwork-analytics/top-20-categories-by-avg-hourly-rate-paid', {
+        query: '',
+      });
+      return response.data;
+    },
+  });
+
   return {
     getTop10CategoriesByJobsPosted,
     getTop10CategoriesByClientTotalSpent,
     getTop10CategoriesByClientHireRate,
     getTop10CategoriesByAvgHourlyBudget,
     getTop10CategoriesByAvgPaidPerProject,
+    getTop20CategoriesByAvgHourlyRatePaid,
   };
 }
