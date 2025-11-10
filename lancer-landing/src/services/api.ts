@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const APIURL = 'https://api.lancer.app';
+// Use proxy route to avoid CORS issues
+const PROXY_BASE_URL = '/api/proxy';
 
 const generateRequestConfig = async ({
   headers,
@@ -8,7 +10,7 @@ const generateRequestConfig = async ({
 }: AxiosRequestConfig = {}) => {
   return {
     ...(base || {}),
-    baseURL: APIURL,
+    baseURL: PROXY_BASE_URL,
     withCredentials: true,
     headers: {
       ...(headers || {}),
@@ -17,7 +19,7 @@ const generateRequestConfig = async ({
 };
 
 export const axiosInstance = axios.create({
-  baseURL: APIURL,
+  baseURL: PROXY_BASE_URL,
   withCredentials: true,
 });
 
