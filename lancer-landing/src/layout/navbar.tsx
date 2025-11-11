@@ -1,5 +1,6 @@
 'use client';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CTAButton } from '@/components/ui/cta-button';
 import { LogoIcon } from '@/components/ui/logo-icon';
@@ -10,9 +11,9 @@ import React from 'react';
 
 const menuItems = [
   { name: 'Testimonials', href: '/#testimonials' },
-  { name: 'Features', href: '/#features' },
   { name: 'Pricing', href: '/#pricing' },
   { name: 'Case Studies', href: '/case-studies' },
+  { name: 'Upwork Insights', href: '/upwork-insights', showNewBadge: true },
 ];
 
 interface NavbarProps {
@@ -69,9 +70,14 @@ export function Navbar({
                   <li key={index}>
                     <Link
                       href={item.href}
-                      className='text-white/80 hover:text-white block duration-150'
+                      className='text-white/80 hover:text-white block duration-150 relative'
                     >
                       <span>{item.name}</span>
+                      {item.showNewBadge && (
+                        <Badge className='absolute -top-2 -right-8 text-[10px] px-1.5 py-0 h-4 bg-[#C23D48] text-white border-transparent'>
+                          new
+                        </Badge>
+                      )}
                     </Link>
                   </li>
                 ))}
@@ -112,10 +118,15 @@ export function Navbar({
                     <li key={index}>
                       <Link
                         href={item.href}
-                        className='text-white/80 hover:text-white block py-2 duration-150'
+                        className='text-white/80 hover:text-white block py-2 duration-150 relative'
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         <span>{item.name}</span>
+                        {item.showNewBadge && (
+                          <Badge className='absolute -top-1.5 -right-1.5 text-[10px] px-1.5 py-0 h-4 leading-none bg-[#C23D48] text-white border-transparent rotate-12'>
+                            new
+                          </Badge>
+                        )}
                       </Link>
                     </li>
                   ))}

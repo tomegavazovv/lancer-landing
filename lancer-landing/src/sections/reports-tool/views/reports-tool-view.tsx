@@ -62,7 +62,7 @@ export function ReportsToolView() {
             className='mb-12 text-center'
           >
             <h1 className='text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent'>
-              Analytics Dashboard
+              Upwork Insights Dashboard
             </h1>
             <p className='text-lg text-white/70 max-w-2xl mx-auto'>
               Get the bigger picture of Upwork job markets and make data-driven
