@@ -28,6 +28,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import AdvancedSearchDialog from './advanced-search-dialog';
 
 // Helper function to transform API response data
 const transformJobsCountLast3Months = (data: any) => {
@@ -278,7 +279,7 @@ function MetricCard({
 }
 
 interface SearchInputProps {
-  onSearch: (keyword: string) => void;
+  onSearch: (query: string) => void;
   isSearching: boolean;
   currentSearchKeyword: string;
 }
@@ -288,18 +289,28 @@ function SearchInput({
   isSearching,
   currentSearchKeyword,
 }: SearchInputProps) {
-  const [keyword, setKeyword] = useState('');
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const handleSearch = () => {
-    const trimmedKeyword = keyword.trim();
-    onSearch(trimmedKeyword);
+  const handleApply = (query: string) => {
+    onSearch(query);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleSearch();
+  const handleInputClick = () => {
+    if (!isSearching) {
+      setDialogOpen(true);
     }
   };
+
+  const handleButtonClick = () => {
+    if (!isSearching) {
+      setDialogOpen(true);
+    }
+  };
+
+  const displayValue =
+    currentSearchKeyword && currentSearchKeyword.length > 50
+      ? `${currentSearchKeyword.substring(0, 50)}...`
+      : currentSearchKeyword;
 
   return (
     <div className='max-w-2xl mx-auto'>
@@ -308,13 +319,14 @@ function SearchInput({
         <Input
           type='text'
           placeholder='Enter query to analyze (e.g., "React developer", "Logo design")'
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className='pl-12 pr-32 h-14 text-lg bg-white/95 border-white/20 text-gray-900 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#D94C58]'
+          value={displayValue || ''}
+          readOnly
+          onClick={handleInputClick}
+          disabled={isSearching}
+          className='pl-12 pr-32 h-14 text-lg bg-white/95 border-white/20 text-gray-900 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#D94C58] cursor-pointer hover:bg-white transition-colors disabled:cursor-not-allowed disabled:opacity-50'
         />
         <button
-          onClick={handleSearch}
+          onClick={handleButtonClick}
           disabled={isSearching}
           className='absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 bg-[#D94C58] text-white rounded-md font-medium hover:bg-[#c43d48] transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
         >
@@ -327,6 +339,12 @@ function SearchInput({
           {currentSearchKeyword || 'all queries'}
         </span>
       </p>
+      <AdvancedSearchDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onApply={handleApply}
+        initialQuery={currentSearchKeyword}
+      />
     </div>
   );
 }
