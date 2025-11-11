@@ -955,11 +955,12 @@ export function KeywordBreakdown() {
           <div className='flex items-center justify-center gap-2 mb-2'>
             <Clock className='w-5 h-5 text-[#D94C58]' />
             <h2 className='text-2xl font-bold text-white text-center'>
-              Jobs Posted by Hour of Day
+              Jobs Posted by Hour of Day{' '}
+              <span className='text-white/50 '>(UTC)</span>
             </h2>
           </div>
           <p className='text-center text-white/70 mb-6 text-sm'>
-            Distribution of job postings throughout the day
+            Distribution of job postings throughout the day{' '}
           </p>
           {analytics.getJobsByHourPosted.isLoading ? (
             <ChartSkeleton />
