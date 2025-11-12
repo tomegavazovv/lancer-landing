@@ -118,6 +118,19 @@ export default function RootLayout({
             gtag('config', 'G-5KSZJ7PJWX');
           `}
         </Script>
+        {/* Google Ads conversion tracking */}
+        <Script
+          src='https://www.googletagmanager.com/gtag/js?id=AW-11262946363'
+          strategy='afterInteractive'
+        />
+        <Script id='google-ads' strategy='afterInteractive'>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-11262946363');
+          `}
+        </Script>
         <Script
           id='structured-data'
           type='application/ld+json'
