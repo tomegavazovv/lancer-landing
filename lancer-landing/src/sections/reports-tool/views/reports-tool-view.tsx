@@ -1,6 +1,7 @@
 'use client';
 
 import { AnimatedGroup } from '@/components/ui/animated-group';
+import { CalendlyModal } from '@/components/ui/calendly-modal';
 import { CTAButton } from '@/components/ui/cta-button';
 import { Particles } from '@/components/ui/particles';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -14,12 +15,13 @@ import { KeywordBreakdown } from '../keyword-breakdown';
 
 export function ReportsToolView() {
   const [activeTab, setActiveTab] = useState('keyword');
+  const [isCalendlyModalOpen, setIsCalendlyModalOpen] = useState(false);
   const router = useRouter();
   return (
     <>
       <Navbar
         isOverDarkSection={true}
-        onBookDemo={() => {}}
+        onBookDemo={() => setIsCalendlyModalOpen(true)}
         onGetStarted={() => {
           window.open('https://1.lancer.app', '_blank');
         }}
@@ -177,6 +179,10 @@ export function ReportsToolView() {
         </section>
       </main>
       <Footer />
+      <CalendlyModal
+        isOpen={isCalendlyModalOpen}
+        onClose={() => setIsCalendlyModalOpen(false)}
+      />
     </>
   );
 }

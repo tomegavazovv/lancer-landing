@@ -1,7 +1,10 @@
+'use client';
+
 import { AnimatedGroup } from '@/components/ui/animated-group';
+import { CalendlyModal } from '@/components/ui/calendly-modal';
 import { Footer } from '@/layout/footer';
 import { Mail } from 'lucide-react';
-import { Metadata } from 'next';
+import { useState } from 'react';
 import { TermsOfServiceContent } from './terms-of-service-content';
 
 const transitionVariants = {
@@ -25,9 +28,11 @@ const transitionVariants = {
 };
 
 export default function TermsOfService() {
+  const [isCalendlyModalOpen, setIsCalendlyModalOpen] = useState(false);
+
   return (
     <>
-      <TermsOfServiceContent />
+      <TermsOfServiceContent onBookDemo={() => setIsCalendlyModalOpen(true)} />
       <main className='overflow-hidden'>
         <div
           aria-hidden
@@ -327,11 +332,10 @@ export default function TermsOfService() {
         </section>
       </main>
       <Footer />
+      <CalendlyModal
+        isOpen={isCalendlyModalOpen}
+        onClose={() => setIsCalendlyModalOpen(false)}
+      />
     </>
   );
 }
-
-export const metadata: Metadata = {
-  title: 'Terms of Service | Lancer',
-  description: 'Terms of Service for Lancer',
-};

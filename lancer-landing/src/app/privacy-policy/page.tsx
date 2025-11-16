@@ -1,7 +1,10 @@
+'use client';
+
 import { AnimatedGroup } from '@/components/ui/animated-group';
+import { CalendlyModal } from '@/components/ui/calendly-modal';
 import { Footer } from '@/layout/footer';
 import { Mail } from 'lucide-react';
-import { Metadata } from 'next';
+import { useState } from 'react';
 import { PrivacyPolicyContent } from './privacy-policy-content';
 
 const transitionVariants = {
@@ -25,9 +28,11 @@ const transitionVariants = {
 };
 
 export default function PrivacyPolicy() {
+  const [isCalendlyModalOpen, setIsCalendlyModalOpen] = useState(false);
+
   return (
     <>
-      <PrivacyPolicyContent />
+      <PrivacyPolicyContent onBookDemo={() => setIsCalendlyModalOpen(true)} />
       <main className='overflow-hidden'>
         <div
           aria-hidden
@@ -368,11 +373,10 @@ export default function PrivacyPolicy() {
         </section>
       </main>
       <Footer />
+      <CalendlyModal
+        isOpen={isCalendlyModalOpen}
+        onClose={() => setIsCalendlyModalOpen(false)}
+      />
     </>
   );
 }
-
-export const metadata: Metadata = {
-  title: 'Privacy Policy | Lancer',
-  description: 'Privacy Policy for Lancer',
-};

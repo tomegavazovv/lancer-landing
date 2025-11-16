@@ -347,8 +347,8 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
                   </h3>
                   <div className='text-white/60 text-sm'>Co-Founder</div>
                   <div className='text-white/50 text-xs mt-1'>
-                    I'll personally walk you through how Lancer can transform
-                    your Upwork success
+                    I'll walk you through how Lancer can transform your Upwork
+                    success
                   </div>
                 </div>
               </div>

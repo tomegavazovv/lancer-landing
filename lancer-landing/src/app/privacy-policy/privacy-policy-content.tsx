@@ -2,11 +2,13 @@
 
 import { Navbar } from '@/layout/navbar';
 
-export function PrivacyPolicyContent() {
-  const handleBookDemo = () => {
-    window.open('https://calendly.com/tome-lancer/lancer-demo', '_blank');
-  };
+interface PrivacyPolicyContentProps {
+  onBookDemo: () => void;
+}
 
+export function PrivacyPolicyContent({
+  onBookDemo,
+}: PrivacyPolicyContentProps) {
   const handleGetStarted = () => {
     window.open('https://1.lancer.app', '_blank');
   };
@@ -14,7 +16,7 @@ export function PrivacyPolicyContent() {
   return (
     <Navbar
       isOverDarkSection={true}
-      onBookDemo={handleBookDemo}
+      onBookDemo={onBookDemo}
       onGetStarted={handleGetStarted}
     />
   );

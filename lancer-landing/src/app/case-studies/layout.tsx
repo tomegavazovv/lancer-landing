@@ -1,21 +1,23 @@
 'use client';
 
+import { CalendlyModal } from '@/components/ui/calendly-modal';
 import { Footer } from '@/layout/footer';
 import { Navbar } from '@/layout/navbar';
+import { useState } from 'react';
 
 export default function CaseStudiesLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isCalendlyModalOpen, setIsCalendlyModalOpen] = useState(false);
+
   const handleBookDemo = () => {
-    // Add your book demo logic here
-    console.log('Book demo clicked');
+    setIsCalendlyModalOpen(true);
   };
 
   const handleGetStarted = () => {
-    // Add your get started logic here
-    console.log('Get started clicked');
+    window.open('https://1.lancer.app', '_blank');
   };
 
   return (
@@ -27,6 +29,10 @@ export default function CaseStudiesLayout({
       />
       {children}
       <Footer />
+      <CalendlyModal
+        isOpen={isCalendlyModalOpen}
+        onClose={() => setIsCalendlyModalOpen(false)}
+      />
     </div>
   );
 }

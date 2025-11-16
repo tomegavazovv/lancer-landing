@@ -86,8 +86,8 @@ export function Navbar({
 
             {/* Desktop: Navigation buttons */}
             <div className='hidden lg:flex gap-1'>
-              <CTAButton size='sm' onClick={onGetStarted}>
-                <span className='text-nowrap'>Get Started</span>
+              <CTAButton size='sm' onClick={onBookDemo}>
+                <span className='text-nowrap'>Get a Demo</span>
               </CTAButton>
             </div>
 
@@ -134,8 +134,8 @@ export function Navbar({
 
                 {/* Mobile action buttons */}
                 <div className='flex flex-col gap-2 pt-4 border-t border-white/10'>
-                  <CTAButton onClick={onGetStarted}>
-                    <span className='text-nowrap'>Get Started</span>
+                  <CTAButton onClick={onBookDemo}>
+                    <span className='text-nowrap'>Get a Demo</span>
                   </CTAButton>
                 </div>
               </div>
