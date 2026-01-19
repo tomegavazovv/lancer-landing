@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const APIURL = 'https://api.lancer.com';
+const APIURL = 'https://api.lancer.app';
 
 export async function GET(
   request: NextRequest,
