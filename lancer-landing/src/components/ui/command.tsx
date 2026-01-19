@@ -67,13 +67,13 @@ function CommandInput({
   return (
     <div
       data-slot='command-input-wrapper'
-      className='flex h-9 items-center gap-2 border-b px-3'
+      className='flex h-9 items-center gap-2 border-b border-white/20 px-3'
     >
-      <SearchIcon className='size-4 shrink-0 opacity-50' />
+      <SearchIcon className='size-4 shrink-0 opacity-50 text-white/60' />
       <CommandPrimitive.Input
         data-slot='command-input'
         className={cn(
-          'placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
+          'placeholder:text-white/50 text-white flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
           className
         )}
         {...props}
@@ -180,5 +180,5 @@ export {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
+  CommandShortcut
 };

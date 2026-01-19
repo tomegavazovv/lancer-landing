@@ -63,7 +63,15 @@ interface MultiSelectProps
     value: string;
     /** Optional icon component to display alongside the option. */
     icon?: React.ComponentType<{ className?: string }>;
+    /** If true, this is a special action option that triggers onSpecialAction instead of normal selection */
+    isSpecial?: boolean;
   }[];
+
+  /**
+   * Callback function triggered when a special action option is selected.
+   * Receives the value of the special option.
+   */
+  onSpecialAction?: (value: string) => void;
 
   /**
    * Callback function triggered when the selected values change.
@@ -138,6 +146,7 @@ export const MultiSelect = React.forwardRef<
     {
       options,
       onValueChange,
+      onSpecialAction,
       variant,
       defaultValue = [],
       value,
@@ -209,13 +218,13 @@ export const MultiSelect = React.forwardRef<
             {...props}
             onClick={handleTogglePopover}
             className={cn(
-              'flex w-full overflow-hidden p-1 rounded-md border border-gray-200 shadow-sm min-h-10 h-auto bg-white hover:bg-white [&_svg]:pointer-events-auto focus:ring-1 focus:ring-[#d94c58] focus:border-[#d94c58] transition-colors',
+              'flex w-full overflow-hidden p-1 rounded-md border border-white/20 shadow-sm min-h-10 h-auto bg-white/5 hover:bg-white/10 [&_svg]:pointer-events-auto focus:ring-1 focus:ring-[#d94c58] focus:border-[#d94c58] transition-colors',
               trimContent && maxRows === 1 && 'h-10',
               className
             )}
           >
             {selectedValues.length > 0 ? (
-              <p className='text-black text-left truncate px-3 text-sm font-normal 2xl:text-base w-full'>
+              <p className='text-white/90 text-left truncate px-3 text-sm font-normal 2xl:text-base w-full'>
                 {selectedValues
                   .map(
                     (value) =>
@@ -225,26 +234,27 @@ export const MultiSelect = React.forwardRef<
               </p>
             ) : (
               <div className='flex items-center justify-between w-full mx-auto'>
-                <span className='text-xs 2xl:text-sm text-muted-foreground mx-3 font-normal'>
+                <span className='text-xs 2xl:text-sm text-white/60 mx-3 font-normal'>
                   {placeholder}
                 </span>
-                <ChevronDown className='h-4 cursor-pointer text-muted-foreground mx-2 shrink-0' />
+                <ChevronDown className='h-4 cursor-pointer text-white/60 mx-2 shrink-0' />
               </div>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className='w-auto p-0 mr-1'
+          className='w-auto p-0 mr-1 bg-[#0A0A0A] border-white/20'
           align='start'
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
-          <Command>
+          <Command className='bg-[#0A0A0A] text-white'>
             <CommandInput
               placeholder='Search...'
               onKeyDown={handleInputKeyDown}
+              className='text-white placeholder:text-white/50'
             />
             <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandEmpty className='text-white/70'>No results found.</CommandEmpty>
               <CommandGroup>
                 <CommandItem
                   key='all'
@@ -253,38 +263,48 @@ export const MultiSelect = React.forwardRef<
                 >
                   <div
                     className={cn(
-                      'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
+                      'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-white/40',
                       selectedValues.length === options.length
-                        ? 'bg-primary text-primary-foreground'
+                        ? 'bg-[#D94C58] border-[#D94C58] text-white'
                         : 'opacity-50 [&_svg]:invisible'
                     )}
                   >
                     <CheckIcon className='h-4 w-4' />
                   </div>
-                  <span>(Select All)</span>
+                  <span className='text-white/90'>(Select All)</span>
                 </CommandItem>
                 {options.map((option) => {
                   const isSelected = selectedValues.includes(option.value);
+                  const isSpecial = option.isSpecial;
+                  
                   return (
                     <CommandItem
                       key={option.value}
-                      onSelect={() => toggleOption(option.value)}
+                      onSelect={() => {
+                        if (isSpecial && onSpecialAction) {
+                          onSpecialAction(option.value);
+                        } else {
+                          toggleOption(option.value);
+                        }
+                      }}
                       className='cursor-pointer'
                     >
-                      <div
-                        className={cn(
-                          'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-                          isSelected
-                            ? 'bg-primary text-primary-foreground'
-                            : 'opacity-50 [&_svg]:invisible'
-                        )}
-                      >
-                        <CheckIcon className='h-4 w-4' />
-                      </div>
-                      {option.icon && (
-                        <option.icon className='mr-2 h-4 w-4 text-muted-foreground' />
+                      {!isSpecial && (
+                        <div
+                          className={cn(
+                            'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-white/40',
+                            isSelected
+                              ? 'bg-[#D94C58] border-[#D94C58] text-white'
+                              : 'opacity-50 [&_svg]:invisible'
+                          )}
+                        >
+                          <CheckIcon className='h-4 w-4' />
+                        </div>
                       )}
-                      <span>{option.label}</span>
+                      {option.icon && (
+                        <option.icon className='mr-2 h-4 w-4 text-white/70' />
+                      )}
+                      <span className='text-white/90'>{option.label}</span>
                     </CommandItem>
                   );
                 })}
@@ -296,19 +316,19 @@ export const MultiSelect = React.forwardRef<
                     <>
                       <CommandItem
                         onSelect={handleClear}
-                        className='flex-1 justify-center cursor-pointer'
+                        className='flex-1 justify-center cursor-pointer text-white/90 hover:text-white'
                       >
                         Clear
                       </CommandItem>
                       <Separator
                         orientation='vertical'
-                        className='flex min-h-6 h-full'
+                        className='flex min-h-6 h-full bg-white/20'
                       />
                     </>
                   )}
                   <CommandItem
                     onSelect={() => setIsPopoverOpen(false)}
-                    className='flex-1 justify-center cursor-pointer max-w-full'
+                    className='flex-1 justify-center cursor-pointer max-w-full text-white/90 hover:text-white'
                   >
                     Close
                   </CommandItem>

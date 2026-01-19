@@ -1,6 +1,7 @@
 'use client';
 
 import { AnimatedGroup } from '@/components/ui/animated-group';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
@@ -12,8 +13,10 @@ import {
   Calendar,
   Clock,
   DollarSign,
+  Filter,
   Globe,
   Search,
+  Settings,
   TrendingUp,
   Users,
 } from 'lucide-react';
@@ -22,19 +25,23 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
   Line,
   LineChart,
+  Pie,
+  PieChart,
   Tooltip,
   XAxis,
-  YAxis,
+  YAxis
 } from 'recharts';
 import AdvancedSearchDialog from './advanced-search-dialog';
+import { FilterBadges } from './components/filter-badges';
 
 // Helper function to transform API response data
 const transformJobsCountLast3Months = (data: any) => {
   if (!data || !Array.isArray(data)) return [];
   return data.map((item: any) => ({
-    month: item.month || '',
+    month: item.period || item.month || '',
     jobsPosted: item.count || item.jobsPosted || 0,
   }));
 };
@@ -52,6 +59,22 @@ const transformJobsByClientTotalSpent = (data: any) => {
   return data.map((item: any) => ({
     bucket: item.range || item.bucket || '',
     clients: item.count || item.clients || item.jobsPosted || 0,
+  }));
+};
+
+const transformJobsByClientHireRate = (data: any) => {
+  if (!data || !Array.isArray(data)) return [];
+  return data.map((item: any) => ({
+    bucket: item.range || item.bucket || '',
+    clients: item.count || item.clients || item.jobs || item.jobsPosted || 0,
+  }));
+};
+
+const transformJobsByClientTotalJobsPosted = (data: any) => {
+  if (!data || !Array.isArray(data)) return [];
+  return data.map((item: any) => ({
+    bucket: item.range || item.bucket || '',
+    clients: item.count || item.clients || item.jobs || item.jobsPosted || 0,
   }));
 };
 
@@ -282,12 +305,14 @@ interface SearchInputProps {
   onSearch: (query: string) => void;
   isSearching: boolean;
   currentSearchKeyword: string;
+  onOpenFilters?: () => void;
 }
 
 function SearchInput({
   onSearch,
   isSearching,
   currentSearchKeyword,
+  onOpenFilters,
 }: SearchInputProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -313,25 +338,38 @@ function SearchInput({
       : currentSearchKeyword;
 
   return (
-    <div className='max-w-2xl mx-auto'>
-      <div className='relative'>
-        <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400' />
-        <Input
-          type='text'
-          placeholder='Enter query to analyze (e.g., "React developer", "Logo design")'
-          value={displayValue || ''}
-          readOnly
-          onClick={handleInputClick}
-          disabled={isSearching}
-          className='pl-12 pr-32 h-14 text-lg bg-white/95 border-white/20 text-gray-900 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#D94C58] cursor-pointer hover:bg-white transition-colors disabled:cursor-not-allowed disabled:opacity-50'
-        />
-        <button
-          onClick={handleButtonClick}
-          disabled={isSearching}
-          className='absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 bg-[#D94C58] text-white rounded-md font-medium hover:bg-[#c43d48] transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
-        >
-          {isSearching ? 'Searching...' : 'Search'}
-        </button>
+    <div className='max-w-3xl mx-auto'>
+      <div className='relative flex gap-2'>
+        <div className='relative flex-1'>
+          <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400' />
+          <Input
+            type='text'
+            placeholder='Enter query to analyze (e.g., "React developer", "Logo design")'
+            value={displayValue || ''}
+            readOnly
+            onClick={handleInputClick}
+            disabled={isSearching}
+            className='pl-12 pr-32 h-14 text-lg bg-white/95 border-white/20 text-gray-900 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#D94C58] cursor-pointer hover:bg-white transition-colors disabled:cursor-not-allowed disabled:opacity-50'
+          />
+          
+          <button
+            onClick={handleButtonClick}
+            disabled={isSearching}
+            className='absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 bg-[#D94C58] text-white rounded-md font-medium hover:bg-[#c43d48] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2'
+          >
+           <Settings className='w-4 h-4' /> {isSearching ? 'Searching...' : 'Build Query'}
+          </button>
+        </div>
+        {onOpenFilters && (
+          <Button
+            onClick={onOpenFilters}
+            variant='outline'
+            className='h-14 text-md bg-white/15 border-2 border-white/40 text-white hover:bg-white/25 hover:border-white/60 hover:!text-white hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer font-semibold px-4 shadow-lg shadow-white/10 hover:shadow-white/20 [&:hover]:text-white [&_svg]:text-white'
+          >
+            <Filter className='h-4 w-4 mr-2 text-white' />
+            Filters
+          </Button>
+        )}
       </div>
       <p className='mt-4 text-center text-white/80'>
         Showing results for:{' '}
@@ -349,7 +387,17 @@ function SearchInput({
   );
 }
 
-export function KeywordBreakdown() {
+interface KeywordBreakdownProps {
+  filters?: import('lancer-shared').JobFilters;
+  onFiltersChange?: (filters: import('lancer-shared').JobFilters) => void;
+  onOpenFilters?: () => void;
+}
+
+export function KeywordBreakdown({
+  filters,
+  onFiltersChange,
+  onOpenFilters,
+}: KeywordBreakdownProps) {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
 
@@ -361,12 +409,21 @@ export function KeywordBreakdown() {
     }
   }, [hasSearched]);
 
+  // Use searchQuery from filters if available, otherwise use local state
+  const query = filters?.searchQuery || searchKeyword.trim();
+
   // Only fetch when search has been initiated
-  const analytics = useKeywordAnalytics(searchKeyword.trim(), hasSearched);
+  const analytics = useKeywordAnalytics(query, filters, hasSearched);
 
   const handleSearch = (keyword: string) => {
     // Allow empty string to fetch all data
-    setSearchKeyword(keyword);
+    if (onFiltersChange && filters) {
+      // Update filters if provided
+      onFiltersChange({ ...filters, searchQuery: keyword });
+    } else {
+      // Fallback to local state
+      setSearchKeyword(keyword);
+    }
     setHasSearched(true);
   };
 
@@ -384,7 +441,9 @@ export function KeywordBreakdown() {
     analytics.getJobsByHourPosted.isLoading ||
     analytics.getJobsByDayOfWeek.isLoading ||
     analytics.getTop10Skills.isLoading ||
-    analytics.getAverageHourlyRatePaidByCountry.isLoading;
+    analytics.getAverageHourlyRatePaidByCountry.isLoading ||
+    analytics.getJobsByClientHireRate.isLoading ||
+    analytics.getJobsByClientTotalJobsPosted.isLoading;
 
   // Transform API responses to match expected format
   const jobsPostedTrendData = transformJobsCountLast3Months(
@@ -415,6 +474,12 @@ export function KeywordBreakdown() {
   );
   const clientSpentBreakdown = transformJobsByClientTotalSpent(
     analytics.getJobsByClientTotalSpent.data
+  );
+  const jobsByClientHireRate = transformJobsByClientHireRate(
+    analytics.getJobsByClientHireRate.data
+  );
+  const jobsByClientTotalJobsPosted = transformJobsByClientTotalJobsPosted(
+    analytics.getJobsByClientTotalJobsPosted.data
   );
   const jobsByHour = transformJobsByHour(analytics.getJobsByHourPosted.data);
   const jobsByDayOfWeek = transformJobsByDayOfWeek(
@@ -472,6 +537,8 @@ export function KeywordBreakdown() {
       jobsPostedTrendData.length > 0 ? jobsPostedTrendData : [],
     topCountriesData,
     clientSpentBreakdown,
+    jobsByClientHireRate,
+    jobsByClientTotalJobsPosted,
     jobsByHour,
     jobsByDayOfWeek,
     mostSearchedSkills,
@@ -490,21 +557,121 @@ export function KeywordBreakdown() {
   return (
     <div className='space-y-8'>
       {/* Data Period Note */}
-      <div className='flex justify-center'>
-        <div className='flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20'>
-          <Calendar className='w-4 h-4 text-white/90' />
-          <p className='text-base font-semibold text-white/90'>
-            Data shown is from the past 30 days
-          </p>
-        </div>
-      </div>
+      
 
       {/* Search Input */}
-      <SearchInput
-        onSearch={handleSearch}
-        isSearching={isSearching}
-        currentSearchKeyword={searchKeyword}
-      />
+      <div>
+        <SearchInput
+          onSearch={handleSearch}
+          isSearching={isSearching}
+          currentSearchKeyword={query}
+          onOpenFilters={onOpenFilters}
+        />
+        {filters && onFiltersChange && (
+          <FilterBadges
+            filters={filters}
+            onRemoveFilter={(filterKey, value) => {
+              const newFilters = { ...filters };
+              const keys = filterKey.split('.');
+              let current: any = newFilters;
+
+              // Navigate to the nested property
+              for (let i = 0; i < keys.length - 1; i++) {
+                current = current[keys[i]];
+              }
+
+              // Handle special cases
+              if (filterKey === 'clientInfo.totalSpent') {
+                current.minTotalSpent = null;
+                current.maxTotalSpent = null;
+              } else if (filterKey === 'clientInfo.avgHourlyRate') {
+                current.minAvgHourlyRate = null;
+                current.maxAvgHourlyRate = null;
+              } else if (filterKey === 'clientInfo.hireRate') {
+                current.minHireRate = null;
+                current.maxHireRate = null;
+              } else if (filterKey === 'payment.hourlyRate') {
+                if (newFilters.payment) {
+                  newFilters.payment.minHourlyRate = null;
+                  newFilters.payment.maxHourlyRate = null;
+                }
+              } else if (filterKey === 'payment.fixedPrice') {
+                if (newFilters.payment) {
+                  newFilters.payment.minFixedPrice = null;
+                  newFilters.payment.maxFixedPrice = null;
+                }
+              } else {
+                // Remove the filter
+                const lastKey = keys[keys.length - 1];
+                if (Array.isArray(current[lastKey])) {
+                  current[lastKey] = [];
+                } else if (typeof current[lastKey] === 'string') {
+                  current[lastKey] = '';
+                } else if (typeof current[lastKey] === 'boolean') {
+                  current[lastKey] = false;
+                } else {
+                  current[lastKey] = null;
+                }
+              }
+
+              onFiltersChange(newFilters);
+            }}
+            onClearAll={() => {
+              if (onFiltersChange) {
+                onFiltersChange({
+                  searchQuery: '',
+                  keywords: null,
+                  isFeatured: null,
+                  regions: ['Worldwide', 'USOnly'],
+                  categories: {
+                    includes: [],
+                    excludes: [],
+                  },
+                  experienceLevel: [],
+                  engagementType: null,
+                  vendorQualifications: null,
+                  clientInfo: {
+                    clientLocationIncludes: [],
+                    clientLocationExcludes: [],
+                    minTotalSpent: null,
+                    maxTotalSpent: null,
+                    minAvgHourlyRate: null,
+                    maxAvgHourlyRate: null,
+                    minHireRate: null,
+                    maxHireRate: null,
+                    minNumReviews: null,
+                    minReviewScore: null,
+                    maxReviewScore: null,
+                    companySize: [],
+                    clientIndustry: [],
+                    minJobsPosted: null,
+                    isPaymentVerified: 'all',
+                    isPhoneVerified: 'all',
+                    enterpriseClient: 'all',
+                    memberSinceFrom: null,
+                    memberSinceTo: null,
+                  },
+                  payment: {
+                    paymentType: [],
+                    minHourlyRate: null,
+                    maxHourlyRate: null,
+                    minFixedPrice: null,
+                    maxFixedPrice: null,
+                  },
+                  projectDuration: [],
+                  questions: {
+                    hasQuestions: [],
+                  },
+                  totalSpentIncludeClientsWithLessThanXPostedJobs: null,
+                  averageHourlyRateIncludeClientsWithLessThanXPostedJobs: null,
+                  includeClientsWithLessThanXPostedJobs: null,
+                  includeClientsWithZeroReviews: null,
+                });
+              }
+            }}
+          />
+        )}
+      </div>
 
       {/* Results - Progressive Loading */}
       {/* Metric Cards */}
@@ -596,7 +763,7 @@ export function KeywordBreakdown() {
           <div className='flex items-center justify-center gap-2 mb-2'>
             <TrendingUp className='w-5 h-5 text-[#D94C58]' />
             <h2 className='text-2xl font-bold text-white text-center'>
-              Jobs Posted Trend (Past 3 Months)
+              Jobs Posted Trend
             </h2>
           </div>
           <p className='text-center text-white/70 mb-6 text-sm'>
@@ -622,7 +789,7 @@ export function KeywordBreakdown() {
                       top: 10,
                       right: 10,
                       left: 0,
-                      bottom: 10,
+                      bottom: 50,
                     }}
                   >
                     <CartesianGrid
@@ -632,9 +799,12 @@ export function KeywordBreakdown() {
                     />
                     <XAxis
                       dataKey='month'
+                      angle={-45}
+                      textAnchor='end'
+                      height={60}
                       tick={{
                         fill: '#6b7280',
-                        fontSize: 12,
+                        fontSize: 11,
                       }}
                       axisLine={{ stroke: '#e5e7eb' }}
                       tickLine={{ stroke: '#e5e7eb' }}
@@ -884,63 +1054,264 @@ export function KeywordBreakdown() {
                   }}
                   className='min-h-[400px] w-full'
                 >
-                  <BarChart
-                    data={data.clientSpentBreakdown}
-                    layout='vertical'
+                  <PieChart
                     margin={{
-                      top: 10,
-                      right: 10,
-                      left: 10,
-                      bottom: 10,
+                      top: 40,
+                      right: 40,
+                      left: 40,
+                      bottom: 40,
                     }}
                   >
-                    <CartesianGrid
-                      strokeDasharray='3 3'
-                      stroke='#e5e7eb'
-                      opacity={0.5}
-                    />
-                    <XAxis
-                      type='number'
-                      tick={{
-                        fill: '#6b7280',
-                        fontSize: 12,
+                    <Pie
+                    data={data.clientSpentBreakdown}
+                      dataKey='clients'
+                      nameKey='bucket'
+                      cx='50%'
+                      cy='50%'
+                      innerRadius={60}
+                      outerRadius={120}
+                      paddingAngle={2}
+                      cornerRadius={4}
+                      stroke='none'
+                      label={({ bucket, percent }) =>
+                        `${bucket} (${(percent * 100).toFixed(0)}%)`
+                      }
+                      labelLine={{
+                        stroke: '#6b7280',
+                        strokeWidth: 1,
                       }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
-                    />
-                    <YAxis
-                      type='category'
-                      dataKey='bucket'
-                      width={80}
-                      tick={{
-                        fill: '#6b7280',
-                        fontSize: 12,
-                      }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
-                    />
+                      className="drop-shadow-sm"
+                    >
+                      {data.clientSpentBreakdown.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={
+                            [
+                              '#FF6B7A', // Lightest red
+                              '#FF5268', // Light red
+                              '#F94459', // Medium-light red
+                              '#D94C58', // Accent (primary)
+                              '#C1424D', // Medium red
+                              '#AA3942', // Medium-dark red
+                              '#932F37', // Dark red
+                              '#7C252C', // Darker red
+                              '#651B21', // Very dark red
+                              '#4E1116', // Darkest red
+                            ][index % 10]
+                          }
+                          strokeWidth={0}
+                        />
+                      ))}
+                    </Pie>
                     <Tooltip
                       content={
                         <ChartTooltipContent
-                          formatter={(value: any) => {
+                          formatter={(value: any, name: any) => {
                             if (typeof value === 'number') {
-                              return Number(value.toFixed(2)).toLocaleString();
+                              return [
+                                `${Number(value.toFixed(0)).toLocaleString()} clients`,
+                              ];
                             }
-                            return value;
+                            return [value];
                           }}
                         />
                       }
-                      cursor={{
-                        fill: '#f3f4f6',
-                        opacity: 0.3,
-                      }}
                     />
-                    <Bar
+                  </PieChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
+
+      {/* Jobs by Client Hire Rate and Total Jobs Posted */}
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mt-12'>
+        {/* Jobs by Client Hire Rate */}
+        <div>
+          <div className='flex items-center justify-center gap-2 mb-2'>
+            <Users className='w-5 h-5 text-[#D94C58]' />
+            <h2 className='text-2xl font-bold text-white text-center'>
+              Client Breakdown by Hire Rate
+            </h2>
+          </div>
+          <p className='text-center text-white/70 mb-6 text-sm'>
+            Distribution of clients across different hire rate ranges
+          </p>
+          {analytics.getJobsByClientHireRate.isLoading ? (
+            <ChartSkeleton />
+          ) : (
+            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
+              <CardContent className='p-4'>
+                <ChartContainer
+                  config={{
+                    clients: {
+                      label: 'Number of Clients',
+                      color: '#D94C58',
+                    },
+                  }}
+                  className='min-h-[400px] w-full'
+                >
+                  <PieChart
+                    margin={{
+                      top: 40,
+                      right: 40,
+                      left: 40,
+                      bottom: 40,
+                    }}
+                  >
+                    <Pie
+                      data={data.jobsByClientHireRate}
                       dataKey='clients'
-                      fill='#D94C58'
-                      radius={[0, 8, 8, 0]}
+                      nameKey='bucket'
+                      cx='50%'
+                      cy='50%'
+                      innerRadius={60}
+                      outerRadius={120}
+                      paddingAngle={2}
+                      cornerRadius={4}
+                      stroke='none'
+                      label={({ bucket, percent }) =>
+                        `${bucket} (${(percent * 100).toFixed(0)}%)`
+                      }
+                      labelLine={{
+                        stroke: '#6b7280',
+                        strokeWidth: 1,
+                      }}
+                      className="drop-shadow-sm"
+                    >
+                      {data.jobsByClientHireRate.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={
+                            [
+                              '#FF6B7A', // Lightest red
+                              '#FF5268', // Light red
+                              '#F94459', // Medium-light red
+                              '#D94C58', // Accent (primary)
+                              '#C1424D', // Medium red
+                              '#AA3942', // Medium-dark red
+                              '#932F37', // Dark red
+                              '#7C252C', // Darker red
+                              '#651B21', // Very dark red
+                              '#4E1116', // Darkest red
+                            ][index % 10]
+                          }
+                          strokeWidth={0}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      content={
+                        <ChartTooltipContent
+                          formatter={(value: any, name: any) => {
+                            if (typeof value === 'number') {
+                              return [
+                                `${Number(value.toFixed(0)).toLocaleString()} clients`,
+                              ];
+                            }
+                            return [value];
+                          }}
+                        />
+                      }
                     />
-                  </BarChart>
+                  </PieChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+
+        {/* Jobs by Client Total Jobs Posted */}
+        <div>
+          <div className='flex items-center justify-center gap-2 mb-2'>
+            <Users className='w-5 h-5 text-[#D94C58]' />
+            <h2 className='text-2xl font-bold text-white text-center'>
+              Client Breakdown by Total Jobs Posted
+            </h2>
+          </div>
+          <p className='text-center text-white/70 mb-6 text-sm'>
+            Distribution of clients across different total jobs posted ranges
+          </p>
+          {analytics.getJobsByClientTotalJobsPosted.isLoading ? (
+            <ChartSkeleton />
+          ) : (
+            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
+              <CardContent className='p-4'>
+                <ChartContainer
+                  config={{
+                    clients: {
+                      label: 'Number of Clients',
+                      color: '#D94C58',
+                    },
+                  }}
+                  className='min-h-[400px] w-full'
+                >
+                  <PieChart
+                    margin={{
+                      top: 40,
+                      right: 40,
+                      left: 40,
+                      bottom: 40,
+                    }}
+                  >
+                    <Pie
+                      data={data.jobsByClientTotalJobsPosted}
+                      dataKey='clients'
+                      nameKey='bucket'
+                      cx='50%'
+                      cy='50%'
+                      innerRadius={60}
+                      outerRadius={120}
+                      paddingAngle={2}
+                      cornerRadius={4}
+                      stroke='none'
+                      label={({ bucket, percent }) =>
+                        `${bucket} (${(percent * 100).toFixed(0)}%)`
+                      }
+                      labelLine={{
+                        stroke: '#6b7280',
+                        strokeWidth: 1,
+                      }}
+                      className="drop-shadow-sm"
+                    >
+                      {data.jobsByClientTotalJobsPosted.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={
+                            [
+                              '#FF6B7A', // Lightest red
+                              '#FF5268', // Light red
+                              '#F94459', // Medium-light red
+                              '#D94C58', // Accent (primary)
+                              '#C1424D', // Medium red
+                              '#AA3942', // Medium-dark red
+                              '#932F37', // Dark red
+                              '#7C252C', // Darker red
+                              '#651B21', // Very dark red
+                              '#4E1116', // Darkest red
+                            ][index % 10]
+                          }
+                          strokeWidth={0}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      content={
+                        <ChartTooltipContent
+                          formatter={(value: any, name: any) => {
+                            if (typeof value === 'number') {
+                              return [
+                                `${Number(value.toFixed(0)).toLocaleString()} clients`,
+                                  
+                              ];
+                            }
+                            return [value];
+                          }}
+                        />
+                      }
+                    />
+                  </PieChart>
                 </ChartContainer>
               </CardContent>
             </Card>

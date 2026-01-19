@@ -23,6 +23,7 @@ import {
   GetTop10CountriesByJobsPostedResponse,
   GetTop10SkillsResponse,
   GetTop20CategoriesByAvgHourlyRatePaidResponse,
+  JobFilters,
   ROUTES,
 } from 'lancer-shared';
 
@@ -30,146 +31,151 @@ import {
  * Hook for Keyword/Query tab analytics
  * Only fetches data needed for the keyword breakdown view
  */
-export function useKeywordAnalytics(query: string, enabled: boolean = true) {
+export function useKeywordAnalytics(
+  query: string,
+  filters?: JobFilters,
+  enabled: boolean = true
+) {
+  const requestBody = filters ? { query, filters } : { query };
   const getJobsPosted = useQuery({
-    queryKey: ['keyword-analytics', 'jobs-posted', query],
+    queryKey: ['keyword-analytics', 'jobs-posted', query, filters],
     queryFn: async () => {
-      const response = await poster<{ query: string }, GetJobsPostedResponse>(
-        ROUTES.UPWORK_ANALYTICS.JOBS_POSTED,
-        { query }
-      );
+      const response = await poster<
+        { query: string; filters?: JobFilters },
+        GetJobsPostedResponse
+      >(ROUTES.UPWORK_ANALYTICS.JOBS_POSTED, requestBody);
       return response.data;
     },
     enabled,
   });
 
   const getAverageClientHireRate = useQuery({
-    queryKey: ['keyword-analytics', 'average-client-hire-rate', query],
+    queryKey: ['keyword-analytics', 'average-client-hire-rate', query, filters],
     queryFn: async () => {
       const response = await poster<
-        { query: string },
+        { query: string; filters?: JobFilters },
         GetAverageClientHireRateResponse
-      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_CLIENT_HIRE_RATE, { query });
+      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_CLIENT_HIRE_RATE, requestBody);
       return response.data;
     },
     enabled,
   });
 
   const getAverageClientTotalSpent = useQuery({
-    queryKey: ['keyword-analytics', 'average-client-total-spent', query],
+    queryKey: ['keyword-analytics', 'average-client-total-spent', query, filters],
     queryFn: async () => {
       const response = await poster<
-        { query: string },
+        { query: string; filters?: JobFilters },
         GetAverageClientTotalSpentResponse
-      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_CLIENT_TOTAL_SPENT, { query });
+      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_CLIENT_TOTAL_SPENT, requestBody);
       return response.data;
     },
     enabled,
   });
 
   const getAverageHourlyRateBudget = useQuery({
-    queryKey: ['keyword-analytics', 'average-hourly-rate-budget', query],
+    queryKey: ['keyword-analytics', 'average-hourly-rate-budget', query, filters],
     queryFn: async () => {
       const response = await poster<
-        { query: string },
+        { query: string; filters?: JobFilters },
         GetAverageHourlyRateBudgetResponse
-      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_HOURLY_RATE_BUDGET, { query });
+      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_HOURLY_RATE_BUDGET, requestBody);
       return response.data;
     },
     enabled,
   });
 
   const getAverageFixedPriceBudget = useQuery({
-    queryKey: ['keyword-analytics', 'average-fixed-price-budget', query],
+    queryKey: ['keyword-analytics', 'average-fixed-price-budget', query, filters],
     queryFn: async () => {
       const response = await poster<
-        { query: string },
+        { query: string; filters?: JobFilters },
         GetAverageFixedPriceBudgetResponse
-      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_FIXED_PRICE_BUDGET, { query });
+      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_FIXED_PRICE_BUDGET, requestBody);
       return response.data;
     },
     enabled,
   });
 
   const getAveragePaidPerProject = useQuery({
-    queryKey: ['keyword-analytics', 'average-paid-per-project', query],
+    queryKey: ['keyword-analytics', 'average-paid-per-project', query, filters],
     queryFn: async () => {
       const response = await poster<
-        { query: string },
+        { query: string; filters?: JobFilters },
         GetAveragePaidPerProjectResponse
-      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_PAID_PER_PROJECT, { query });
+      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_PAID_PER_PROJECT, requestBody);
       return response.data;
     },
     enabled,
   });
 
   const getJobsCountLast3Months = useQuery({
-    queryKey: ['keyword-analytics', 'jobs-count-last-3-months', query],
+    queryKey: ['keyword-analytics', 'jobs-count-last-3-months', query, filters],
     queryFn: async () => {
       const response = await poster<
-        { query: string },
+        { query: string; filters?: JobFilters },
         GetJobsCountLast3MonthsResponse
-      >(ROUTES.UPWORK_ANALYTICS.JOBS_COUNT_LAST_3_MONTHS, { query });
+      >(ROUTES.UPWORK_ANALYTICS.JOBS_COUNT_LAST_3_MONTHS, requestBody);
       return response.data;
     },
     enabled,
   });
 
   const getTop10CountriesByJobsPosted = useQuery({
-    queryKey: ['keyword-analytics', 'top-10-countries-by-jobs-posted', query],
+    queryKey: ['keyword-analytics', 'top-10-countries-by-jobs-posted', query, filters],
     queryFn: async () => {
       const response = await poster<
-        { query: string },
+        { query: string; filters?: JobFilters },
         GetTop10CountriesByJobsPostedResponse
-      >(ROUTES.UPWORK_ANALYTICS.TOP_10_COUNTRIES_BY_JOBS_POSTED, { query });
+      >(ROUTES.UPWORK_ANALYTICS.TOP_10_COUNTRIES_BY_JOBS_POSTED, requestBody);
       return response.data;
     },
     enabled,
   });
 
   const getJobsByClientTotalSpent = useQuery({
-    queryKey: ['keyword-analytics', 'jobs-by-client-total-spent', query],
+    queryKey: ['keyword-analytics', 'jobs-by-client-total-spent', query, filters],
     queryFn: async () => {
       const response = await poster<
-        { query: string },
+        { query: string; filters?: JobFilters },
         GetJobsByClientTotalSpentResponse
-      >(ROUTES.UPWORK_ANALYTICS.JOBS_BY_CLIENT_TOTAL_SPENT, { query });
+      >(ROUTES.UPWORK_ANALYTICS.JOBS_BY_CLIENT_TOTAL_SPENT, requestBody);
       return response.data;
     },
     enabled,
   });
 
   const getJobsByHourPosted = useQuery({
-    queryKey: ['keyword-analytics', 'jobs-by-hour-posted', query],
+    queryKey: ['keyword-analytics', 'jobs-by-hour-posted', query, filters],
     queryFn: async () => {
       const response = await poster<
-        { query: string },
+        { query: string; filters?: JobFilters },
         GetJobsByHourPostedResponse
-      >(ROUTES.UPWORK_ANALYTICS.JOBS_BY_HOUR_POSTED, { query });
+      >(ROUTES.UPWORK_ANALYTICS.JOBS_BY_HOUR_POSTED, requestBody);
       return response.data;
     },
     enabled,
   });
 
   const getJobsByDayOfWeek = useQuery({
-    queryKey: ['keyword-analytics', 'jobs-by-day-of-week', query],
+    queryKey: ['keyword-analytics', 'jobs-by-day-of-week', query, filters],
     queryFn: async () => {
       const response = await poster<
-        { query: string },
+        { query: string; filters?: JobFilters },
         GetJobsByDayOfWeekResponse
-      >(ROUTES.UPWORK_ANALYTICS.JOBS_BY_DAY_OF_WEEK, { query });
+      >(ROUTES.UPWORK_ANALYTICS.JOBS_BY_DAY_OF_WEEK, requestBody);
       return response.data;
     },
     enabled,
   });
 
   const getTop10Skills = useQuery({
-    queryKey: ['keyword-analytics', 'top-10-skills', query],
+    queryKey: ['keyword-analytics', 'top-10-skills', query, filters],
     queryFn: async () => {
-      const response = await poster<{ query: string }, GetTop10SkillsResponse>(
-        ROUTES.UPWORK_ANALYTICS.TOP_10_SKILLS,
-        { query }
-      );
+      const response = await poster<
+        { query: string; filters?: JobFilters },
+        GetTop10SkillsResponse
+      >(ROUTES.UPWORK_ANALYTICS.TOP_10_SKILLS, requestBody);
       return response.data;
     },
     enabled,
@@ -180,12 +186,42 @@ export function useKeywordAnalytics(query: string, enabled: boolean = true) {
       'keyword-analytics',
       'average-hourly-rate-paid-by-country',
       query,
+      filters,
     ],
     queryFn: async () => {
       const response = await poster<
-        { query: string },
+        { query: string; filters?: JobFilters },
         GetAverageHourlyRatePaidByCountryResponse
-      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_HOURLY_RATE_PAID_BY_COUNTRY, { query });
+      >(ROUTES.UPWORK_ANALYTICS.AVERAGE_HOURLY_RATE_PAID_BY_COUNTRY, requestBody);
+      return response.data;
+    },
+    enabled,
+  });
+
+  const getJobsByClientHireRate = useQuery({
+    queryKey: ['keyword-analytics', 'jobs-by-client-hire-rate', query, filters],
+    queryFn: async () => {
+      const response = await poster<
+        { query: string; filters?: JobFilters },
+        any
+      >('upwork-analytics/jobs-by-client-hire-rate', requestBody);
+      return response.data;
+    },
+    enabled,
+  });
+
+  const getJobsByClientTotalJobsPosted = useQuery({
+    queryKey: [
+      'keyword-analytics',
+      'jobs-by-client-total-jobs-posted',
+      query,
+      filters,
+    ],
+    queryFn: async () => {
+      const response = await poster<
+        { query: string; filters?: JobFilters },
+        any
+      >('upwork-analytics/jobs-by-client-total-jobs-posted', requestBody);
       return response.data;
     },
     enabled,
@@ -205,6 +241,8 @@ export function useKeywordAnalytics(query: string, enabled: boolean = true) {
     getJobsByDayOfWeek,
     getTop10Skills,
     getAverageHourlyRatePaidByCountry,
+    getJobsByClientHireRate,
+    getJobsByClientTotalJobsPosted,
   };
 }
 
