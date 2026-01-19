@@ -1472,10 +1472,10 @@ jiti@^2.4.2:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
 
-lancer-shared@^1.2.298:
-  version "1.2.298"
-  resolved "https://registry.yarnpkg.com/lancer-shared/-/lancer-shared-1.2.298.tgz#2ab5e00908ebe7570b0e11ae8709e720b7993999"
-  integrity sha512-N7dqq4s5m/1nri8Xw0pU6MS4ZEI0apT5Unk92twDep1GvN3kcQjJINhZZ59xB+jNIkW6K5IrM6dlilYJdj4Znw==
+lancer-shared@^1.2.310:
+  version "1.2.310"
+  resolved "https://registry.yarnpkg.com/lancer-shared/-/lancer-shared-1.2.310.tgz#76b557f3738a4e9ddc51329dfe281d9d16f1072a"
+  integrity sha512-bq3T8UDQNtgMBiMNhGBnNbOHi/BuQjvpNDbaAlKJXbTQihsQVpJ4+FwqbB6ioqJNkt6nOKaT9HafTeW3F3t8Kg==
   dependencies:
     currency-symbol-map "^5.1.0"
     lodash "4.17.21"
