@@ -2,8 +2,7 @@
 
 import { AnimatedGroup } from '@/components/ui/animated-group';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import { ChartContainer } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -135,8 +134,12 @@ interface MetricCardProps {
 
 function MetricCardSkeleton() {
   return (
-    <Card className='bg-white/5 border-white/10 shadow-lg'>
-      <CardContent className='p-6'>
+    <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden'>
+      {/* Subtle background glow */}
+      <div className='absolute top-0 right-0 w-32 h-32 bg-[#D94C58]/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2' />
+      <div className='absolute bottom-0 left-0 w-24 h-24 bg-[#D94C58]/5 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2' />
+      
+      <div className='relative z-10'>
         <div className='flex items-start justify-between mb-4'>
           <div className='p-3 rounded-lg bg-white/10 animate-pulse w-12 h-12'></div>
           <div className='w-16 h-6 bg-white/10 rounded-md animate-pulse'></div>
@@ -146,8 +149,8 @@ function MetricCardSkeleton() {
           <div className='h-8 bg-white/10 rounded w-24 animate-pulse'></div>
           <div className='h-3 bg-white/10 rounded w-40 animate-pulse mt-2'></div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -156,73 +159,75 @@ function ChartSkeleton() {
   const barHeights = [65, 85, 45, 75, 55, 90, 40, 70, 50, 80];
 
   return (
-    <Card className='bg-white border-border/50 p-0 shadow-lg'>
-      <CardContent className='p-4'>
-        <div className='min-h-[300px] w-full relative overflow-hidden'>
-          {/* Loading overlay */}
-          <div className='absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm'>
-            <div className='flex flex-col items-center gap-3'>
-              <div className='relative'>
-                <div className='h-8 w-8 border-4 border-[#D94C58]/20 rounded-full'></div>
-                <div className='h-8 w-8 border-4 border-transparent border-t-[#D94C58] rounded-full animate-spin absolute top-0 left-0'></div>
-              </div>
-              <p className='text-sm font-medium text-gray-600 animate-pulse'>
-                Loading chart data...
-              </p>
+    <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden'>
+      {/* Subtle background glow */}
+      <div className='absolute top-0 right-0 w-64 h-64 bg-[#D94C58]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2' />
+      <div className='absolute bottom-0 left-0 w-48 h-48 bg-[#D94C58]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2' />
+      
+      <div className='relative z-10 min-h-[300px] w-full overflow-hidden'>
+        {/* Loading overlay */}
+        <div className='absolute inset-0 z-10 flex items-center justify-center bg-[#1a1a2e]/80 backdrop-blur-sm'>
+          <div className='flex flex-col items-center gap-3'>
+            <div className='relative'>
+              <div className='h-8 w-8 border-4 border-[#D94C58]/20 rounded-full'></div>
+              <div className='h-8 w-8 border-4 border-transparent border-t-[#D94C58] rounded-full animate-spin absolute top-0 left-0'></div>
             </div>
-          </div>
-
-          {/* Grid lines */}
-          <div className='absolute inset-0 flex flex-col justify-between py-4 px-12'>
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className='border-t border-dashed border-gray-200/40'
-                style={{ marginTop: i === 0 ? '0' : 'auto' }}
-              />
-            ))}
-          </div>
-
-          {/* Y-axis labels */}
-          <div className='absolute left-2 top-0 bottom-10 flex flex-col justify-between py-4'>
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className='h-3 w-10 bg-gray-200/30 rounded-sm animate-pulse'
-                style={{
-                  animationDelay: `${i * 0.08}s`,
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Chart bars */}
-          <div className='absolute inset-0 flex items-end justify-center gap-2 px-12 pb-10'>
-            {barHeights.map((height, i) => (
-              <div
-                key={i}
-                className='flex-1 flex flex-col items-center gap-2 max-w-[60px]'
-              >
-                <div
-                  className='w-full bg-gradient-to-t from-[#D94C58]/40 to-[#D94C58]/20 rounded-t-md animate-pulse relative overflow-hidden'
-                  style={{
-                    height: `${height}%`,
-                    animationDelay: `${i * 0.1}s`,
-                    minHeight: '20px',
-                  }}
-                />
-                <div
-                  className='h-2.5 w-10 bg-gray-200/30 rounded-sm animate-pulse'
-                  style={{
-                    animationDelay: `${i * 0.1 + 0.05}s`,
-                  }}
-                />
-              </div>
-            ))}
+            <p className='text-sm font-medium text-white/70 animate-pulse'>
+              Loading chart data...
+            </p>
           </div>
         </div>
-      </CardContent>
-    </Card>
+
+        {/* Grid lines */}
+        <div className='absolute inset-0 flex flex-col justify-between py-4 px-12'>
+          {[...Array(5)].map((_, i) => (
+            <div
+              key={i}
+              className='border-t border-dashed border-white/10'
+              style={{ marginTop: i === 0 ? '0' : 'auto' }}
+            />
+          ))}
+        </div>
+
+        {/* Y-axis labels */}
+        <div className='absolute left-2 top-0 bottom-10 flex flex-col justify-between py-4'>
+          {[...Array(5)].map((_, i) => (
+            <div
+              key={i}
+              className='h-3 w-10 bg-white/10 rounded-sm animate-pulse'
+              style={{
+                animationDelay: `${i * 0.08}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Chart bars */}
+        <div className='absolute inset-0 flex items-end justify-center gap-2 px-12 pb-10'>
+          {barHeights.map((height, i) => (
+            <div
+              key={i}
+              className='flex-1 flex flex-col items-center gap-2 max-w-[60px]'
+            >
+              <div
+                className='w-full bg-gradient-to-t from-[#D94C58]/40 to-[#D94C58]/20 rounded-t-md animate-pulse relative overflow-hidden'
+                style={{
+                  height: `${height}%`,
+                  animationDelay: `${i * 0.1}s`,
+                  minHeight: '20px',
+                }}
+              />
+              <div
+                className='h-2.5 w-10 bg-white/10 rounded-sm animate-pulse'
+                style={{
+                  animationDelay: `${i * 0.1 + 0.05}s`,
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -271,8 +276,12 @@ function MetricCard({
   const isNegativeTrend = trend !== undefined && trend < 0;
 
   return (
-    <Card className='bg-white/5 border-white/10 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]'>
-      <CardContent className='p-6'>
+    <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]'>
+      {/* Subtle background glow */}
+      <div className='absolute top-0 right-0 w-32 h-32 bg-[#D94C58]/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2' />
+      <div className='absolute bottom-0 left-0 w-24 h-24 bg-[#D94C58]/5 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2' />
+      
+      <div className='relative z-10'>
         <div className='flex items-start justify-between mb-4'>
           <div className='p-3 rounded-lg bg-[#D94C58]/10'>{icon}</div>
           {trend !== undefined && (
@@ -303,8 +312,8 @@ function MetricCard({
             <p className='text-xs text-white/60 mt-2'>{description}</p>
           )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -449,8 +458,11 @@ export function KeywordBreakdown({
 
   const handleSearch = (keyword: string) => {
     // Allow empty string to fetch all data
-    if (onFiltersChange && filters) {
-      // Update filters if provided
+    if (onAppliedFiltersChange && filters) {
+      // Update applied filters directly to trigger API calls
+      onAppliedFiltersChange({ ...filters, searchQuery: keyword });
+    } else if (onFiltersChange && filters) {
+      // Fallback to draft filters if no applied filters handler
       onFiltersChange({ ...filters, searchQuery: keyword });
     } else {
       // Fallback to local state
@@ -824,8 +836,12 @@ export function KeywordBreakdown({
           {analytics.getJobsCountLast3Months.isLoading ? (
             <ChartSkeleton />
           ) : (
-            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
-              <CardContent className='p-4'>
+            <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden'>
+              {/* Subtle background glow */}
+              <div className='absolute top-0 right-0 w-64 h-64 bg-[#D94C58]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2' />
+              <div className='absolute bottom-0 left-0 w-48 h-48 bg-[#D94C58]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2' />
+              
+              <div className='relative z-10'>
                 <ChartContainer
                   config={{
                     jobsPosted: {
@@ -833,7 +849,7 @@ export function KeywordBreakdown({
                       color: '#D94C58',
                     },
                   }}
-                  className='min-h-[300px] w-full'
+                  className='min-h-[300px] w-full [&_.recharts-cartesian-axis-tick_text]:fill-[rgba(255,255,255,0.85)]'
                 >
                   <LineChart
                     data={data.jobsPostedTrendData}
@@ -841,31 +857,33 @@ export function KeywordBreakdown({
                       top: 10,
                       right: 10,
                       left: 0,
-                      bottom: 50,
+                      bottom: 10,
                     }}
                   >
                     <CartesianGrid
                       strokeDasharray='3 3'
-                      stroke='#e5e7eb'
+                      stroke='rgba(255, 255, 255, 0.1)'
                       opacity={0.5}
                     />
                     <XAxis
                       dataKey='month'
                       angle={-45}
                       textAnchor='end'
-                      height={60}
+                      height={50}
                       tick={{
-                        fill: '#6b7280',
+                        fill: 'rgba(255, 255, 255, 0.85)',
                         fontSize: 11,
                       }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                     />
                     <YAxis
                       width={50}
-                      tick={{ fill: '#6b7280' }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
+                      tick={{ 
+                        fill: 'rgba(255, 255, 255, 0.85)',
+                      }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                       tickFormatter={(value) => {
                         if (value >= 1000) {
                           return `${(value / 1000).toFixed(0)}K`;
@@ -874,16 +892,20 @@ export function KeywordBreakdown({
                       }}
                     />
                     <Tooltip
-                      content={
-                        <ChartTooltipContent
-                          formatter={(value: any) => {
-                            if (typeof value === 'number') {
-                              return Number(value.toFixed(2)).toLocaleString();
-                            }
-                            return value;
-                          }}
-                        />
-                      }
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload;
+                          return (
+                            <div className='bg-[#1a1a2e]/95 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-3 shadow-xl'>
+                              <p className='text-white/70 text-xs mb-1'>{data.month}</p>
+                              <p className='text-[#D94C58] font-bold text-lg'>
+                                {Number(data.jobsPosted).toLocaleString()} jobs
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
                       cursor={{ stroke: '#D94C58', strokeWidth: 1 }}
                     />
                     <Line
@@ -896,8 +918,8 @@ export function KeywordBreakdown({
                     />
                   </LineChart>
                 </ChartContainer>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
         </div>
 
@@ -915,8 +937,12 @@ export function KeywordBreakdown({
           {analytics.getTop10CountriesByJobsPosted.isLoading ? (
             <ChartSkeleton />
           ) : (
-            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
-              <CardContent className='p-4'>
+            <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden'>
+              {/* Subtle background glow */}
+              <div className='absolute top-0 right-0 w-64 h-64 bg-[#D94C58]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2' />
+              <div className='absolute bottom-0 left-0 w-48 h-48 bg-[#D94C58]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2' />
+              
+              <div className='relative z-10'>
                 <ChartContainer
                   config={{
                     jobsPosted: {
@@ -924,7 +950,7 @@ export function KeywordBreakdown({
                       color: '#D94C58',
                     },
                   }}
-                  className='min-h-[300px] w-full'
+                  className='min-h-[300px] w-full [&_.recharts-cartesian-axis-tick_text]:fill-[rgba(255,255,255,0.85)]'
                 >
                   <BarChart
                     data={data.topCountriesData}
@@ -937,7 +963,7 @@ export function KeywordBreakdown({
                   >
                     <CartesianGrid
                       strokeDasharray='3 3'
-                      stroke='#e5e7eb'
+                      stroke='rgba(255, 255, 255, 0.1)'
                       opacity={0.5}
                     />
                     <XAxis
@@ -946,17 +972,17 @@ export function KeywordBreakdown({
                       textAnchor='end'
                       height={40}
                       tick={{
-                        fill: '#6b7280',
+                        fill: 'rgba(255, 255, 255, 0.85)',
                         fontSize: 12,
                       }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                     />
                     <YAxis
                       width={40}
-                      tick={{ fill: '#6b7280' }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
+                      tick={{ fill: 'rgba(255, 255, 255, 0.85)' }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                       tickFormatter={(value) => {
                         if (value >= 1000) {
                           return `${(value / 1000).toFixed(0)}K`;
@@ -965,18 +991,22 @@ export function KeywordBreakdown({
                       }}
                     />
                     <Tooltip
-                      content={
-                        <ChartTooltipContent
-                          formatter={(value: any) => {
-                            if (typeof value === 'number') {
-                              return Number(value.toFixed(2)).toLocaleString();
-                            }
-                            return value;
-                          }}
-                        />
-                      }
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload;
+                          return (
+                            <div className='bg-[#1a1a2e]/95 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-3 shadow-xl'>
+                              <p className='text-white/70 text-xs mb-1'>{data.country}</p>
+                              <p className='text-[#D94C58] font-bold text-lg'>
+                                {Number(data.jobsPosted).toLocaleString()} jobs
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
                       cursor={{
-                        fill: '#f3f4f6',
+                        fill: 'rgba(217, 76, 88, 0.2)',
                         opacity: 0.3,
                       }}
                     />
@@ -987,386 +1017,8 @@ export function KeywordBreakdown({
                     />
                   </BarChart>
                 </ChartContainer>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      </div>
-
-      {/* Average Hourly Rate Paid by Country and Client Breakdown */}
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mt-12'>
-        {/* Average Hourly Rate Paid by Country */}
-        <div>
-          <div className='flex items-center justify-center gap-2 mb-2'>
-            <Globe className='w-5 h-5 text-[#D94C58]' />
-            <h2 className='text-2xl font-bold text-white text-center'>
-              Top 20 Countries by Hourly Rate Paid
-            </h2>
-          </div>
-          <p className='text-center text-white/70 mb-6 text-sm'>
-            Average hourly rate actually paid by clients in each country
-          </p>
-          {analytics.getAverageHourlyRatePaidByCountry.isLoading ? (
-            <ChartSkeleton />
-          ) : (
-            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
-              <CardContent className='p-4'>
-                <ChartContainer
-                  config={{
-                    avgHourlyRatePaid: {
-                      label: 'Avg. Hourly Rate Paid',
-                      color: '#D94C58',
-                    },
-                  }}
-                  className='min-h-[400px] w-full'
-                >
-                  <BarChart
-                    data={averageHourlyRatePaidByCountry}
-                    margin={{
-                      top: 10,
-                      right: 10,
-                      left: 0,
-                      bottom: 40,
-                    }}
-                  >
-                    <CartesianGrid
-                      strokeDasharray='3 3'
-                      stroke='#e5e7eb'
-                      opacity={0.5}
-                    />
-                    <XAxis
-                      dataKey='country'
-                      angle={-45}
-                      textAnchor='end'
-                      height={40}
-                      tick={{
-                        fill: '#6b7280',
-                        fontSize: 12,
-                      }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
-                    />
-                    <YAxis
-                      width={50}
-                      tick={{ fill: '#6b7280' }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
-                      tickFormatter={(value) => `$${value}/hr`}
-                    />
-                    <Tooltip
-                      content={
-                        <ChartTooltipContent
-                          formatter={(value: any) => {
-                            if (typeof value === 'number') {
-                              return `$${Number(value.toFixed(2))}/hr`;
-                            }
-                            return value;
-                          }}
-                        />
-                      }
-                      cursor={{
-                        fill: '#f3f4f6',
-                        opacity: 0.3,
-                      }}
-                    />
-                    <Bar
-                      dataKey='avgHourlyRatePaid'
-                      fill='#D94C58'
-                      radius={[8, 8, 0, 0]}
-                    />
-                  </BarChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-
-        {/* Client Breakdown by Total Spent */}
-        <div>
-          <div className='flex items-center justify-center gap-2 mb-2'>
-            <Users className='w-5 h-5 text-[#D94C58]' />
-            <h2 className='text-2xl font-bold text-white text-center'>
-              Client Breakdown by Total Spent
-            </h2>
-          </div>
-          <p className='text-center text-white/70 mb-6 text-sm'>
-            Distribution of clients across different total spent ranges
-          </p>
-          {analytics.getJobsByClientTotalSpent.isLoading ? (
-            <ChartSkeleton />
-          ) : (
-            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
-              <CardContent className='p-4'>
-                <ChartContainer
-                  config={{
-                    clients: {
-                      label: 'Number of Clients',
-                      color: '#D94C58',
-                    },
-                  }}
-                  className='min-h-[400px] w-full'
-                >
-                  <PieChart
-                    margin={{
-                      top: 40,
-                      right: 40,
-                      left: 40,
-                      bottom: 40,
-                    }}
-                  >
-                    <Pie
-                    data={data.clientSpentBreakdown}
-                      dataKey='clients'
-                      nameKey='bucket'
-                      cx='50%'
-                      cy='50%'
-                      innerRadius={60}
-                      outerRadius={120}
-                      paddingAngle={2}
-                      cornerRadius={4}
-                      stroke='none'
-                      label={({ bucket, percent }) =>
-                        `${bucket} (${(percent * 100).toFixed(0)}%)`
-                      }
-                      labelLine={{
-                        stroke: '#6b7280',
-                        strokeWidth: 1,
-                      }}
-                      className="drop-shadow-sm"
-                    >
-                      {data.clientSpentBreakdown.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={
-                            [
-                              '#FF6B7A', // Lightest red
-                              '#FF5268', // Light red
-                              '#F94459', // Medium-light red
-                              '#D94C58', // Accent (primary)
-                              '#C1424D', // Medium red
-                              '#AA3942', // Medium-dark red
-                              '#932F37', // Dark red
-                              '#7C252C', // Darker red
-                              '#651B21', // Very dark red
-                              '#4E1116', // Darkest red
-                            ][index % 10]
-                          }
-                          strokeWidth={0}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      content={
-                        <ChartTooltipContent
-                          formatter={(value: any, name: any) => {
-                            if (typeof value === 'number') {
-                              return [
-                                `${Number(value.toFixed(0)).toLocaleString()} clients`,
-                              ];
-                            }
-                            return [value];
-                          }}
-                        />
-                      }
-                    />
-                  </PieChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      </div>
-
-      {/* Jobs by Client Hire Rate and Total Jobs Posted */}
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mt-12'>
-        {/* Jobs by Client Hire Rate */}
-        <div>
-          <div className='flex items-center justify-center gap-2 mb-2'>
-            <Users className='w-5 h-5 text-[#D94C58]' />
-            <h2 className='text-2xl font-bold text-white text-center'>
-              Client Breakdown by Hire Rate
-            </h2>
-          </div>
-          <p className='text-center text-white/70 mb-6 text-sm'>
-            Distribution of clients across different hire rate ranges
-          </p>
-          {analytics.getJobsByClientHireRate.isLoading ? (
-            <ChartSkeleton />
-          ) : (
-            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
-              <CardContent className='p-4'>
-                <ChartContainer
-                  config={{
-                    clients: {
-                      label: 'Number of Clients',
-                      color: '#D94C58',
-                    },
-                  }}
-                  className='min-h-[400px] w-full'
-                >
-                  <PieChart
-                    margin={{
-                      top: 40,
-                      right: 40,
-                      left: 40,
-                      bottom: 40,
-                    }}
-                  >
-                    <Pie
-                      data={data.jobsByClientHireRate}
-                      dataKey='clients'
-                      nameKey='bucket'
-                      cx='50%'
-                      cy='50%'
-                      innerRadius={60}
-                      outerRadius={120}
-                      paddingAngle={2}
-                      cornerRadius={4}
-                      stroke='none'
-                      label={({ bucket, percent }) =>
-                        `${bucket} (${(percent * 100).toFixed(0)}%)`
-                      }
-                      labelLine={{
-                        stroke: '#6b7280',
-                        strokeWidth: 1,
-                      }}
-                      className="drop-shadow-sm"
-                    >
-                      {data.jobsByClientHireRate.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={
-                            [
-                              '#FF6B7A', // Lightest red
-                              '#FF5268', // Light red
-                              '#F94459', // Medium-light red
-                              '#D94C58', // Accent (primary)
-                              '#C1424D', // Medium red
-                              '#AA3942', // Medium-dark red
-                              '#932F37', // Dark red
-                              '#7C252C', // Darker red
-                              '#651B21', // Very dark red
-                              '#4E1116', // Darkest red
-                            ][index % 10]
-                          }
-                          strokeWidth={0}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      content={
-                        <ChartTooltipContent
-                          formatter={(value: any, name: any) => {
-                            if (typeof value === 'number') {
-                              return [
-                                `${Number(value.toFixed(0)).toLocaleString()} clients`,
-                              ];
-                            }
-                            return [value];
-                          }}
-                        />
-                      }
-                    />
-                  </PieChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-
-        {/* Jobs by Client Total Jobs Posted */}
-        <div>
-          <div className='flex items-center justify-center gap-2 mb-2'>
-            <Users className='w-5 h-5 text-[#D94C58]' />
-            <h2 className='text-2xl font-bold text-white text-center'>
-              Client Breakdown by Total Jobs Posted
-            </h2>
-          </div>
-          <p className='text-center text-white/70 mb-6 text-sm'>
-            Distribution of clients across different total jobs posted ranges
-          </p>
-          {analytics.getJobsByClientTotalJobsPosted.isLoading ? (
-            <ChartSkeleton />
-          ) : (
-            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
-              <CardContent className='p-4'>
-                <ChartContainer
-                  config={{
-                    clients: {
-                      label: 'Number of Clients',
-                      color: '#D94C58',
-                    },
-                  }}
-                  className='min-h-[400px] w-full'
-                >
-                  <PieChart
-                    margin={{
-                      top: 40,
-                      right: 40,
-                      left: 40,
-                      bottom: 40,
-                    }}
-                  >
-                    <Pie
-                      data={data.jobsByClientTotalJobsPosted}
-                      dataKey='clients'
-                      nameKey='bucket'
-                      cx='50%'
-                      cy='50%'
-                      innerRadius={60}
-                      outerRadius={120}
-                      paddingAngle={2}
-                      cornerRadius={4}
-                      stroke='none'
-                      label={({ bucket, percent }) =>
-                        `${bucket} (${(percent * 100).toFixed(0)}%)`
-                      }
-                      labelLine={{
-                        stroke: '#6b7280',
-                        strokeWidth: 1,
-                      }}
-                      className="drop-shadow-sm"
-                    >
-                      {data.jobsByClientTotalJobsPosted.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={
-                            [
-                              '#FF6B7A', // Lightest red
-                              '#FF5268', // Light red
-                              '#F94459', // Medium-light red
-                              '#D94C58', // Accent (primary)
-                              '#C1424D', // Medium red
-                              '#AA3942', // Medium-dark red
-                              '#932F37', // Dark red
-                              '#7C252C', // Darker red
-                              '#651B21', // Very dark red
-                              '#4E1116', // Darkest red
-                            ][index % 10]
-                          }
-                          strokeWidth={0}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      content={
-                        <ChartTooltipContent
-                          formatter={(value: any, name: any) => {
-                            if (typeof value === 'number') {
-                              return [
-                                `${Number(value.toFixed(0)).toLocaleString()} clients`,
-                                  
-                              ];
-                            }
-                            return [value];
-                          }}
-                        />
-                      }
-                    />
-                  </PieChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -1388,8 +1040,12 @@ export function KeywordBreakdown({
           {analytics.getJobsByHourPosted.isLoading ? (
             <ChartSkeleton />
           ) : (
-            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
-              <CardContent className='p-4'>
+            <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden'>
+              {/* Subtle background glow */}
+              <div className='absolute top-0 right-0 w-64 h-64 bg-[#D94C58]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2' />
+              <div className='absolute bottom-0 left-0 w-48 h-48 bg-[#D94C58]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2' />
+              
+              <div className='relative z-10'>
                 <ChartContainer
                   config={{
                     jobsPosted: {
@@ -1397,7 +1053,7 @@ export function KeywordBreakdown({
                       color: '#D94C58',
                     },
                   }}
-                  className='min-h-[300px] w-full'
+                  className='min-h-[300px] w-full [&_.recharts-cartesian-axis-tick_text]:fill-[rgba(255,255,255,0.85)]'
                 >
                   <BarChart
                     data={data.jobsByHour}
@@ -1410,7 +1066,7 @@ export function KeywordBreakdown({
                   >
                     <CartesianGrid
                       strokeDasharray='3 3'
-                      stroke='#e5e7eb'
+                      stroke='rgba(255, 255, 255, 0.1)'
                       opacity={0.5}
                     />
                     <XAxis
@@ -1419,17 +1075,17 @@ export function KeywordBreakdown({
                       textAnchor='end'
                       height={40}
                       tick={{
-                        fill: '#6b7280',
+                        fill: 'rgba(255, 255, 255, 0.85)',
                         fontSize: 11,
                       }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                     />
                     <YAxis
                       width={40}
-                      tick={{ fill: '#6b7280' }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
+                      tick={{ fill: 'rgba(255, 255, 255, 0.85)' }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                       tickFormatter={(value) => {
                         if (value >= 1000) {
                           return `${(value / 1000).toFixed(0)}K`;
@@ -1438,18 +1094,22 @@ export function KeywordBreakdown({
                       }}
                     />
                     <Tooltip
-                      content={
-                        <ChartTooltipContent
-                          formatter={(value: any) => {
-                            if (typeof value === 'number') {
-                              return Number(value.toFixed(2)).toLocaleString();
-                            }
-                            return value;
-                          }}
-                        />
-                      }
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload;
+                          return (
+                            <div className='bg-[#1a1a2e]/95 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-3 shadow-xl'>
+                              <p className='text-white/70 text-xs mb-1'>{data.hour}</p>
+                              <p className='text-[#D94C58] font-bold text-lg'>
+                                {Number(data.jobsPosted).toLocaleString()} jobs
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
                       cursor={{
-                        fill: '#f3f4f6',
+                        fill: 'rgba(217, 76, 88, 0.2)',
                         opacity: 0.3,
                       }}
                     />
@@ -1460,8 +1120,8 @@ export function KeywordBreakdown({
                     />
                   </BarChart>
                 </ChartContainer>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
         </div>
 
@@ -1479,8 +1139,12 @@ export function KeywordBreakdown({
           {analytics.getJobsByDayOfWeek.isLoading ? (
             <ChartSkeleton />
           ) : (
-            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
-              <CardContent className='p-4'>
+            <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden'>
+              {/* Subtle background glow */}
+              <div className='absolute top-0 right-0 w-64 h-64 bg-[#D94C58]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2' />
+              <div className='absolute bottom-0 left-0 w-48 h-48 bg-[#D94C58]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2' />
+              
+              <div className='relative z-10'>
                 <ChartContainer
                   config={{
                     jobsPosted: {
@@ -1488,7 +1152,7 @@ export function KeywordBreakdown({
                       color: '#D94C58',
                     },
                   }}
-                  className='min-h-[300px] w-full'
+                  className='min-h-[300px] w-full [&_.recharts-cartesian-axis-tick_text]:fill-[rgba(255,255,255,0.85)]'
                 >
                   <BarChart
                     data={data.jobsByDayOfWeek}
@@ -1501,7 +1165,7 @@ export function KeywordBreakdown({
                   >
                     <CartesianGrid
                       strokeDasharray='3 3'
-                      stroke='#e5e7eb'
+                      stroke='rgba(255, 255, 255, 0.1)'
                       opacity={0.5}
                     />
                     <XAxis
@@ -1510,17 +1174,17 @@ export function KeywordBreakdown({
                       textAnchor='end'
                       height={40}
                       tick={{
-                        fill: '#6b7280',
+                        fill: 'rgba(255, 255, 255, 0.85)',
                         fontSize: 12,
                       }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                     />
                     <YAxis
                       width={40}
-                      tick={{ fill: '#6b7280' }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
+                      tick={{ fill: 'rgba(255, 255, 255, 0.85)' }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                       tickFormatter={(value) => {
                         if (value >= 1000) {
                           return `${(value / 1000).toFixed(0)}K`;
@@ -1529,18 +1193,22 @@ export function KeywordBreakdown({
                       }}
                     />
                     <Tooltip
-                      content={
-                        <ChartTooltipContent
-                          formatter={(value: any) => {
-                            if (typeof value === 'number') {
-                              return Number(value.toFixed(2)).toLocaleString();
-                            }
-                            return value;
-                          }}
-                        />
-                      }
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload;
+                          return (
+                            <div className='bg-[#1a1a2e]/95 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-3 shadow-xl'>
+                              <p className='text-white/70 text-xs mb-1'>{data.day}</p>
+                              <p className='text-[#D94C58] font-bold text-lg'>
+                                {Number(data.jobsPosted).toLocaleString()} jobs
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
                       cursor={{
-                        fill: '#f3f4f6',
+                        fill: 'rgba(217, 76, 88, 0.2)',
                         opacity: 0.3,
                       }}
                     />
@@ -1551,8 +1219,579 @@ export function KeywordBreakdown({
                     />
                   </BarChart>
                 </ChartContainer>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Top 20 Countries by Hourly Rate Paid and Client Breakdown by Total Spent */}
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto mt-12'>
+        {/* Average Hourly Rate Paid by Country */}
+        <div>
+          <div className='flex items-center justify-center gap-2 mb-2'>
+            <Globe className='w-5 h-5 text-[#D94C58]' />
+            <h2 className='text-2xl font-bold text-white text-center'>
+              Top 20 Countries by Hourly Rate Paid
+            </h2>
+          </div>
+          <p className='text-center text-white/70 mb-6 text-sm'>
+            Average hourly rate actually paid by clients in each country
+          </p>
+          {analytics.getAverageHourlyRatePaidByCountry.isLoading ? (
+            <ChartSkeleton />
+          ) : (
+            <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden'>
+              {/* Subtle background glow */}
+              <div className='absolute top-0 right-0 w-64 h-64 bg-[#D94C58]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2' />
+              <div className='absolute bottom-0 left-0 w-48 h-48 bg-[#D94C58]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2' />
+              
+              <div className='relative z-10'>
+                <ChartContainer
+                  config={{
+                    avgHourlyRatePaid: {
+                      label: 'Avg. Hourly Rate Paid',
+                      color: '#D94C58',
+                    },
+                  }}
+                  className='min-h-[530px] w-full [&_.recharts-cartesian-axis-tick_text]:fill-[rgba(255,255,255,0.85)]'
+                >
+                  <BarChart
+                    data={averageHourlyRatePaidByCountry}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: 0,
+                      bottom: 40,
+                    }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray='3 3'
+                      stroke='rgba(255, 255, 255, 0.1)'
+                      opacity={0.5}
+                    />
+                    <XAxis
+                      dataKey='country'
+                      angle={-45}
+                      textAnchor='end'
+                      height={40}
+                      tick={{
+                        fill: 'rgba(255, 255, 255, 0.85)',
+                        fontSize: 12,
+                      }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                    />
+                    <YAxis
+                      width={50}
+                      tick={{ fill: 'rgba(255, 255, 255, 0.85)' }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickFormatter={(value) => `$${value}/hr`}
+                    />
+                    <Tooltip
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload;
+                          return (
+                            <div className='bg-[#1a1a2e]/95 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-3 shadow-xl'>
+                              <p className='text-white/70 text-xs mb-1'>{data.country}</p>
+                              <p className='text-[#D94C58] font-bold text-lg'>
+                                ${Number(data.avgHourlyRatePaid.toFixed(2))}/hr
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
+                      cursor={{
+                        fill: 'rgba(217, 76, 88, 0.2)',
+                        opacity: 0.3,
+                      }}
+                    />
+                    <Bar
+                      dataKey='avgHourlyRatePaid'
+                      fill='#D94C58'
+                      radius={[8, 8, 0, 0]}
+                    />
+                  </BarChart>
+                </ChartContainer>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Client Breakdown by Total Spent */}
+        <div>
+          <div className='flex items-center justify-center gap-2 mb-2'>
+            <Users className='w-5 h-5 text-[#D94C58]' />
+            <h2 className='text-2xl font-bold text-white text-center'>
+              Client Breakdown by Total Spent
+            </h2>
+          </div>
+          <p className='text-center text-white/70 mb-6 text-sm'>
+            Distribution of clients across different total spent ranges
+          </p>
+          {analytics.getJobsByClientTotalSpent.isLoading ? (
+            <ChartSkeleton />
+          ) : (
+            <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden'>
+              {/* Subtle background glow */}
+              <div className='absolute top-0 right-0 w-64 h-64 bg-[#D94C58]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2' />
+              <div className='absolute bottom-0 left-0 w-48 h-48 bg-[#D94C58]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2' />
+              
+              <div className='relative z-10 flex flex-col items-center justify-center gap-6'>
+                {/* Pie Chart with Center Label */}
+                <div className='relative flex-shrink-0'>
+                  <ChartContainer
+                    config={{
+                      clients: {
+                        label: 'Number of Clients',
+                        color: '#D94C58',
+                      },
+                    }}
+                    className='w-[300px] h-[300px] lg:w-[320px] lg:h-[320px]'
+                  >
+                    <PieChart>
+                      <Pie
+                        data={data.clientSpentBreakdown}
+                        dataKey='clients'
+                        nameKey='bucket'
+                        cx='50%'
+                        cy='50%'
+                        innerRadius={70}
+                        outerRadius={120}
+                        paddingAngle={3}
+                        cornerRadius={6}
+                        stroke='none'
+                      >
+                        {data.clientSpentBreakdown.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={
+                              [
+                                '#FF6B7A',
+                                '#FF5268',
+                                '#F94459',
+                                '#D94C58',
+                                '#C1424D',
+                                '#AA3942',
+                                '#932F37',
+                                '#7C252C',
+                                '#651B21',
+                                '#4E1116',
+                              ][index % 10]
+                            }
+                            strokeWidth={0}
+                            className='transition-all duration-300 hover:opacity-80 cursor-pointer'
+                            style={{
+                              filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))',
+                            }}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        content={({ active, payload }) => {
+                          if (active && payload && payload.length) {
+                            const data = payload[0].payload;
+                            return (
+                              <div className='bg-[#1a1a2e]/95 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-3 shadow-xl'>
+                                <p className='text-white font-semibold text-sm'>{data.bucket}</p>
+                                <p className='text-[#D94C58] font-bold text-lg'>
+                                  {Number(data.clients).toLocaleString()} clients
+                                </p>
+                              </div>
+                            );
+                          }
+                          return null;
+                        }}
+                      />
+                    </PieChart>
+                  </ChartContainer>
+                  {/* Center Label */}
+                  <div className='absolute inset-0 flex flex-col items-center justify-center pointer-events-none'>
+                    <span className='text-3xl font-bold text-white'>
+                      {data.clientSpentBreakdown.reduce((sum, item) => sum + item.clients, 0).toLocaleString()}
+                    </span>
+                    <span className='text-xs text-white/60 uppercase tracking-wider'>Total Clients</span>
+                  </div>
+                </div>
+
+                {/* Legend */}
+                <div className='w-full max-w-xs'>
+                  <div className='space-y-2'>
+                    {data.clientSpentBreakdown.map((item, index) => {
+                      const total = data.clientSpentBreakdown.reduce((sum, i) => sum + i.clients, 0);
+                      const percentage = total > 0 ? (item.clients / total) * 100 : 0;
+                      const colors = [
+                        '#FF6B7A',
+                        '#FF5268',
+                        '#F94459',
+                        '#D94C58',
+                        '#C1424D',
+                        '#AA3942',
+                        '#932F37',
+                        '#7C252C',
+                        '#651B21',
+                        '#4E1116',
+                      ];
+                      const color = colors[index % 10];
+                      
+                      return (
+                        <div key={index} className='group cursor-pointer'>
+                          <div className='flex items-center justify-between mb-1'>
+                            <div className='flex items-center gap-2'>
+                              <div 
+                                className='w-2.5 h-2.5 rounded-full shadow-lg transition-transform duration-200 group-hover:scale-125'
+                                style={{ backgroundColor: color }}
+                              />
+                              <span className='text-white/80 text-xs font-medium group-hover:text-white transition-colors'>
+                                {item.bucket}
+                              </span>
+                            </div>
+                            <div className='flex items-center gap-2'>
+                              <span className='text-white/50 text-xs'>
+                                {percentage.toFixed(1)}%
+                              </span>
+                              <span className='text-white font-semibold text-xs min-w-[50px] text-right'>
+                                {item.clients.toLocaleString()}
+                              </span>
+                            </div>
+                          </div>
+                          <div className='h-1 bg-white/10 rounded-full overflow-hidden'>
+                            <div 
+                              className='h-full rounded-full transition-all duration-500 ease-out'
+                              style={{ 
+                                width: `${percentage}%`,
+                                backgroundColor: color,
+                                boxShadow: `0 0 8px ${color}40`
+                              }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Client Breakdown by Hire Rate and Total Jobs Posted */}
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto mt-12'>
+        {/* Jobs by Client Hire Rate */}
+        <div>
+          <div className='flex items-center justify-center gap-2 mb-2'>
+            <Users className='w-5 h-5 text-[#D94C58]' />
+            <h2 className='text-2xl font-bold text-white text-center'>
+              Client Breakdown by Hire Rate
+            </h2>
+          </div>
+          <p className='text-center text-white/70 mb-6 text-sm'>
+            Distribution of clients across different hire rate ranges
+          </p>
+          {analytics.getJobsByClientHireRate.isLoading ? (
+            <ChartSkeleton />
+          ) : (
+            <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden'>
+              {/* Subtle background glow */}
+              <div className='absolute top-0 right-0 w-64 h-64 bg-[#D94C58]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2' />
+              <div className='absolute bottom-0 left-0 w-48 h-48 bg-[#D94C58]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2' />
+              
+              <div className='relative z-10 flex flex-col items-center justify-center gap-6'>
+                {/* Pie Chart with Center Label */}
+                <div className='relative flex-shrink-0'>
+                  <ChartContainer
+                    config={{
+                      clients: {
+                        label: 'Number of Clients',
+                        color: '#D94C58',
+                      },
+                    }}
+                    className='w-[300px] h-[300px] lg:w-[320px] lg:h-[320px]'
+                  >
+                    <PieChart>
+                      <Pie
+                        data={data.jobsByClientHireRate}
+                        dataKey='clients'
+                        nameKey='bucket'
+                        cx='50%'
+                        cy='50%'
+                        innerRadius={70}
+                        outerRadius={120}
+                        paddingAngle={3}
+                        cornerRadius={6}
+                        stroke='none'
+                      >
+                        {data.jobsByClientHireRate.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={
+                              [
+                                '#FF6B7A',
+                                '#FF5268',
+                                '#F94459',
+                                '#D94C58',
+                                '#C1424D',
+                                '#AA3942',
+                                '#932F37',
+                                '#7C252C',
+                                '#651B21',
+                                '#4E1116',
+                              ][index % 10]
+                            }
+                            strokeWidth={0}
+                            className='transition-all duration-300 hover:opacity-80 cursor-pointer'
+                            style={{
+                              filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))',
+                            }}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        content={({ active, payload }) => {
+                          if (active && payload && payload.length) {
+                            const data = payload[0].payload;
+                            return (
+                              <div className='bg-[#1a1a2e]/95 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-3 shadow-xl'>
+                                <p className='text-white font-semibold text-sm'>{data.bucket}</p>
+                                <p className='text-[#D94C58] font-bold text-lg'>
+                                  {Number(data.clients).toLocaleString()} clients
+                                </p>
+                              </div>
+                            );
+                          }
+                          return null;
+                        }}
+                      />
+                    </PieChart>
+                  </ChartContainer>
+                  {/* Center Label */}
+                  <div className='absolute inset-0 flex flex-col items-center justify-center pointer-events-none'>
+                    <span className='text-3xl font-bold text-white'>
+                      {data.jobsByClientHireRate.reduce((sum, item) => sum + item.clients, 0).toLocaleString()}
+                    </span>
+                    <span className='text-xs text-white/60 uppercase tracking-wider'>Total Clients</span>
+                  </div>
+                </div>
+
+                {/* Legend */}
+                <div className='w-full max-w-xs'>
+                  <div className='space-y-2'>
+                    {data.jobsByClientHireRate.map((item, index) => {
+                      const total = data.jobsByClientHireRate.reduce((sum, i) => sum + i.clients, 0);
+                      const percentage = total > 0 ? (item.clients / total) * 100 : 0;
+                      const colors = [
+                        '#FF6B7A',
+                        '#FF5268',
+                        '#F94459',
+                        '#D94C58',
+                        '#C1424D',
+                        '#AA3942',
+                        '#932F37',
+                        '#7C252C',
+                        '#651B21',
+                        '#4E1116',
+                      ];
+                      const color = colors[index % 10];
+                      
+                      return (
+                        <div key={index} className='group cursor-pointer'>
+                          <div className='flex items-center justify-between mb-1'>
+                            <div className='flex items-center gap-2'>
+                              <div 
+                                className='w-2.5 h-2.5 rounded-full shadow-lg transition-transform duration-200 group-hover:scale-125'
+                                style={{ backgroundColor: color }}
+                              />
+                              <span className='text-white/80 text-xs font-medium group-hover:text-white transition-colors'>
+                                {item.bucket}
+                              </span>
+                            </div>
+                            <div className='flex items-center gap-2'>
+                              <span className='text-white/50 text-xs'>
+                                {percentage.toFixed(1)}%
+                              </span>
+                              <span className='text-white font-semibold text-xs min-w-[50px] text-right'>
+                                {item.clients.toLocaleString()}
+                              </span>
+                            </div>
+                          </div>
+                          <div className='h-1 bg-white/10 rounded-full overflow-hidden'>
+                            <div 
+                              className='h-full rounded-full transition-all duration-500 ease-out'
+                              style={{ 
+                                width: `${percentage}%`,
+                                backgroundColor: color,
+                                boxShadow: `0 0 8px ${color}40`
+                              }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Jobs by Client Total Jobs Posted */}
+        <div>
+          <div className='flex items-center justify-center gap-2 mb-2'>
+            <Users className='w-5 h-5 text-[#D94C58]' />
+            <h2 className='text-2xl font-bold text-white text-center'>
+              Client Breakdown by Total Jobs Posted
+            </h2>
+          </div>
+          <p className='text-center text-white/70 mb-6 text-sm'>
+            Distribution of clients across different total jobs posted ranges
+          </p>
+          {analytics.getJobsByClientTotalJobsPosted.isLoading ? (
+            <ChartSkeleton />
+          ) : (
+            <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden'>
+              {/* Subtle background glow */}
+              <div className='absolute top-0 right-0 w-64 h-64 bg-[#D94C58]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2' />
+              <div className='absolute bottom-0 left-0 w-48 h-48 bg-[#D94C58]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2' />
+              
+              <div className='relative z-10 flex flex-col items-center justify-center gap-6'>
+                {/* Pie Chart with Center Label */}
+                <div className='relative flex-shrink-0'>
+                  <ChartContainer
+                    config={{
+                      clients: {
+                        label: 'Number of Clients',
+                        color: '#D94C58',
+                      },
+                    }}
+                    className='w-[300px] h-[300px] lg:w-[320px] lg:h-[320px]'
+                  >
+                    <PieChart>
+                      <Pie
+                        data={data.jobsByClientTotalJobsPosted}
+                        dataKey='clients'
+                        nameKey='bucket'
+                        cx='50%'
+                        cy='50%'
+                        innerRadius={70}
+                        outerRadius={120}
+                        paddingAngle={3}
+                        cornerRadius={6}
+                        stroke='none'
+                      >
+                        {data.jobsByClientTotalJobsPosted.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={
+                              [
+                                '#FF6B7A',
+                                '#FF5268',
+                                '#F94459',
+                                '#D94C58',
+                                '#C1424D',
+                                '#AA3942',
+                                '#932F37',
+                                '#7C252C',
+                                '#651B21',
+                                '#4E1116',
+                              ][index % 10]
+                            }
+                            strokeWidth={0}
+                            className='transition-all duration-300 hover:opacity-80 cursor-pointer'
+                            style={{
+                              filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))',
+                            }}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        content={({ active, payload }) => {
+                          if (active && payload && payload.length) {
+                            const data = payload[0].payload;
+                            return (
+                              <div className='bg-[#1a1a2e]/95 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-3 shadow-xl'>
+                                <p className='text-white font-semibold text-sm'>{data.bucket}</p>
+                                <p className='text-[#D94C58] font-bold text-lg'>
+                                  {Number(data.clients).toLocaleString()} clients
+                                </p>
+                              </div>
+                            );
+                          }
+                          return null;
+                        }}
+                      />
+                    </PieChart>
+                  </ChartContainer>
+                  {/* Center Label */}
+                  <div className='absolute inset-0 flex flex-col items-center justify-center pointer-events-none'>
+                    <span className='text-3xl font-bold text-white'>
+                      {data.jobsByClientTotalJobsPosted.reduce((sum, item) => sum + item.clients, 0).toLocaleString()}
+                    </span>
+                    <span className='text-xs text-white/60 uppercase tracking-wider'>Total Clients</span>
+                  </div>
+                </div>
+
+                {/* Legend */}
+                <div className='w-full max-w-xs'>
+                  <div className='space-y-2'>
+                    {data.jobsByClientTotalJobsPosted.map((item, index) => {
+                      const total = data.jobsByClientTotalJobsPosted.reduce((sum, i) => sum + i.clients, 0);
+                      const percentage = total > 0 ? (item.clients / total) * 100 : 0;
+                      const colors = [
+                        '#FF6B7A',
+                        '#FF5268',
+                        '#F94459',
+                        '#D94C58',
+                        '#C1424D',
+                        '#AA3942',
+                        '#932F37',
+                        '#7C252C',
+                        '#651B21',
+                        '#4E1116',
+                      ];
+                      const color = colors[index % 10];
+                      
+                      return (
+                        <div key={index} className='group cursor-pointer'>
+                          <div className='flex items-center justify-between mb-1'>
+                            <div className='flex items-center gap-2'>
+                              <div 
+                                className='w-2.5 h-2.5 rounded-full shadow-lg transition-transform duration-200 group-hover:scale-125'
+                                style={{ backgroundColor: color }}
+                              />
+                              <span className='text-white/80 text-xs font-medium group-hover:text-white transition-colors'>
+                                {item.bucket}
+                              </span>
+                            </div>
+                            <div className='flex items-center gap-2'>
+                              <span className='text-white/50 text-xs'>
+                                {percentage.toFixed(1)}%
+                              </span>
+                              <span className='text-white font-semibold text-xs min-w-[50px] text-right'>
+                                {item.clients.toLocaleString()}
+                              </span>
+                            </div>
+                          </div>
+                          <div className='h-1 bg-white/10 rounded-full overflow-hidden'>
+                            <div 
+                              className='h-full rounded-full transition-all duration-500 ease-out'
+                              style={{ 
+                                width: `${percentage}%`,
+                                backgroundColor: color,
+                                boxShadow: `0 0 8px ${color}40`
+                              }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -1572,8 +1811,12 @@ export function KeywordBreakdown({
           {analytics.getTop10Skills.isLoading ? (
             <ChartSkeleton />
           ) : (
-            <Card className='bg-white border-border/50 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300'>
-              <CardContent className='p-4'>
+            <div className='relative rounded-2xl bg-[#161616] border border-white/10 p-6 shadow-2xl overflow-hidden'>
+              {/* Subtle background glow */}
+              <div className='absolute top-0 right-0 w-64 h-64 bg-[#D94C58]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2' />
+              <div className='absolute bottom-0 left-0 w-48 h-48 bg-[#D94C58]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2' />
+              
+              <div className='relative z-10'>
                 <ChartContainer
                   config={{
                     jobsPosted: {
@@ -1581,7 +1824,7 @@ export function KeywordBreakdown({
                       color: '#D94C58',
                     },
                   }}
-                  className='min-h-[400px] w-full'
+                  className='min-h-[500px] max-h-[500px] w-full [&_.recharts-cartesian-axis-tick_text]:fill-[rgba(255,255,255,0.85)]'
                 >
                   <BarChart
                     data={data.mostSearchedSkills}
@@ -1595,50 +1838,47 @@ export function KeywordBreakdown({
                   >
                     <CartesianGrid
                       strokeDasharray='3 3'
-                      stroke='#e5e7eb'
+                      stroke='rgba(255, 255, 255, 0.1)'
                       opacity={0.5}
                     />
                     <XAxis
                       type='number'
                       tick={{
-                        fill: '#6b7280',
+                        fill: 'rgba(255, 255, 255, 0.85)',
                         fontSize: 12,
                       }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                     />
                     <YAxis
                       type='category'
                       dataKey='skill'
                       width={150}
                       tick={{
-                        fill: '#6b7280',
+                        fill: 'rgba(255, 255, 255, 0.85)',
                         fontSize: 12,
                       }}
-                      axisLine={{ stroke: '#e5e7eb' }}
-                      tickLine={{ stroke: '#e5e7eb' }}
+                      axisLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
+                      tickLine={{ stroke: 'rgba(255, 255, 255, 0.2)' }}
                       interval={0}
                     />
                     <Tooltip
-                      content={
-                        <ChartTooltipContent
-                          labelFormatter={(label, payload) => {
-                            // Use the full skill name from the payload data
-                            if (payload && payload[0] && payload[0].payload) {
-                              return payload[0].payload.skillFull || label;
-                            }
-                            return label;
-                          }}
-                          formatter={(value: any) => {
-                            if (typeof value === 'number') {
-                              return Number(value.toFixed(2)).toLocaleString();
-                            }
-                            return value;
-                          }}
-                        />
-                      }
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload;
+                          return (
+                            <div className='bg-[#1a1a2e]/95 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-3 shadow-xl'>
+                              <p className='text-white/70 text-xs mb-1'>{data.skillFull || data.skill}</p>
+                              <p className='text-[#D94C58] font-bold text-lg'>
+                                {Number(data.jobsPosted).toLocaleString()} jobs
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }}
                       cursor={{
-                        fill: '#f3f4f6',
+                        fill: 'rgba(217, 76, 88, 0.2)',
                         opacity: 0.3,
                       }}
                     />
@@ -1649,8 +1889,8 @@ export function KeywordBreakdown({
                     />
                   </BarChart>
                 </ChartContainer>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
         </div>
       </div>

@@ -19,7 +19,7 @@ import {
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import { SearchFields, SearchQueryBuilder } from 'lancer-shared';
 import { HelpCircle, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface AdvancedSearchDialogProps {
   open: boolean;
@@ -76,8 +76,13 @@ export default function AdvancedSearchDialog({
     });
   };
 
+  // Track the previous open state to detect when dialog is newly opened
+  const prevOpenRef = useRef(false);
+
   useEffect(() => {
-    if (open) {
+    // Only reset fields when the dialog transitions from closed to open
+    // Don't reset if initialQuery changes while dialog is already open
+    if (open && !prevOpenRef.current) {
       if (initialQuery && initialQuery.trim() && initialQuery !== '*') {
         try {
           const parsedFields = SearchQueryBuilder.parseQuery(initialQuery);
@@ -107,6 +112,9 @@ export default function AdvancedSearchDialog({
         });
       }
     }
+    
+    // Update the previous open state
+    prevOpenRef.current = open;
   }, [open, initialQuery]);
 
   const isAnyFieldFilled = Object.values(fields).some((value) => value.trim());

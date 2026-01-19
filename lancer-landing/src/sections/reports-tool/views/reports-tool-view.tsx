@@ -153,7 +153,7 @@ export function ReportsToolView() {
           color='white'
           refresh={false}
         />
-        <div className='relative container mx-auto px-6 pb-16'>
+        <div className='relative max-w-8xl mx-auto px-6 pb-16'>
           <AnimatedGroup
             variants={{
               container: {
@@ -192,7 +192,7 @@ export function ReportsToolView() {
 
           {/* <SummaryStats />   */}
 
-          <div className='max-w-5xl mx-auto'>
+          <div className='max-w-6xl mx-auto'>
             {/* Main Content */}
             <div>
               <Tabs
