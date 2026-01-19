@@ -153,7 +153,7 @@ export function HierarchicalMultiSelect({
 
       return (
         <div key={category.value} className="category-item">
-          <div className="flex items-center gap-2 py-1.5">
+          <div className="flex items-center gap-2 py-1.5 px-2 rounded-sm hover:bg-white/10 transition-colors">
             <Checkbox
               checked={isSelected}
               onCheckedChange={(checked) => handleCategorySelect(category, checked as boolean)}
@@ -171,7 +171,7 @@ export function HierarchicalMultiSelect({
               <button
                 type="button"
                 onClick={() => toggleCategory(category.value)}
-                className="p-1 hover:bg-white/10 rounded"
+                className="p-1 hover:bg-white/20 rounded"
               >
                 {isExpanded ? (
                   <ChevronDown className="h-4 w-4 text-white/70" />
@@ -185,7 +185,7 @@ export function HierarchicalMultiSelect({
           {isExpanded && hasChildren && (
             <div className="pl-6 border-l border-white/20 ml-2">
               {category.children!.map((child) => (
-                <div key={child} className="flex items-center gap-2 py-1.5">
+                <div key={child} className="flex items-center gap-2 py-1.5 px-2 rounded-sm hover:bg-white/10 transition-colors">
                   <Checkbox
                     checked={value.includes(child)}
                     onCheckedChange={(checked) => {
@@ -245,7 +245,7 @@ export function HierarchicalMultiSelect({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[300px] p-0 mr-1 bg-[#0A0A0A] border-white/20" align="start">
+      <PopoverContent className="w-[300px] p-0 mr-1 bg-[#0A0A0A] border-white/20" align="start" onWheel={(e) => e.stopPropagation()}>
         <div className="p-2">
           <div className="flex items-center mb-2 border border-white/20 rounded-md px-2 bg-white/5">
             <SearchIcon className="h-4 w-4 text-white/60" />
@@ -258,7 +258,7 @@ export function HierarchicalMultiSelect({
             />
           </div>
 
-          <div className="flex items-center gap-2 py-1.5 border-b border-white/20 mb-2">
+          <div className="flex items-center gap-2 py-1.5 px-2 rounded-sm hover:bg-white/10 transition-colors border-b border-white/20 mb-2">
             <Checkbox
               checked={value.length === getAllCategoryValues().length && value.length > 0}
               onCheckedChange={handleSelectAll}
@@ -273,7 +273,7 @@ export function HierarchicalMultiSelect({
             </label>
           </div>
 
-          <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-hide">
+          <div className="max-h-60 overflow-y-scroll scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent hover:scrollbar-thumb-white/30">
             {filterCategories(options).map(renderCategory)}
           </div>
 

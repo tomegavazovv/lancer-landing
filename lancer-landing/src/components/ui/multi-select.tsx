@@ -246,6 +246,7 @@ export const MultiSelect = React.forwardRef<
           className='w-auto p-0 mr-1 bg-[#0A0A0A] border-white/20'
           align='start'
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
+          onWheel={(e) => e.stopPropagation()}
         >
           <Command className='bg-[#0A0A0A] text-white'>
             <CommandInput

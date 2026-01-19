@@ -5,6 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useKeywordAnalytics } from '@/hooks/use-upwork-analytics';
 import {
   ArrowDown,
@@ -305,6 +312,8 @@ interface SearchInputProps {
   onSearch: (query: string) => void;
   isSearching: boolean;
   currentSearchKeyword: string;
+  timePeriod?: 'lastMonth' | 'last5Months';
+  onTimePeriodChange?: (period: 'lastMonth' | 'last5Months') => void;
   onOpenFilters?: () => void;
 }
 
@@ -312,6 +321,8 @@ function SearchInput({
   onSearch,
   isSearching,
   currentSearchKeyword,
+  timePeriod,
+  onTimePeriodChange,
   onOpenFilters,
 }: SearchInputProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -338,7 +349,7 @@ function SearchInput({
       : currentSearchKeyword;
 
   return (
-    <div className='max-w-3xl mx-auto'>
+    <div className='max-w-4xl mx-auto'>
       <div className='relative flex gap-2'>
         <div className='relative flex-1'>
           <Search className='absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400' />
@@ -349,13 +360,13 @@ function SearchInput({
             readOnly
             onClick={handleInputClick}
             disabled={isSearching}
-            className='pl-12 pr-32 h-14 text-lg bg-white/95 border-white/20 text-gray-900 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#D94C58] cursor-pointer hover:bg-white transition-colors disabled:cursor-not-allowed disabled:opacity-50'
+            className='pl-12 pr-32 h-14 text bg-white/95 border-white/20 text-gray-900 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#D94C58] cursor-pointer hover:bg-white transition-colors disabled:cursor-not-allowed disabled:opacity-50'
           />
           
           <button
             onClick={handleButtonClick}
             disabled={isSearching}
-            className='absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 bg-[#D94C58] text-white rounded-md font-medium hover:bg-[#c43d48] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2'
+            className='absolute right-2 top-1/2 transform -translate-y-1/2 px-3 py-2 bg-[#D94C58] text-white rounded-md font-medium hover:bg-[#c43d48] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2'
           >
            <Settings className='w-4 h-4' /> {isSearching ? 'Searching...' : 'Build Query'}
           </button>
@@ -370,8 +381,23 @@ function SearchInput({
             Filters
           </Button>
         )}
+        {timePeriod && onTimePeriodChange && (
+          <Select value={timePeriod} onValueChange={onTimePeriodChange}>
+            <SelectTrigger className='h-14 text-md bg-white/15 border-2 border-white/40 text-white hover:bg-white/25 hover:border-white/60 hover:!text-white hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer font-semibold px-4 shadow-lg shadow-white/10 hover:shadow-white/20 w-auto min-w-[150px] [&>span]:text-white'>
+              <SelectValue className='text-white' />
+            </SelectTrigger>
+            <SelectContent className='bg-[#1A1A1A] border-white/10'>
+              <SelectItem value='lastMonth' className='text-white hover:bg-white/10 focus:bg-white/10 focus:text-white'>
+                Last Month
+              </SelectItem>
+              <SelectItem value='last5Months' className='text-white hover:bg-white/10 focus:bg-white/10 focus:text-white'>
+                Last 6 Months
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        )}
       </div>
-      <p className='mt-4 text-center text-white/80'>
+      <p className='mt-12 text-center text-white/80'>
         Showing results for:{' '}
         <span className='font-semibold text-white'>
           {currentSearchKeyword || 'all queries'}
@@ -389,13 +415,19 @@ function SearchInput({
 
 interface KeywordBreakdownProps {
   filters?: import('lancer-shared').JobFilters;
+  timePeriod?: 'lastMonth' | 'last5Months';
+  onTimePeriodChange?: (period: 'lastMonth' | 'last5Months') => void;
   onFiltersChange?: (filters: import('lancer-shared').JobFilters) => void;
+  onAppliedFiltersChange?: (filters: import('lancer-shared').JobFilters) => void;
   onOpenFilters?: () => void;
 }
 
 export function KeywordBreakdown({
   filters,
+  timePeriod,
+  onTimePeriodChange,
   onFiltersChange,
+  onAppliedFiltersChange,
   onOpenFilters,
 }: KeywordBreakdownProps) {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -413,7 +445,7 @@ export function KeywordBreakdown({
   const query = filters?.searchQuery || searchKeyword.trim();
 
   // Only fetch when search has been initiated
-  const analytics = useKeywordAnalytics(query, filters, hasSearched);
+  const analytics = useKeywordAnalytics(query, filters, timePeriod, hasSearched);
 
   const handleSearch = (keyword: string) => {
     // Allow empty string to fetch all data
@@ -450,16 +482,32 @@ export function KeywordBreakdown({
     analytics.getJobsCountLast3Months.data
   );
   const jobsPostedResponse = analytics.getJobsPosted.data;
-  const jobsPostedCount =
-    typeof jobsPostedResponse === 'number'
-      ? jobsPostedResponse
-      : (jobsPostedResponse as any)?.count ||
-        (jobsPostedResponse as any)?.jobsPosted ||
-        0;
-  const currentJobs =
-    jobsPostedTrendData.length > 0
+  
+  // Parse jobsPosted response - handle string, number, or object formats
+  let jobsPostedCount = 0;
+  if (typeof jobsPostedResponse === 'number') {
+    jobsPostedCount = jobsPostedResponse;
+  } else if (typeof jobsPostedResponse === 'string') {
+    // API returns string, convert to number
+    jobsPostedCount = parseInt(jobsPostedResponse, 10) || 0;
+  } else if (jobsPostedResponse) {
+    // Try various possible object response formats
+    jobsPostedCount = 
+      (jobsPostedResponse as any)?.count ||
+      (jobsPostedResponse as any)?.jobsPosted ||
+      (jobsPostedResponse as any)?.data?.count ||
+      (jobsPostedResponse as any)?.data?.jobsPosted ||
+      (jobsPostedResponse as any)?.total ||
+      0;
+  }
+  
+  // Always prefer jobsPostedCount from the main API, only use trend data as fallback when data is not loaded
+  const currentJobs = jobsPostedCount > 0 
+    ? jobsPostedCount 
+    : jobsPostedTrendData.length > 0
       ? jobsPostedTrendData[jobsPostedTrendData.length - 1].jobsPosted
-      : jobsPostedCount;
+      : 0;
+      
   const previousJobs =
     jobsPostedTrendData.length > 1
       ? jobsPostedTrendData[jobsPostedTrendData.length - 2].jobsPosted
@@ -531,7 +579,7 @@ export function KeywordBreakdown({
   };
 
   const data = {
-    jobsPosted: jobsPostedCount || currentJobs,
+    jobsPosted: currentJobs,
     jobsPostedTrend: jobsTrend,
     jobsPostedTrendData:
       jobsPostedTrendData.length > 0 ? jobsPostedTrendData : [],
@@ -565,9 +613,11 @@ export function KeywordBreakdown({
           onSearch={handleSearch}
           isSearching={isSearching}
           currentSearchKeyword={query}
+          timePeriod={timePeriod}
+          onTimePeriodChange={onTimePeriodChange}
           onOpenFilters={onOpenFilters}
         />
-        {filters && onFiltersChange && (
+        {filters && onAppliedFiltersChange && (
           <FilterBadges
             filters={filters}
             onRemoveFilter={(filterKey, value) => {
@@ -614,11 +664,13 @@ export function KeywordBreakdown({
                 }
               }
 
-              onFiltersChange(newFilters);
+              // Use onAppliedFiltersChange to directly update and trigger API calls
+              onAppliedFiltersChange(newFilters);
             }}
             onClearAll={() => {
-              if (onFiltersChange) {
-                onFiltersChange({
+              // Use onAppliedFiltersChange to directly update and trigger API calls
+              if (onAppliedFiltersChange) {
+                onAppliedFiltersChange({
                   searchQuery: '',
                   keywords: null,
                   isFeatured: null,

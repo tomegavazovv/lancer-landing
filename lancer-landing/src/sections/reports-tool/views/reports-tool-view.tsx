@@ -79,6 +79,7 @@ export function ReportsToolView() {
   const [activeTab, setActiveTab] = useState('keyword');
   const [isCalendlyModalOpen, setIsCalendlyModalOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [timePeriod, setTimePeriod] = useState<'lastMonth' | 'last5Months'>('lastMonth');
   const router = useRouter();
 
   // Applied filters - these trigger API calls
@@ -110,6 +111,15 @@ export function ReportsToolView() {
   };
 
   const handleFiltersChange = (newFilters: JobFilters) => {
+    Object.keys(newFilters).forEach((key) => {
+      setValue(key as keyof JobFilters, newFilters[key as keyof JobFilters]);
+    });
+  };
+
+  const handleAppliedFiltersChange = (newFilters: JobFilters) => {
+    // Directly update applied filters (for changes from main view, not dialog)
+    setAppliedFilters(newFilters);
+    // Also update draft filters to keep them in sync
     Object.keys(newFilters).forEach((key) => {
       setValue(key as keyof JobFilters, newFilters[key as keyof JobFilters]);
     });
@@ -216,7 +226,10 @@ export function ReportsToolView() {
                   <TabsContent value='keyword'>
                     <KeywordBreakdown
                       filters={appliedFilters}
+                      timePeriod={timePeriod}
+                      onTimePeriodChange={setTimePeriod}
                       onFiltersChange={handleFiltersChange}
+                      onAppliedFiltersChange={handleAppliedFiltersChange}
                       onOpenFilters={() => setIsFiltersOpen(true)}
                     />
                   </TabsContent>

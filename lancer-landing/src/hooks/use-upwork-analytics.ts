@@ -34,14 +34,17 @@ import {
 export function useKeywordAnalytics(
   query: string,
   filters?: JobFilters,
+  timePeriod?: 'lastMonth' | 'last5Months',
   enabled: boolean = true
 ) {
-  const requestBody = filters ? { query, filters } : { query };
+  const requestBody = filters 
+    ? { query, filters, timePeriod } 
+    : { query, timePeriod };
   const getJobsPosted = useQuery({
-    queryKey: ['keyword-analytics', 'jobs-posted', query, filters],
+    queryKey: ['keyword-analytics', 'jobs-posted', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetJobsPostedResponse
       >(ROUTES.UPWORK_ANALYTICS.JOBS_POSTED, requestBody);
       return response.data;
@@ -50,10 +53,10 @@ export function useKeywordAnalytics(
   });
 
   const getAverageClientHireRate = useQuery({
-    queryKey: ['keyword-analytics', 'average-client-hire-rate', query, filters],
+    queryKey: ['keyword-analytics', 'average-client-hire-rate', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetAverageClientHireRateResponse
       >(ROUTES.UPWORK_ANALYTICS.AVERAGE_CLIENT_HIRE_RATE, requestBody);
       return response.data;
@@ -62,10 +65,10 @@ export function useKeywordAnalytics(
   });
 
   const getAverageClientTotalSpent = useQuery({
-    queryKey: ['keyword-analytics', 'average-client-total-spent', query, filters],
+    queryKey: ['keyword-analytics', 'average-client-total-spent', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetAverageClientTotalSpentResponse
       >(ROUTES.UPWORK_ANALYTICS.AVERAGE_CLIENT_TOTAL_SPENT, requestBody);
       return response.data;
@@ -74,10 +77,10 @@ export function useKeywordAnalytics(
   });
 
   const getAverageHourlyRateBudget = useQuery({
-    queryKey: ['keyword-analytics', 'average-hourly-rate-budget', query, filters],
+    queryKey: ['keyword-analytics', 'average-hourly-rate-budget', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetAverageHourlyRateBudgetResponse
       >(ROUTES.UPWORK_ANALYTICS.AVERAGE_HOURLY_RATE_BUDGET, requestBody);
       return response.data;
@@ -86,10 +89,10 @@ export function useKeywordAnalytics(
   });
 
   const getAverageFixedPriceBudget = useQuery({
-    queryKey: ['keyword-analytics', 'average-fixed-price-budget', query, filters],
+    queryKey: ['keyword-analytics', 'average-fixed-price-budget', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetAverageFixedPriceBudgetResponse
       >(ROUTES.UPWORK_ANALYTICS.AVERAGE_FIXED_PRICE_BUDGET, requestBody);
       return response.data;
@@ -98,10 +101,10 @@ export function useKeywordAnalytics(
   });
 
   const getAveragePaidPerProject = useQuery({
-    queryKey: ['keyword-analytics', 'average-paid-per-project', query, filters],
+    queryKey: ['keyword-analytics', 'average-paid-per-project', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetAveragePaidPerProjectResponse
       >(ROUTES.UPWORK_ANALYTICS.AVERAGE_PAID_PER_PROJECT, requestBody);
       return response.data;
@@ -110,10 +113,10 @@ export function useKeywordAnalytics(
   });
 
   const getJobsCountLast3Months = useQuery({
-    queryKey: ['keyword-analytics', 'jobs-count-last-3-months', query, filters],
+    queryKey: ['keyword-analytics', 'jobs-count-last-3-months', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetJobsCountLast3MonthsResponse
       >(ROUTES.UPWORK_ANALYTICS.JOBS_COUNT_LAST_3_MONTHS, requestBody);
       return response.data;
@@ -122,10 +125,10 @@ export function useKeywordAnalytics(
   });
 
   const getTop10CountriesByJobsPosted = useQuery({
-    queryKey: ['keyword-analytics', 'top-10-countries-by-jobs-posted', query, filters],
+    queryKey: ['keyword-analytics', 'top-10-countries-by-jobs-posted', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetTop10CountriesByJobsPostedResponse
       >(ROUTES.UPWORK_ANALYTICS.TOP_10_COUNTRIES_BY_JOBS_POSTED, requestBody);
       return response.data;
@@ -134,10 +137,10 @@ export function useKeywordAnalytics(
   });
 
   const getJobsByClientTotalSpent = useQuery({
-    queryKey: ['keyword-analytics', 'jobs-by-client-total-spent', query, filters],
+    queryKey: ['keyword-analytics', 'jobs-by-client-total-spent', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetJobsByClientTotalSpentResponse
       >(ROUTES.UPWORK_ANALYTICS.JOBS_BY_CLIENT_TOTAL_SPENT, requestBody);
       return response.data;
@@ -146,10 +149,10 @@ export function useKeywordAnalytics(
   });
 
   const getJobsByHourPosted = useQuery({
-    queryKey: ['keyword-analytics', 'jobs-by-hour-posted', query, filters],
+    queryKey: ['keyword-analytics', 'jobs-by-hour-posted', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetJobsByHourPostedResponse
       >(ROUTES.UPWORK_ANALYTICS.JOBS_BY_HOUR_POSTED, requestBody);
       return response.data;
@@ -158,10 +161,10 @@ export function useKeywordAnalytics(
   });
 
   const getJobsByDayOfWeek = useQuery({
-    queryKey: ['keyword-analytics', 'jobs-by-day-of-week', query, filters],
+    queryKey: ['keyword-analytics', 'jobs-by-day-of-week', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetJobsByDayOfWeekResponse
       >(ROUTES.UPWORK_ANALYTICS.JOBS_BY_DAY_OF_WEEK, requestBody);
       return response.data;
@@ -170,10 +173,10 @@ export function useKeywordAnalytics(
   });
 
   const getTop10Skills = useQuery({
-    queryKey: ['keyword-analytics', 'top-10-skills', query, filters],
+    queryKey: ['keyword-analytics', 'top-10-skills', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetTop10SkillsResponse
       >(ROUTES.UPWORK_ANALYTICS.TOP_10_SKILLS, requestBody);
       return response.data;
@@ -187,10 +190,11 @@ export function useKeywordAnalytics(
       'average-hourly-rate-paid-by-country',
       query,
       filters,
+      timePeriod,
     ],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         GetAverageHourlyRatePaidByCountryResponse
       >(ROUTES.UPWORK_ANALYTICS.AVERAGE_HOURLY_RATE_PAID_BY_COUNTRY, requestBody);
       return response.data;
@@ -199,10 +203,10 @@ export function useKeywordAnalytics(
   });
 
   const getJobsByClientHireRate = useQuery({
-    queryKey: ['keyword-analytics', 'jobs-by-client-hire-rate', query, filters],
+    queryKey: ['keyword-analytics', 'jobs-by-client-hire-rate', query, filters, timePeriod],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         any
       >('upwork-analytics/jobs-by-client-hire-rate', requestBody);
       return response.data;
@@ -216,10 +220,11 @@ export function useKeywordAnalytics(
       'jobs-by-client-total-jobs-posted',
       query,
       filters,
+      timePeriod,
     ],
     queryFn: async () => {
       const response = await poster<
-        { query: string; filters?: JobFilters },
+        { query: string; filters?: JobFilters; timePeriod?: string },
         any
       >('upwork-analytics/jobs-by-client-total-jobs-posted', requestBody);
       return response.data;
@@ -420,3 +425,4 @@ export function useCategoryAnalytics() {
     getTop20CategoriesByAvgHourlyRatePaid,
   };
 }
+
