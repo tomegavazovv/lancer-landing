@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-const APIURL = 'http://localhost:3003';
+const APIURL = 'https://api.lancer.app';
 // Use proxy route to avoid CORS issues
 const PROXY_BASE_URL = '/api/proxy';
 
@@ -26,7 +26,7 @@ export const axiosInstance = axios.create({
 export const fetcher = async <T>(path: string, config?: AxiosRequestConfig) => {
   const { data } = await axiosInstance.get<T>(
     path,
-    await generateRequestConfig(config)
+    await generateRequestConfig(config),
   );
 
   return data;
@@ -35,30 +35,30 @@ export const fetcher = async <T>(path: string, config?: AxiosRequestConfig) => {
 export const poster = async <D = any, R = any>(
   path: string,
   data?: D,
-  config?: AxiosRequestConfig<D>
+  config?: AxiosRequestConfig<D>,
 ): Promise<AxiosResponse<R>> => {
   return await axiosInstance.post<R, AxiosResponse<R>, D>(
     path,
     data,
-    await generateRequestConfig(config)
+    await generateRequestConfig(config),
   );
 };
 
 export const patcher = async <D = any, R = any>(
   path: string,
   data?: D,
-  config?: AxiosRequestConfig<D>
+  config?: AxiosRequestConfig<D>,
 ): Promise<AxiosResponse<R>> => {
   return await axiosInstance.patch(
     path,
     data,
-    await generateRequestConfig(config)
+    await generateRequestConfig(config),
   );
 };
 
 export const deleter = async <D = any, R = any>(
   path: string,
-  config?: AxiosRequestConfig<D>
+  config?: AxiosRequestConfig<D>,
 ): Promise<AxiosResponse<R>> => {
   return await axiosInstance.delete(path, await generateRequestConfig(config));
 };
@@ -66,7 +66,7 @@ export const deleter = async <D = any, R = any>(
 export const streamer = async <T>(
   path: string,
   data?: any,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ): Promise<ReadableStream<T>> => {
   const requestConfig = await generateRequestConfig(config);
 
@@ -83,7 +83,7 @@ export const streamer = async <T>(
         },
         onDownloadProgress: (progressEvent) => {
           const chunk = progressEvent.event.target.responseText.slice(
-            buffer.length
+            buffer.length,
           );
           buffer = progressEvent.event.target.responseText;
 

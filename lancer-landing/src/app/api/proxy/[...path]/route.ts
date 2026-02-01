@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const APIURL = 'http://localhost:3003';
+const APIURL = 'https://api.lancer.app';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
+  { params }: { params: Promise<{ path: string[] }> },
 ) {
   const resolvedParams = await params;
   return handleRequest(request, resolvedParams, 'GET');
@@ -12,7 +12,7 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
+  { params }: { params: Promise<{ path: string[] }> },
 ) {
   const resolvedParams = await params;
   return handleRequest(request, resolvedParams, 'POST');
@@ -20,7 +20,7 @@ export async function POST(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
+  { params }: { params: Promise<{ path: string[] }> },
 ) {
   const resolvedParams = await params;
   return handleRequest(request, resolvedParams, 'PATCH');
@@ -28,7 +28,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
+  { params }: { params: Promise<{ path: string[] }> },
 ) {
   const resolvedParams = await params;
   return handleRequest(request, resolvedParams, 'DELETE');
@@ -37,7 +37,7 @@ export async function DELETE(
 async function handleRequest(
   request: NextRequest,
   params: { path: string[] },
-  method: string
+  method: string,
 ) {
   try {
     const path = params.path.join('/');
@@ -131,7 +131,7 @@ async function handleRequest(
         error: 'Failed to proxy request',
         message: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

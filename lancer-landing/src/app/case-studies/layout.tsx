@@ -3,7 +3,7 @@
 import { CalendlyModal } from '@/components/ui/calendly-modal';
 import { Footer } from '@/layout/footer';
 import { Navbar } from '@/layout/navbar';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
 export default function CaseStudiesLayout({
   children,
@@ -22,11 +22,13 @@ export default function CaseStudiesLayout({
 
   return (
     <div className='bg-[#0A0A0A] min-h-screen'>
-      <Navbar
-        isOverDarkSection={true}
-        onBookDemo={handleBookDemo}
-        onGetStarted={handleGetStarted}
-      />
+      <Suspense fallback={<div className="h-20" />}>
+        <Navbar
+          isOverDarkSection={true}
+          onBookDemo={handleBookDemo}
+          onGetStarted={handleGetStarted}
+        />
+      </Suspense>
       {children}
       <Footer />
       <CalendlyModal

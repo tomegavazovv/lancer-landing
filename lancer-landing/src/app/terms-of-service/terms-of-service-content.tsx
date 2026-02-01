@@ -1,6 +1,7 @@
 'use client';
 
 import { Navbar } from '@/layout/navbar';
+import { Suspense } from 'react';
 
 interface TermsOfServiceContentProps {
   onBookDemo: () => void;
@@ -14,10 +15,12 @@ export function TermsOfServiceContent({
   };
 
   return (
-    <Navbar
-      isOverDarkSection={true}
-      onBookDemo={onBookDemo}
-      onGetStarted={handleGetStarted}
-    />
+    <Suspense fallback={<div className="h-20" />}>
+      <Navbar
+        isOverDarkSection={true}
+        onBookDemo={onBookDemo}
+        onGetStarted={handleGetStarted}
+      />
+    </Suspense>
   );
 }

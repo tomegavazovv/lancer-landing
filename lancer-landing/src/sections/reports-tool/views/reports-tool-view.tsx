@@ -13,15 +13,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Particles } from '@/components/ui/particles';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Footer } from '@/layout/footer';
 import { Navbar } from '@/layout/navbar';
 import { JobFilters } from 'lancer-shared';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { CategoryCharts } from '../category-charts';
-import { CountryCharts } from '../country-charts';
 import FeedFilters from '../feed-filters';
 import { KeywordBreakdown } from '../keyword-breakdown';
 
@@ -76,7 +73,6 @@ const defaultFilters: JobFilters = {
 };
 
 export function ReportsToolView() {
-  const [activeTab, setActiveTab] = useState('keyword');
   const [isCalendlyModalOpen, setIsCalendlyModalOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [timePeriod, setTimePeriod] = useState<'lastMonth' | 'last5Months'>('lastMonth');
@@ -195,58 +191,14 @@ export function ReportsToolView() {
           <div className='max-w-6xl mx-auto'>
             {/* Main Content */}
             <div>
-              <Tabs
-                defaultValue='keyword'
-                value={activeTab}
-                onValueChange={setActiveTab}
-                className='w-full'
-              >
-                <TabsList className='grid w-full max-w-2xl mx-auto mb-8 grid-cols-3 bg-white/5 border-white/10'>
-                  <TabsTrigger
-                    value='keyword'
-                    className='data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/70'
-                  >
-                    By Query
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value='country'
-                    className='data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/70'
-                  >
-                    By Country
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value='category'
-                    className='data-[state=active]:bg-white/10 data-[state=active]:text-white text-white/70'
-                  >
-                    By Category
-                  </TabsTrigger>
-                </TabsList>
-
-                {activeTab === 'keyword' && (
-                  <TabsContent value='keyword'>
-                    <KeywordBreakdown
-                      filters={appliedFilters}
-                      timePeriod={timePeriod}
-                      onTimePeriodChange={setTimePeriod}
-                      onFiltersChange={handleFiltersChange}
-                      onAppliedFiltersChange={handleAppliedFiltersChange}
-                      onOpenFilters={() => setIsFiltersOpen(true)}
-                    />
-                  </TabsContent>
-                )}
-
-                {activeTab === 'country' && (
-                  <TabsContent value='country'>
-                    <CountryCharts />
-                  </TabsContent>
-                )}
-
-                {activeTab === 'category' && (
-                  <TabsContent value='category'>
-                    <CategoryCharts />
-                  </TabsContent>
-                )}
-              </Tabs>
+              <KeywordBreakdown
+                filters={appliedFilters}
+                timePeriod={timePeriod}
+                onTimePeriodChange={setTimePeriod}
+                onFiltersChange={handleFiltersChange}
+                onAppliedFiltersChange={handleAppliedFiltersChange}
+                onOpenFilters={() => setIsFiltersOpen(true)}
+              />
             </div>
           </div>
         </div>
