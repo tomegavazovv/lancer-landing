@@ -2,7 +2,7 @@
 
 import { Footer } from '@/layout/footer';
 import { Navbar } from '@/layout/navbar';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Features } from '../features';
 import { Hero } from '../hero';
 import {
@@ -21,11 +21,13 @@ function LandingPageContent() {
 
   return (
     <>
-      <Navbar
-        isOverDarkSection={isOverDarkSection}
-        onBookDemo={onBookDemo}
-        onGetStarted={() => window.open('https://1.lancer.app', '_blank')}
-      />
+      <Suspense fallback={<div className="h-16" />}>
+        <Navbar
+          isOverDarkSection={isOverDarkSection}
+          onBookDemo={onBookDemo}
+          onGetStarted={() => window.open('https://1.lancer.app', '_blank')}
+        />
+      </Suspense>
       <main className='overflow-hidden'>
         <div
           aria-hidden

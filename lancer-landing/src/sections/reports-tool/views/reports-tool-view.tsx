@@ -17,7 +17,7 @@ import { Footer } from '@/layout/footer';
 import { Navbar } from '@/layout/navbar';
 import { JobFilters } from 'lancer-shared';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import FeedFilters from '../feed-filters';
 import { KeywordBreakdown } from '../keyword-breakdown';
@@ -133,13 +133,15 @@ export function ReportsToolView() {
   }, []);
   return (
     <>
-      <Navbar
-        isOverDarkSection={true}
-        onBookDemo={() => setIsCalendlyModalOpen(true)}
-        onGetStarted={() => {
-          window.open('https://1.lancer.app', '_blank');
-        }}
-      />
+      <Suspense fallback={<div className="h-16" />}>
+        <Navbar
+          isOverDarkSection={true}
+          onBookDemo={() => setIsCalendlyModalOpen(true)}
+          onGetStarted={() => {
+            window.open('https://1.lancer.app', '_blank');
+          }}
+        />
+      </Suspense>
       <main className='relative min-h-[calc(100vh-120px)] text-white bg-[#0A0A0A] pt-24 lg:pt-36 overflow-hidden'>
         <Particles
           className='absolute inset-0'
