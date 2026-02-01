@@ -7,13 +7,20 @@ import { LogoIcon } from '@/components/ui/logo-icon';
 import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
-const menuItems = [
+interface MenuItem {
+  name: string;
+  href: string;
+  showNewBadge?: boolean;
+}
+
+const menuItems: MenuItem[] = [
   { name: 'Testimonials', href: '/#testimonials' },
   { name: 'Pricing', href: '/#pricing' },
   { name: 'Case Studies', href: '/case-studies' },
-  { name: 'Upwork Insights', href: '/upwork-insights', showNewBadge: true },
+  { name: 'Upwork Insights', href: '/upwork-insights' },
 ];
 
 interface NavbarProps {
@@ -29,6 +36,19 @@ export function Navbar({
 }: NavbarProps) {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const searchParams = useSearchParams();
+
+  // Build login URL with preserved ref parameter
+  const getLoginUrl = () => {
+    const baseUrl = 'https://1.lancer.app';
+    const ref = searchParams.get('ref');
+
+    if (ref) {
+      return `${baseUrl}?ref=${encodeURIComponent(ref)}`;
+    }
+
+    return baseUrl;
+  };
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -85,8 +105,18 @@ export function Navbar({
             </div>
 
             {/* Desktop: Navigation buttons */}
-            <div className='hidden lg:flex gap-1'>
-              <CTAButton size='sm' onClick={onBookDemo}>
+            <div className='hidden lg:flex items-center gap-3'>
+              <Button
+                variant='outline'
+                size='sm'
+                asChild
+                className='bg-transparent text-white/80 border-white/20 hover:text-white hover:border-white/40 hover:bg-white/5 rounded-lg transition-all duration-200 h-8'
+              >
+                <Link href={getLoginUrl()} target='_blank'>
+                  Login
+                </Link>
+              </Button>
+              <CTAButton size='sm' onClick={onBookDemo} className='h-8'>
                 <span className='text-nowrap'>Get a Demo</span>
               </CTAButton>
             </div>
@@ -133,8 +163,19 @@ export function Navbar({
                 </ul>
 
                 {/* Mobile action buttons */}
-                <div className='flex flex-col gap-2 pt-4 border-t border-white/10'>
-                  <CTAButton onClick={onBookDemo}>
+                <div className='flex flex-col gap-3 pt-4 border-t border-white/10'>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    asChild
+                    className='bg-transparent text-white/80 border-white/20 hover:text-white hover:border-white/40 hover:bg-white/5 rounded-lg transition-all duration-200 justify-start h-8'
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <Link href={getLoginUrl()} target='_blank'>
+                      Login
+                    </Link>
+                  </Button>
+                  <CTAButton size='sm' onClick={onBookDemo} className='h-8'>
                     <span className='text-nowrap'>Get a Demo</span>
                   </CTAButton>
                 </div>

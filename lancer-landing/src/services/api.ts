@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-const APIURL = 'https://api.lancer.app';
+const APIURL = 'http://localhost:3003';
 // Use proxy route to avoid CORS issues
 const PROXY_BASE_URL = '/api/proxy';
 
