@@ -29,7 +29,7 @@ const transitionVariants = {
 export function Hero() {
   return (
     <section style={{ backgroundColor: '#0A0A0A' }}>
-      <div className='relative pt-4 md:pt-26'>
+      <div className='relative pt-2 md:pt-26'>
         <AnimatedGroup
           variants={{
             container: {
@@ -71,7 +71,7 @@ export function Hero() {
           className='absolute inset-0 -z-10 size-full [background:radial-gradient(125%_125%_at_50%_100%,transparent_0%,#0A0A0A_75%)]'
         />
         <div className='mx-auto max-w-7xl px-6'>
-          <div className='text-center sm:mx-auto lg:mr-auto mt-20'>
+          <div className='text-center sm:mx-auto lg:mr-auto mt-10 md:mt-20'>
             <AnimatedGroup variants={transitionVariants}>
               <span
                 className='inline-block px-3 sm:px-4 py-1 mb-6 rounded-full text-xs sm:text-sm font-semibold tracking-wide'
@@ -85,11 +85,15 @@ export function Hero() {
               </span>
               <SparklesText
                 as='h1'
-                text='Land Upwork jobs 24/7 Without The Grind.'
                 colors={{ first: '#9E7AFF', second: '#FE8BBB' }}
                 sparklesCount={8}
                 className='max-w-full md:max-w-6xl mx-auto text-balance text-5xl font-bold md:text-6xl md:font-semibold xl:text-[5.25rem] text-white'
-              />
+              >
+                Land Upwork jobs 24/7{' '}
+                <span className='text-3xl md:text-6xl xl:text-[5.25rem]'>
+                  Without The Grind.
+                </span>
+              </SparklesText>
               <p className='mx-auto mt-8 mb-8 max-w-[800px] text-balance text-lg sm:text-xl md:text-2xl font-normal text-white/100'>
                 For{' '}
                 <span
