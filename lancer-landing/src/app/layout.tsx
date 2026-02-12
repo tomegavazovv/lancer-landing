@@ -297,7 +297,7 @@ export default function RootLayout({
         />
         <Script
           id='analytics-tracking'
-          src='https://datafa.st/js/script.js'
+          src='/js/script.js'
           data-website-id='68ceaf857210f2ab3906b5dc'
           data-domain='lancer.app'
           defer
