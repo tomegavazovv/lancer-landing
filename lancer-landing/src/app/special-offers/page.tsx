@@ -20,7 +20,7 @@ interface SpecialOffer {
   originalBreakdown?: { item: string; price: string }[];
 }
 
-const specialOffers: SpecialOffer[] = [
+const specialOffers: (SpecialOffer & { offerSlug: string })[] = [
   {
     name: '"Dominate Upwork" Playbook',
     price: '$299',
@@ -35,6 +35,7 @@ const specialOffers: SpecialOffer[] = [
     ],
     buttonText: 'Get the Playbook',
     href: 'https://buy.stripe.com/dRmcN53n1bkD92K65x8k80c',
+    offerSlug: 'playbook',
   },
   {
     name: '3 Months of Lancer Unlimited + "The Dominate Upwork Playbook"',
@@ -53,6 +54,7 @@ const specialOffers: SpecialOffer[] = [
     isPopular: true,
     buttonText: 'Get This Deal',
     href: 'https://buy.stripe.com/4gMfZhe1FgEXa6O0Ld8k80d',
+    offerSlug: 'bundle',
   },
   {
     name: 'Upwork Launch',
@@ -74,6 +76,7 @@ const specialOffers: SpecialOffer[] = [
     ],
     buttonText: 'Launch Your Success',
     href: 'https://buy.stripe.com/4gMfZhe1FgEXa6O0Ld8k80d',
+    offerSlug: 'launch',
   },
 ];
 
@@ -204,7 +207,10 @@ export default function SpecialOffersPage() {
                         <Button
                           size='lg'
                           className='rounded-xl px-5 text-base w-full'
-                          onClick={offer.onButtonClick}
+                          onClick={() => {
+                            window.datafast?.('special_offer_click', { offer: offer.offerSlug });
+                            offer.onButtonClick?.();
+                          }}
                           asChild={
                             !offer.onButtonClick && offer.href
                               ? true
@@ -212,7 +218,10 @@ export default function SpecialOffersPage() {
                           }
                         >
                           {!offer.onButtonClick && offer.href ? (
-                            <Link href={offer.href}>
+                            <Link
+                              href={offer.href}
+                              onClick={() => window.datafast?.('special_offer_click', { offer: offer.offerSlug })}
+                            >
                               <span className='text-nowrap'>
                                 {offer.buttonText}
                               </span>

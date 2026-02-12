@@ -22,6 +22,7 @@ const featuresData = [
     imageAlt: 'AI suitability filtering',
     isVideo: true,
     videoUrl: 'https://youtu.be/hA93aGhQvt0', // AI Analysis
+    featureSlug: 'ai_filtering',
   },
   {
     title: (
@@ -38,6 +39,7 @@ const featuresData = [
     imageAlt: 'AI suitability filtering',
     isVideo: true,
     videoUrl: 'https://youtu.be/EcDPRDXV5OM', // Unlimited Campaigns
+    featureSlug: 'campaigns',
   },
   {
     title: (
@@ -54,6 +56,7 @@ const featuresData = [
     imageAlt: 'Automated proposal generation',
     isVideo: true,
     videoUrl: 'https://youtu.be/kUEqz4Bsr5Q', // Cover Letter Templates
+    featureSlug: 'cover_letters',
   },
   {
     title: (
@@ -70,6 +73,7 @@ const featuresData = [
     imageAlt: 'Automated bidding system',
     isVideo: true,
     videoUrl: 'https://youtu.be/m800yJv9DEU', // Notifications
+    featureSlug: 'notifications',
   },
   {
     title: (
@@ -86,6 +90,7 @@ const featuresData = [
     imageAlt: 'Analytics dashboard',
     isVideo: true,
     videoUrl: 'https://www.youtube.com/watch?v=OE_IrVv8JWk', // Bidding Control
+    featureSlug: 'bidding_control',
   },
   {
     title: (
@@ -102,6 +107,7 @@ const featuresData = [
     imageAlt: 'Analytics dashboard',
     isVideo: true,
     videoUrl: 'https://youtu.be/DkQqLZkwAbc', // Advanced Analytics
+    featureSlug: 'analytics',
   },
   {
     title: (
@@ -118,6 +124,7 @@ const featuresData = [
     imageAlt: 'Analytics dashboard',
     isVideo: true,
     videoUrl: 'https://youtu.be/YW01EmpQYGs', // Academy
+    featureSlug: 'academy',
   },
 ];
 
@@ -127,6 +134,7 @@ export function Features() {
       className='py-16'
       style={{ backgroundColor: '#0A0A0A' }}
       id='features'
+      data-fast-scroll='scroll_to_features'
     >
       <AnimatedGroup
         className='mx-auto max-w-7xl px-6 py-16 flex flex-col items-center justify-center gap-5'
@@ -183,6 +191,7 @@ export function Features() {
               imageAlt={feature.imageAlt}
               isVideo={feature.isVideo}
               videoUrl={feature.videoUrl}
+              featureSlug={feature.featureSlug}
               className='transition-all duration-300 hover:scale-[1.02]'
             />
           </AnimatedGroup>

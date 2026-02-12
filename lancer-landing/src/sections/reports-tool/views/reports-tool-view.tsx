@@ -136,7 +136,12 @@ export function ReportsToolView() {
       <Suspense fallback={<div className="h-16" />}>
         <Navbar
           isOverDarkSection={true}
-          onBookDemo={() => setIsCalendlyModalOpen(true)}
+          onBookDemo={(source?: string) => {
+            if (source) {
+              window.datafast?.('book_demo', { source });
+            }
+            setIsCalendlyModalOpen(true);
+          }}
           onGetStarted={() => {
             window.open('https://1.lancer.app', '_blank');
           }}
@@ -251,7 +256,10 @@ export function ReportsToolView() {
                   automate their Upwork outreach and never miss an opportunity.
                 </p>
                 <div className='flex flex-col items-center justify-center gap-4 md:flex-row'>
-                  <CTAButton onClick={() => router.push('/#pricing')} size='lg'>
+                  <CTAButton onClick={() => {
+                    window.datafast?.('insights_get_started');
+                    router.push('/#pricing');
+                  }} size='lg'>
                     <span className='text-nowrap'>Get Started</span>
                   </CTAButton>
                 </div>

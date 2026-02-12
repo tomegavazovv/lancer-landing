@@ -51,6 +51,7 @@ export function FaqWrapper() {
           title='Frequently Asked Questions'
           description='Everything you need to know about Lancer and Upwork automation'
           items={faqData}
+          data-fast-scroll='scroll_to_faq'
         />
       </AnimatedGroup>
     </div>

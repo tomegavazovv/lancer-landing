@@ -1,3 +1,5 @@
+'use client';
+
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,6 +9,7 @@ interface CaseStudyCardProps {
   description: string;
   image: string;
   readMoreUrl?: string;
+  slug?: string;
 }
 
 export function CaseStudyCard({
@@ -14,13 +17,22 @@ export function CaseStudyCard({
   description,
   image,
   readMoreUrl = '#',
+  slug,
 }: CaseStudyCardProps) {
   const isExternalImage =
     image.startsWith('http://') || image.startsWith('https://');
   const imageSrc = isExternalImage ? image : `/${image}`;
 
   return (
-    <div className='group relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-white/10 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#D94C58]/10'>
+    <div
+      className='group relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-white/10 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#D94C58]/10'
+      onClick={() => {
+        const cardSlug = slug || readMoreUrl.split('/').pop();
+        if (cardSlug) {
+          window.datafast?.('case_study_click', { slug: cardSlug });
+        }
+      }}
+    >
       {/* Main Image */}
       <div className='relative aspect-[16/9] overflow-hidden'>
         <Image

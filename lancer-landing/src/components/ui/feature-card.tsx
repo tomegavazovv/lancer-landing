@@ -18,6 +18,7 @@ interface FeatureCardProps {
   className?: string;
   isVideo?: boolean;
   videoUrl?: string;
+  featureSlug?: string;
 }
 
 export function FeatureCard({
@@ -33,6 +34,7 @@ export function FeatureCard({
   className,
   isVideo = false,
   videoUrl,
+  featureSlug,
 }: FeatureCardProps) {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -50,6 +52,9 @@ export function FeatureCard({
   // Handle video button click
   const handleVideoClick = () => {
     if (isVideo) {
+      if (featureSlug) {
+        window.datafast?.('feature_video_click', { feature: featureSlug });
+      }
       setIsVideoModalOpen(true);
     } else {
       // Fallback to original behavior for non-video buttons

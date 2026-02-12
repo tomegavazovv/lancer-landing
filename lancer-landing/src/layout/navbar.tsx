@@ -23,9 +23,16 @@ const menuItems: MenuItem[] = [
   { name: 'Upwork Insights', href: '/upwork-insights' },
 ];
 
+const navDestinationMap: Record<string, string> = {
+  '/#testimonials': 'testimonials',
+  '/#pricing': 'pricing',
+  '/case-studies': 'case_studies',
+  '/upwork-insights': 'upwork_insights',
+};
+
 interface NavbarProps {
   isOverDarkSection?: boolean;
-  onBookDemo: () => void;
+  onBookDemo: (source?: string) => void;
   onGetStarted: () => void;
 }
 
@@ -91,6 +98,12 @@ export function Navbar({
                     <Link
                       href={item.href}
                       className='text-white/80 hover:text-white block duration-150 relative'
+                      onClick={() => {
+                        const destination = navDestinationMap[item.href];
+                        if (destination) {
+                          window.datafast?.('nav_click', { destination });
+                        }
+                      }}
                     >
                       <span>{item.name}</span>
                       {item.showNewBadge && (
@@ -111,13 +124,14 @@ export function Navbar({
                 size='sm'
                 asChild
                 className='bg-transparent text-white/80 border-white/20 hover:text-white hover:border-white/40 hover:bg-white/5 rounded-lg transition-all duration-200 h-8'
+                onClick={() => window.datafast?.('login_click', { source: 'navbar' })}
               >
                 <Link href={getLoginUrl()} target='_blank'>
                   Login
                 </Link>
               </Button>
-              <CTAButton size='sm' onClick={onBookDemo} className='h-8'>
-                <span className='text-nowrap'>Get a Demo</span>
+              <CTAButton size='sm' onClick={() => onBookDemo('navbar')} className='h-8'>
+                <span className='text-nowrap'>Book Demo</span>
               </CTAButton>
             </div>
 
@@ -149,7 +163,13 @@ export function Navbar({
                       <Link
                         href={item.href}
                         className='text-white/80 hover:text-white block py-2 duration-150 relative'
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        onClick={() => {
+                          const destination = navDestinationMap[item.href];
+                          if (destination) {
+                            window.datafast?.('nav_click', { destination });
+                          }
+                          setIsMobileMenuOpen(false);
+                        }}
                       >
                         <span>{item.name}</span>
                         {item.showNewBadge && (
@@ -169,14 +189,17 @@ export function Navbar({
                     size='sm'
                     asChild
                     className='bg-transparent text-white/80 border-white/20 hover:text-white hover:border-white/40 hover:bg-white/5 rounded-lg transition-all duration-200 justify-start h-8'
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      window.datafast?.('login_click', { source: 'navbar_mobile' });
+                      setIsMobileMenuOpen(false);
+                    }}
                   >
                     <Link href={getLoginUrl()} target='_blank'>
                       Login
                     </Link>
                   </Button>
-                  <CTAButton size='sm' onClick={onBookDemo} className='h-8'>
-                    <span className='text-nowrap'>Get a Demo</span>
+                  <CTAButton size='sm' onClick={() => onBookDemo('navbar_mobile')} className='h-8'>
+                    <span className='text-nowrap'>Book Demo</span>
                   </CTAButton>
                 </div>
               </div>

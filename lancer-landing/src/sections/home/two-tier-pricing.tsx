@@ -29,7 +29,7 @@ import {
 import { useState } from 'react';
 
 interface TwoTierPricingProps {
-  onBookDemo: () => void;
+  onBookDemo: (source?: string) => void;
 }
 
 export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
@@ -177,7 +177,7 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
   const unlimitedFeatures = unlimitedBaseFeatures;
 
   return (
-    <section className='py-24 relative overflow-hidden' id='pricing'>
+    <section className='py-24 relative overflow-hidden' id='pricing' data-fast-scroll='scroll_to_pricing'>
       {/* Grid Pattern Background */}
       <div className='absolute inset-0 -z-10'>
         <div className='h-full w-full bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:35px_35px] opacity-40 [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]' />
@@ -205,7 +205,10 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
           <div className='relative'>
             <div className='rounded-full border border-white/20 p-1 bg-white/5 inline-flex items-center gap-1'>
               <button
-                onClick={() => setBillingCycle('monthly')}
+                onClick={() => {
+                  setBillingCycle('monthly');
+                  window.datafast?.('pricing_toggle', { cycle: 'monthly' });
+                }}
                 className={cn(
                   'px-6 py-2.5 rounded-full font-medium transition-all text-base',
                   billingCycle === 'monthly'
@@ -216,7 +219,10 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                 Monthly
               </button>
               <button
-                onClick={() => setBillingCycle('quarterly')}
+                onClick={() => {
+                  setBillingCycle('quarterly');
+                  window.datafast?.('pricing_toggle', { cycle: 'quarterly' });
+                }}
                 className={cn(
                   'px-6 py-2.5 rounded-full font-medium transition-all inline-flex items-center gap-2 text-base',
                   billingCycle === 'quarterly'
@@ -236,7 +242,10 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                 </span>
               </button>
               <button
-                onClick={() => setBillingCycle('yearly')}
+                onClick={() => {
+                  setBillingCycle('yearly');
+                  window.datafast?.('pricing_toggle', { cycle: 'yearly' });
+                }}
                 className={cn(
                   'px-6 py-2.5 rounded-full font-medium transition-all inline-flex items-center gap-2 text-base',
                   billingCycle === 'yearly'
@@ -324,7 +333,10 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               size='lg'
               variant='primary'
               className='w-full'
-              onClick={() => window.open('https://1.lancer.app', '_blank')}
+              onClick={() => {
+                window.datafast?.('start_now', { tier: 'pay_as_you_go' });
+                window.open('https://1.lancer.app', '_blank');
+              }}
             >
               <Rocket className='h-5 w-5' />
               Start Now
@@ -420,7 +432,10 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               size='lg'
               variant='primary'
               className='w-full'
-              onClick={() => window.open('https://1.lancer.app', '_blank')}
+              onClick={() => {
+                window.datafast?.('start_now', { tier: 'light' });
+                window.open('https://1.lancer.app', '_blank');
+              }}
             >
               <Rocket className='h-5 w-5' />
               Start Now
@@ -438,7 +453,10 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
             <div className='flex md:hidden items-center justify-center mb-6 relative'>
               <div className='rounded-full border border-gray-200 p-1 bg-gray-50 inline-flex items-center gap-1 text-sm w-full max-w-xs'>
                 <button
-                  onClick={() => setBillingCycle('monthly')}
+                  onClick={() => {
+                    setBillingCycle('monthly');
+                    window.datafast?.('pricing_toggle', { cycle: 'monthly' });
+                  }}
                   className={cn(
                     'px-2 py-2 rounded-full font-medium transition-all text-xs flex-1',
                     billingCycle === 'monthly'
@@ -449,7 +467,10 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                   Monthly
                 </button>
                 <button
-                  onClick={() => setBillingCycle('quarterly')}
+                  onClick={() => {
+                    setBillingCycle('quarterly');
+                    window.datafast?.('pricing_toggle', { cycle: 'quarterly' });
+                  }}
                   className={cn(
                     'px-2 py-2 rounded-full font-medium transition-all inline-flex items-center gap-1 text-xs flex-1',
                     billingCycle === 'quarterly'
@@ -469,7 +490,10 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                   </span>
                 </button>
                 <button
-                  onClick={() => setBillingCycle('yearly')}
+                  onClick={() => {
+                    setBillingCycle('yearly');
+                    window.datafast?.('pricing_toggle', { cycle: 'yearly' });
+                  }}
                   className={cn(
                     'px-2 py-2 rounded-full font-medium transition-all inline-flex items-center gap-1 text-xs flex-1',
                     billingCycle === 'yearly'
@@ -572,7 +596,7 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               size='lg'
               variant='primary'
               className='w-full'
-              onClick={onBookDemo}
+              onClick={() => onBookDemo('pricing_unlimited')}
             >
               <Phone className='h-5 w-5' />
               Book 1:1 Demo

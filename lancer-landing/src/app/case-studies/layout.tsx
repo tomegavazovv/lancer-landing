@@ -12,7 +12,10 @@ export default function CaseStudiesLayout({
 }) {
   const [isCalendlyModalOpen, setIsCalendlyModalOpen] = useState(false);
 
-  const handleBookDemo = () => {
+  const handleBookDemo = (source?: string) => {
+    if (source) {
+      window.datafast?.('book_demo', { source });
+    }
     setIsCalendlyModalOpen(true);
   };
 

@@ -4,7 +4,7 @@ import { FaqWrapper } from './faq-wrapper';
 import { TwoTierPricing } from './two-tier-pricing';
 
 interface PricingSectionProps {
-  onBookDemo: () => void;
+  onBookDemo: (source?: string) => void;
 }
 
 export function PricingSection({ onBookDemo }: PricingSectionProps) {

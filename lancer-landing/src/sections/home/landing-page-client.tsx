@@ -5,7 +5,7 @@ import { EmailModal } from '@/components/ui/email-modal';
 import React from 'react';
 
 interface LandingPageContextType {
-  onBookDemo: () => void;
+  onBookDemo: (source?: string) => void;
 }
 
 const LandingPageContext = React.createContext<LandingPageContextType | null>(
@@ -16,7 +16,7 @@ export function useLandingPageActions() {
   const context = React.useContext(LandingPageContext);
   if (!context) {
     return {
-      onBookDemo: () => {},
+      onBookDemo: () => { },
     };
   }
   return context;
@@ -32,7 +32,12 @@ export function LandingPageProvider({ children }: LandingPageProviderProps) {
 
   const contextValue = React.useMemo(
     () => ({
-      onBookDemo: () => setIsCalendlyModalOpen(true),
+      onBookDemo: (source?: string) => {
+        if (source) {
+          window.datafast?.('book_demo', { source });
+        }
+        setIsCalendlyModalOpen(true);
+      },
     }),
     []
   );
