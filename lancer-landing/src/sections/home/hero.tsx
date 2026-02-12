@@ -73,6 +73,16 @@ export function Hero() {
         <div className='mx-auto max-w-7xl px-6'>
           <div className='text-center sm:mx-auto lg:mr-auto mt-20'>
             <AnimatedGroup variants={transitionVariants}>
+              <span
+                className='inline-block px-3 sm:px-4 py-1 mb-6 rounded-full text-xs sm:text-sm font-semibold tracking-wide'
+                style={{
+                  backgroundColor: 'rgba(109, 40, 217, 0.2)',
+                  color: '#a78bfa',
+                  border: '1px solid rgba(109, 40, 217, 0.35)',
+                }}
+              >
+                The #1 Upwork AI Agent
+              </span>
               <SparklesText
                 as='h1'
                 text='Land Upwork jobs 24/7 Without The Grind.'

@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://lancer.app'),
-  title: 'Lancer - AI-Powered Upwork Automation | Win More Jobs Automatically',
+  title: 'Lancer - Upwork AI Agent | Win More Jobs Automatically',
   description:
     'Stop chasing work and start winning it. Lancer is an AI agent that finds perfect Upwork jobs and submits personalized proposals automatically. Trusted by 1,247+ successful professionals.',
   manifest: '/manifest.json',
@@ -51,21 +51,15 @@ export const metadata: Metadata = {
     url: 'https://lancer.app', // Replace with your actual domain
     siteName: 'Lancer',
     title:
-      'Lancer - AI-Powered Upwork Automation | Win More Jobs Automatically',
+      'Lancer - Upwork AI Agent | Win More Jobs Automatically',
     description:
       'Stop chasing work and start winning it. Lancer is an AI agent that finds perfect Upwork jobs and submits personalized proposals automatically. Trusted by 1,247+ successful professionals.',
     images: [
       {
-        url: '/product.png', // Using your existing product screenshot
-        width: 2700,
-        height: 1440,
-        alt: 'Lancer AI Upwork Automation Dashboard - Automated Job Bidding and Proposal Generation',
-      },
-      {
-        url: '/web-app-manifest-512x512.png', // Fallback square image
-        width: 512,
-        height: 512,
-        alt: 'Lancer Logo',
+        url: '/og-image.png',
+        width: 1268,
+        height: 923,
+        alt: 'Lancer - The #1 Upwork AI Agent. Land Upwork jobs 24/7 without the grind.',
       },
     ],
   },
@@ -74,10 +68,10 @@ export const metadata: Metadata = {
     site: '@lancer', // Replace with your actual Twitter handle
     creator: '@lancer', // Replace with your actual Twitter handle
     title:
-      'Lancer - AI-Powered Upwork Automation | Win More Jobs Automatically',
+      'Lancer - Upwork AI Agent | Win More Jobs Automatically',
     description:
       'Stop chasing work and start winning it. Lancer finds perfect Upwork jobs and submits personalized proposals automatically. Join 1,247+ successful professionals.',
-    images: ['/product.png'],
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,
