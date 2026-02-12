@@ -17,7 +17,7 @@ import TrustedUsers from '../trusted-users';
 
 function LandingPageContent() {
   const [isOverDarkSection] = React.useState(true);
-  const { onVideoClick, onBookDemo } = useLandingPageActions();
+  const { onBookDemo } = useLandingPageActions();
 
   return (
     <>
@@ -38,7 +38,7 @@ function LandingPageContent() {
           <div className='h-[80rem] -translate-y-[350px] absolute left-0 top-0 w-56 -rotate-45 bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,0%,85%,.04)_0,hsla(0,0%,45%,.02)_80%,transparent_100%)]' />
         </div>
 
-        <Hero onVideoClick={onVideoClick} />
+        <Hero />
         <TrustedUsers />
         <div className='hidden md:block'></div>
         <Features />

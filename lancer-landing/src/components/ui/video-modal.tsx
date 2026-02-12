@@ -11,7 +11,7 @@ interface VideoModalProps {
 
 export function VideoModal({ isOpen, onClose, videoUrl, title }: VideoModalProps) {
   // Default to hero video if no URL provided
-  const defaultVideoUrl = "https://www.youtube.com/embed/2B_q2alwPFA?autoplay=1";
+  const defaultVideoUrl = "https://www.youtube.com/embed/dDkAaZsMc_w?autoplay=1";
   
   // Convert YouTube URL to embed format with autoplay
   const getEmbedUrl = (url: string) => {

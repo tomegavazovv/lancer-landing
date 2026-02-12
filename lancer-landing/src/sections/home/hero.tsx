@@ -2,9 +2,8 @@
 
 import { AnimatedGroup } from '@/components/ui/animated-group';
 import { BackgroundSnippets } from '@/components/ui/background-snippets';
-import { Button } from '@/components/ui/button';
+import { HeroVideo } from '@/components/ui/hero-video';
 import { SparklesText } from '@/components/ui/sparkles-text';
-import { Play } from 'lucide-react';
 import Image from 'next/image';
 
 const transitionVariants = {
@@ -27,11 +26,7 @@ const transitionVariants = {
   },
 };
 
-interface HeroProps {
-  onVideoClick: () => void;
-}
-
-export function Hero({ onVideoClick }: HeroProps) {
+export function Hero() {
   return (
     <section style={{ backgroundColor: '#0A0A0A' }}>
       <div className='relative pt-4 md:pt-26'>
@@ -130,41 +125,9 @@ export function Hero({ onVideoClick }: HeroProps) {
         >
           <div className='relative flex justify-center mt-4 px-2 sm:mr-0 sm:mt-8 md:mt-12 z-10 pb-16'>
             <BackgroundSnippets />
-            <div className='relative pt-8'>
-              <div className='relative mx-auto max-w-6xl overflow-hidden rounded-2xl border border-border bg-white/80 dark:bg-muted/60 shadow-sm'>
-                <div className='relative aspect-15/8 rounded-2xl overflow-hidden'>
-                  <Image
-                    src='https://img.youtube.com/vi/2B_q2alwPFA/maxresdefault.jpg'
-                    alt='Lancer Demo Video Thumbnail'
-                    className='w-full h-full object-cover rounded-2xl'
-                    width={2700}
-                    height={1440}
-                  />
-                  {/* Video Overlay Button */}
-                  <div
-                    className='absolute inset-0 flex items-center justify-center z-20 bg-black/20 hover:bg-black/30 transition-colors cursor-pointer'
-                    onClick={onVideoClick}
-                  >
-                    <Button
-                      size='lg'
-                      className='rounded-full w-20 h-20 shadow-2xl backdrop-blur-sm border-4 border-white hover:scale-110 transition-all duration-300 animate-pulse flex items-center justify-center'
-                      style={{
-                        backgroundColor: 'var(--accent-color)',
-                        color: 'var(--accent-text-color)',
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.currentTarget.style.backgroundColor =
-                          'var(--accent-color-hover)')
-                      }
-                      onMouseLeave={(e) =>
-                        (e.currentTarget.style.backgroundColor =
-                          'var(--accent-color)')
-                      }
-                    >
-                      <Play className='w-20 h-20' fill='currentColor' />
-                    </Button>
-                  </div>
-                </div>
+            <div className='relative w-full pt-8'>
+              <div className='relative mx-auto max-w-6xl overflow-hidden rounded-2xl border border-white/[0.08] shadow-2xl shadow-black/40'>
+                <HeroVideo />
               </div>
             </div>
           </div>
