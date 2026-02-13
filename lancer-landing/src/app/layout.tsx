@@ -295,12 +295,6 @@ export default function RootLayout({
           data-tolt='pk_kF4zkzLaaTifeVEbiMbPJkdb'
           strategy='afterInteractive'
         />
-        <Script id='datafast-queue' strategy='beforeInteractive'>
-          {`window.datafast = window.datafast || function() {
-            window.datafast.q = window.datafast.q || [];
-            window.datafast.q.push(arguments);
-          };`}
-        </Script>
         <Script
           id='analytics-tracking'
           src='/js/script.js'

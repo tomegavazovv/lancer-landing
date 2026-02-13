@@ -52,9 +52,6 @@ export function FeatureCard({
   // Handle video button click
   const handleVideoClick = () => {
     if (isVideo) {
-      if (featureSlug) {
-        window.datafast?.('feature_video_click', { feature: featureSlug });
-      }
       setIsVideoModalOpen(true);
     } else {
       // Fallback to original behavior for non-video buttons

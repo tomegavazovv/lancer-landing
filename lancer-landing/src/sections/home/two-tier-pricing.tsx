@@ -207,7 +207,6 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               <button
                 onClick={() => {
                   setBillingCycle('monthly');
-                  window.datafast?.('pricing_toggle', { cycle: 'monthly' });
                 }}
                 className={cn(
                   'px-6 py-2.5 rounded-full font-medium transition-all text-base',
@@ -221,7 +220,6 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               <button
                 onClick={() => {
                   setBillingCycle('quarterly');
-                  window.datafast?.('pricing_toggle', { cycle: 'quarterly' });
                 }}
                 className={cn(
                   'px-6 py-2.5 rounded-full font-medium transition-all inline-flex items-center gap-2 text-base',
@@ -244,7 +242,6 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               <button
                 onClick={() => {
                   setBillingCycle('yearly');
-                  window.datafast?.('pricing_toggle', { cycle: 'yearly' });
                 }}
                 className={cn(
                   'px-6 py-2.5 rounded-full font-medium transition-all inline-flex items-center gap-2 text-base',
@@ -334,7 +331,6 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               variant='primary'
               className='w-full'
               onClick={() => {
-                window.datafast?.('start_now', { tier: 'pay_as_you_go' });
                 window.open('https://1.lancer.app', '_blank');
               }}
             >
@@ -433,7 +429,6 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
               variant='primary'
               className='w-full'
               onClick={() => {
-                window.datafast?.('start_now', { tier: 'light' });
                 window.open('https://1.lancer.app', '_blank');
               }}
             >
@@ -455,7 +450,6 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                 <button
                   onClick={() => {
                     setBillingCycle('monthly');
-                    window.datafast?.('pricing_toggle', { cycle: 'monthly' });
                   }}
                   className={cn(
                     'px-2 py-2 rounded-full font-medium transition-all text-xs flex-1',
@@ -469,7 +463,6 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                 <button
                   onClick={() => {
                     setBillingCycle('quarterly');
-                    window.datafast?.('pricing_toggle', { cycle: 'quarterly' });
                   }}
                   className={cn(
                     'px-2 py-2 rounded-full font-medium transition-all inline-flex items-center gap-1 text-xs flex-1',
@@ -492,7 +485,6 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
                 <button
                   onClick={() => {
                     setBillingCycle('yearly');
-                    window.datafast?.('pricing_toggle', { cycle: 'yearly' });
                   }}
                   className={cn(
                     'px-2 py-2 rounded-full font-medium transition-all inline-flex items-center gap-1 text-xs flex-1',

@@ -208,7 +208,6 @@ export default function SpecialOffersPage() {
                           size='lg'
                           className='rounded-xl px-5 text-base w-full'
                           onClick={() => {
-                            window.datafast?.('special_offer_click', { offer: offer.offerSlug });
                             offer.onButtonClick?.();
                           }}
                           asChild={
@@ -220,7 +219,6 @@ export default function SpecialOffersPage() {
                           {!offer.onButtonClick && offer.href ? (
                             <Link
                               href={offer.href}
-                              onClick={() => window.datafast?.('special_offer_click', { offer: offer.offerSlug })}
                             >
                               <span className='text-nowrap'>
                                 {offer.buttonText}

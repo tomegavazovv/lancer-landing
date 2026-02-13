@@ -7,7 +7,6 @@ import { TextGenerateEffect } from '@/components/ui/text-generate-effect';
 
 export function StatisticsSection() {
   const handleGetStarted = () => {
-    window.datafast?.('stats_get_started');
     const pricingSection = document.getElementById('pricing');
     if (pricingSection) {
       pricingSection.scrollIntoView({ behavior: 'smooth' });

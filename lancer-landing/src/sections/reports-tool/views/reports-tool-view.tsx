@@ -136,10 +136,7 @@ export function ReportsToolView() {
       <Suspense fallback={<div className="h-16" />}>
         <Navbar
           isOverDarkSection={true}
-          onBookDemo={(source?: string) => {
-            if (source) {
-              window.datafast?.('book_demo', { source });
-            }
+          onBookDemo={() => {
             setIsCalendlyModalOpen(true);
           }}
           onGetStarted={() => {
@@ -257,7 +254,6 @@ export function ReportsToolView() {
                 </p>
                 <div className='flex flex-col items-center justify-center gap-4 md:flex-row'>
                   <CTAButton onClick={() => {
-                    window.datafast?.('insights_get_started');
                     router.push('/#pricing');
                   }} size='lg'>
                     <span className='text-nowrap'>Get Started</span>

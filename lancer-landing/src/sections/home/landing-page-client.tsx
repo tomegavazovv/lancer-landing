@@ -32,10 +32,7 @@ export function LandingPageProvider({ children }: LandingPageProviderProps) {
 
   const contextValue = React.useMemo(
     () => ({
-      onBookDemo: (source?: string) => {
-        if (source) {
-          window.datafast?.('book_demo', { source });
-        }
+      onBookDemo: () => {
         setIsCalendlyModalOpen(true);
       },
     }),
