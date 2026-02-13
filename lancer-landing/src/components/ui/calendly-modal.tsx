@@ -336,14 +336,14 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
               <div className='flex items-center gap-4'>
                 <Avatar className='w-16 h-16'>
                   <AvatarImage
-                    src='https://firebasestorage.googleapis.com/v0/b/lancer-prod.firebasestorage.app/o/assets%2FScreenshot%202025-09-28%20at%2009.07.12.png?alt=media&token=370bcb29-2d18-4e38-85c0-b9fdeb4d5f16'
-                    alt='Tome'
+                    src='/ivan-headshot.png'
+                    alt='Ivan'
                   />
-                  <AvatarFallback>T</AvatarFallback>
+                  <AvatarFallback>I</AvatarFallback>
                 </Avatar>
                 <div>
                   <h3 className='text-xl lg:text-2xl font-bold text-white'>
-                    Book Demo with Tome
+                    Book Demo with Ivan
                   </h3>
                   <div className='text-white/60 text-sm'>Co-Founder</div>
                   <div className='text-white/50 text-xs mt-1'>
@@ -397,7 +397,7 @@ export function CalendlyModal({ isOpen, onClose }: CalendlyModalProps) {
 
             <div className='p-0 min-h-[520px] lg:min-h-[520px] relative z-10 touch-auto bg-white'>
               <CalendlyEmbed
-                url='https://calendly.com/tome-lancer/lancer-demo'
+                url='https://calendly.com/ivan-mvp/lancer-1-1-demo-call'
                 minimal={true}
                 height={520}
                 backgroundColor='ffffff'
