@@ -134,7 +134,6 @@ export function Features() {
       className='py-16'
       style={{ backgroundColor: '#0A0A0A' }}
       id='features'
-      data-fast-scroll='scroll_to_features'
     >
       <AnimatedGroup
         className='mx-auto max-w-7xl px-6 py-16 flex flex-col items-center justify-center gap-5'

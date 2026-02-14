@@ -177,7 +177,7 @@ export function TwoTierPricing({ onBookDemo }: TwoTierPricingProps) {
   const unlimitedFeatures = unlimitedBaseFeatures;
 
   return (
-    <section className='py-24 relative overflow-hidden' id='pricing' data-fast-scroll='scroll_to_pricing'>
+    <section className='py-24 relative overflow-hidden' id='pricing'>
       {/* Grid Pattern Background */}
       <div className='absolute inset-0 -z-10'>
         <div className='h-full w-full bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:35px_35px] opacity-40 [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]' />

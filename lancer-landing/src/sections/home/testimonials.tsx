@@ -411,7 +411,6 @@ export function Testimonials() {
       id='testimonials'
       className='py-24 relative overflow-hidden'
       style={{ backgroundColor: '#0A0A0A' }}
-      data-fast-scroll='scroll_to_testimonials'
     >
       <div className='w-full px-4'>
         {/* Header */}
