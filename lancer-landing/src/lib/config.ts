@@ -1,50 +1,35 @@
-// Configuration file for environment-dependent settings
 export const config = {
-  // Use internal API route instead of direct Zapier call to avoid CORS
-  apiWebhookUrl: '/api/webhook/zapier',
-  
-  // Add other configuration values here as needed
+  apiPlaybookLeadUrl: '/api/playbook-lead',
   isDevelopment: process.env.NODE_ENV === 'development',
   isProduction: process.env.NODE_ENV === 'production',
 } as const;
 
-// Type for webhook payload
-export interface WebhookPayload {
+export interface PlaybookLeadPayload {
   email: string;
-  timestamp: string;
+  upworkUrl?: string;
+  linkedinUrl?: string;
   source: string;
 }
 
-// Type for API response
-export interface ApiResponse {
-  success?: boolean;
-  message?: string;
-  error?: string;
-  zapierResponse?: any;
-}
-
-// Webhook submission function - now calls internal API route
-export const submitToZapier = async (payload: WebhookPayload): Promise<boolean> => {
+export const submitPlaybookLead = async (
+  payload: PlaybookLeadPayload
+): Promise<boolean> => {
   try {
-    const response = await fetch(config.apiWebhookUrl, {
+    const response = await fetch(config.apiPlaybookLeadUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
-      const errorData: ApiResponse = await response.json();
+      const errorData = await response.json();
       console.error('API error:', errorData.error);
       return false;
     }
 
-    const data: ApiResponse = await response.json();
-    console.log('Webhook submission successful:', data.message);
-    return data.success || false;
+    return true;
   } catch (error) {
-    console.error('Webhook submission error:', error);
+    console.error('Lead submission error:', error);
     return false;
   }
-}; 
+};

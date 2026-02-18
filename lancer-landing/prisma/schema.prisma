@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Freelancer {
+  id                    String    @id
+  ciphertext            String?
+  vanityUrl             String?
+  name                  String
+  title                 String
+  description           String?
+  city                  String?
+  country               String
+  countryCode           String?
+  bigPortraitUrl        String?
+  portrait500Url        String?
+  hourlyRate            Float?
+  totalJobsWorked       Int       @default(0)
+  totalJobsWorkedRecent Int       @default(0)
+  totalFixedJobs        Int       @default(0)
+  totalHourlyJobs       Int       @default(0)
+  completedJobs         Int?
+  activeJobs            Int?
+  hideEarnings          Boolean   @default(false)
+  contractorEarnings    Float     @default(0)
+  recentEarnings        Float     @default(0)
+  averageRecentEarnings Float     @default(0)
+  jobSuccessScore       Int       @default(0)
+  totalFeedback         Int       @default(0)
+  rating                Float     @default(0)
+  ratingRecent          Float     @default(0)
+  topRatedStatus        String?
+  topRatedPlusStatus    String?
+  isVetted              Boolean   @default(false)
+  skills                String[]  @default([])
+  videoUrl              String?
+  memberSince           DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime
+
+  @@index([averageRecentEarnings(sort: Desc)])
+  @@index([ciphertext])
+  @@index([contractorEarnings(sort: Desc)])
+  @@index([country])
+  @@index([hideEarnings])
+  @@index([jobSuccessScore(sort: Desc)])
+  @@index([rating(sort: Desc)])
+  @@index([vanityUrl])
+}
+
+model LeadSubmission {
+  id          String   @id
+  email       String
+  upworkUrl   String
+  linkedinUrl String?
+  source      String
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+
+  @@unique([email, upworkUrl, source])
+  @@index([email])
+  @@index([source])
+}
+
+model ProfileRoastRequest {
+  id         String   @id
+  email      String
+  profileUrl String
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+}

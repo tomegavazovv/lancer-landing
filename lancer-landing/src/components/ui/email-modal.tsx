@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import { submitToZapier, WebhookPayload } from '@/lib/config';
+import { submitPlaybookLead } from '@/lib/config';
 
 interface EmailModalProps {
   isOpen: boolean;
@@ -39,13 +39,10 @@ export function EmailModal({ isOpen, onClose }: EmailModalProps) {
     setErrorMessage('');
 
     try {
-      const payload: WebhookPayload = {
+      const success = await submitPlaybookLead({
         email: email.trim(),
-        timestamp: new Date().toISOString(),
-        source: 'navbar_cta'
-      };
-
-      const success = await submitToZapier(payload);
+        source: 'navbar_cta',
+      });
 
       if (success) {
         setEmail(''); // Clear form on success
